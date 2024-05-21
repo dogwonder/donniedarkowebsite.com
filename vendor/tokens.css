@@ -1,0 +1,14 @@
+:root {
+  --color-neon: #00FFD9;
+  --color-blue: #081248;
+  --color-teal: #10827B;
+  --color-dark: #000000;
+  --color-light: #FFFFFF;
+  --color-alt: #FAFBFC;
+  --space-1-2: clamp(0.5rem, 0.40rem + 0.50vw, 1rem);
+  --space-2-9: clamp(1rem, 0.00rem + 5.00vw, 6rem);
+  --space-5-8: clamp(2.5rem, 2.00rem + 2.50vw, 5rem);
+  --space-offset: clamp(4.75rem, 4.30rem + 2.25vw, 7rem);
+  --font-size-huge: clamp(2rem, 1.60rem + 2.00vw, 4rem);
+  --font-size-large: clamp(2rem, 1.80rem + 1.00vw, 3rem); 
+}

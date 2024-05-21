@@ -1,0 +1,26 @@
+{
+    "title": "Spacing",
+    "description": "Consistent spacing sizes, based on a ratio, with min and max sizes. This allows you to set spacing based on the context size. For example, min for mobile and max for desktop browsers.",
+    "items": [
+      {
+        "name": "1-2",
+        "min": 8,
+        "max": 16
+      }, 
+      {
+        "name": "2-9",
+        "min": 16,
+        "max": 96
+      }, 
+      {
+        "name": "5-8",
+        "min": 40,
+        "max": 80
+      },  
+      {
+        "name": "offset",
+        "min": 76,
+        "max": 112
+      }
+    ]
+  }

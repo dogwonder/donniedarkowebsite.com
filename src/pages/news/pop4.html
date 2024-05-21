@@ -1,0 +1,64 @@
+---
+permalink: /news/pop4.html
+---
+
+{% set isAlpine = true %}
+{% set hasCredit = false %}
+
+{% css %}
+body {
+    overflow-y: hidden;
+}
+.iframe-modal  {
+  max-width: 730px !important;
+}
+{% endcss %}
+
+{% extends "layouts/base.html" %}
+
+{% block content %}
+
+<div class="flex items-center justify-center h-screen">
+    <p class="text-center">Close the window to continue</p>
+</div>
+
+<div x-data="{ open: true }" class="flex justify-center">
+
+  <!-- Modal -->
+  <div
+      x-dialog
+      x-model="open"
+      style="display: none"
+      class="fixed inset-0 overflow-y-auto z-10"
+  >
+      <!-- Overlay -->
+      <div x-dialog:overlay x-transition.opacity class="fixed inset-0 bg-black bg-opacity-50"></div>
+
+      <!-- Panel -->
+      <div class="relative min-h-screen flex items-center justify-center p-4">
+          <div
+              x-dialog:panel
+              x-transition
+              class="iframe-modal window relative max-w-xl w-full bg-white shadow-lg overflow-y-auto"
+          >
+              <div class="title-bar">
+                <div class="title-bar-text"></div>
+                <div class="title-bar-controls">
+                    <button aria-label="Close" @click="$dialog.close()"></button>
+                  </div>
+              </div>
+
+              <!-- Body -->
+              <div class="p-1">
+                <iframe src="/news/newspaper5.htm" width="100%" height="800px" frameborder="0" scrolling="yes"></iframe>
+              </div>
+
+          </div>
+      </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

@@ -1,0 +1,436 @@
+---
+permalink: /from/the/sky/missing/document.html
+---
+
+{% set isRuffle = false %}
+
+{% css %}
+html body {
+    background-color: #ddddcc;
+    background: linear-gradient(to top, #ffffff 0%, #ffffff 400px, #ddddcc 500px, #ddddcc 100%);
+}
+.aspect-ratio {
+    position: relative;
+    aspect-ratio: 800 / 500;
+}
+.aspect-ratio canvas {
+    width: 100%;
+    height: 100%;
+    background-image: url("/images/missing/level3/document.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+}
+.scene {
+    width: 100%;
+    height: 100%;
+}
+#animation {
+    position: absolute;
+    right: 14%;
+    top: 9%;
+    z-index: 2;
+    width: 70%;
+    height: 70%;
+}
+.window {
+    width: 250px;
+    height: 250px;
+    position: absolute;
+    right: 10%;
+    bottom: 30%;
+    overflow: hidden;
+    z-index: 1;
+}
+.faa-window {
+    position: absolute;
+    bottom: 10%;
+    height: 45%;
+    left: 12%;
+    max-width: calc(280px + 30ch);
+    display: flex;
+    gap: 2ch;
+    display: none;
+}
+.faa-info {
+    background-color: white;
+    box-shadow: inset -1px -1px #fff,inset 1px 1px grey,inset -2px -2px #dfdfdf,inset 2px 2px #0a0a0a;
+    padding: 1rem;
+    color: var(--highlight);
+    font-size: clamp(0.75rem, 0.9vw, 0.8rem);
+    font-family: var(--mono);
+    font-weight: bold;
+    overflow-x: hidden;
+    width: 280px;
+}
+.launch {
+    color: var(--highlight);
+    text-transform: uppercase;
+    font-size: clamp(0.75rem, 0.9vw, 0.8rem);
+    font-weight: bold;
+    flex: 1;
+    align-self: flex-end;
+    min-width: 30ch;
+}
+.launch:hover {
+    cursor: pointer;
+}
+.blink {
+    animation: blink 1s steps(5, start) infinite;
+    -webkit-animation: blink 1s steps(5, start) infinite;
+}
+.transcript {
+    position: absolute;
+    bottom:0;
+    height: 80%;
+    left: 5%;
+    max-width: 90%;
+    font-size: clamp(0.75rem, 0.9vw, 1rem);
+    font-family: var(--mono);
+    font-weight: bold;
+    overflow-x: hidden;
+    padding-inline-end: 2rem;
+    padding-block-end: 4rem;
+}
+.times-up {
+    position: absolute;
+    bottom: 20%;
+    right: 10%; 
+}
+#phone:hover {
+    cursor: pointer;
+    animation: flicker 0.1s 5;
+}
+@keyframes flicker {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+@keyframes reveal {
+    0% {
+        transform: scaleY(0);
+    }
+    100% {
+        transform: scaleY(1);
+    }
+}
+@keyframes blink {
+    to {
+        visibility: hidden;
+    }
+}
+.fade-in {
+    animation: fadeIn 2s;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+{% endcss %}
+
+{% extends "layouts/base.html" %}
+{% block content %}
+
+<!--TODO
+Absolutely position the phone and the rest of the animation
+-->
+
+<div class="flex items-end h-full">
+    <div class="aspect-ratio">
+        <canvas id="image" width="800" height="500"></canvas>
+        <div class="scene" id="scene-1">
+            <svg id="animation" viewBox="0 0 800 500">
+            
+                <image x="525" y="175" id="window" width="250" height="250" xlink:href="/images/missing/level3/window-lamp.jpg" />
+
+                <image x="625" y="275" id="phone" xlink:href="/images/missing/level3/phone.svg" x="250" y="175" width="50" height="50" visibility="visible" />
+
+                <!-- Initial Circle and Dot 
+                -->
+                <circle id="circle1" cx="650" cy="300" r="50" stroke="var(--highlight)" stroke-width="0.8%" fill="none" visibility="hidden" />
+        
+                <!-- Line 
+                    600 is the x coordinate of the circle
+                    300 is the y coordinate of the circle
+                -->
+                <line id="line" x1="600" y1="285" x2="600" y2="285" stroke="var(--highlight)" stroke-width="0.6%" />
+                <line id="line2" x1="325" y1="285" x2="327" y2="285" stroke="var(--highlight)" stroke-width="0.6%" />
+        
+                <!-- Second Circle and Dot (initially hidden) -->
+                <circle id="circle2" cx="200" cy="160" r="32" stroke="var(--highlight)" stroke-width="0.8%" fill="none" visibility="hidden" />
+                <circle id="dot" cx="200" cy="160" r="12" fill="var(--highlight)" visibility="hidden" />
+            </svg>
+            <div class="faa-window">
+                <div class="faa-info">
+                    <div id="words" style="display: none;">
+                        FEDERAL AVIATION ADMINISTRATION<br>
+                        OFFICE OF ACCIDENT INVESTIGATION<br>
+                        TRANSCRIPT 345512334<br>
+                        SOURCE: USA -- WASHINGTON D.C./UNITED KINGDOM -- LONDON<br>
+                        DATE: 4/23/91 03:23:26 AM EST<br><br>
+                        
+                        DISCLAIMER:<br><br>
+                        
+                        THE OFFICE OF ACCIDENT INFORMATION (AAI) IS THE PRINCIPAL ORGANIZATION WITHIN THE FAA WITH<br> RESPECT TO AIRCRAFT INVESTIGATION AND ALL ACTIVITIES RELATED TO THE NATIONAL TRANSPORTATION<br> SAFETY BOARD (NTSB)<br><br>
+                        
+                        THE FOLLOWING TRANSCRIPT IS A CLASSIFIED DOCUMENT WITH LEVEL 6 RESTRICTIONS.<br>
+                    </div>
+                </div>
+                <p class="launch" id="launch" style="opacity: 0;">>> Launch the document</p>
+            </div>
+        </div>
+        <div class="scene" id="scene-2" style="display:none;">
+            <div id="transcript" class="transcript">
+                FEDERAL AVIATION ADMINISTRATION<br>
+                OFFICE OF ACCIDENT INVESTIGATION<br>
+                TRANSCRIPT #345512334<br>
+                SOURCE: USA -- WASHINGTON D.C./UNITED KINGDOM -- LONDON<br>
+                DATE: 4/23/91 03:23:26 AM EST<br><br>
+    
+                [CALLER 1]: Hello?<br>
+    
+                [CALLER 2]: Yes, is this [NAME WITHHELD]?<br>
+    
+                [CALLER 1]: Yes.<br>
+    
+                [CALLER 2]: This is [NAME WITHHELD]. I apologize for calling you at home, but I am calling from London and this appears to be a very urgent matter.<br>
+    
+                [CALLER 1]: I understand. What have you got for me?<br>
+    
+                [CALLER 2]: We have run the tests on the engine parts that you sent to Heathrow and I have some rather conclusive results to share with you.<br>
+    
+                [CALLER 1]: Do we have a match?<br>
+    
+                [CALLER 2]: Indeed we do. The parts from engine x that you sent appear to be exact replicas from the [NAME WITHHELD] 747 that just returned from Honolulu. We have compared the serial numbers and they are exact matches.<br>
+    
+                [CALLER 1]: Are you sure of this? I need confirmation on all of the parts sent.<br>
+    
+                [CALLER 2]: Not only can I give you confirmation on all of the parts, I can confirm that the handpainted spiral is identical to the [NAME WITHHELD] 747 design. We have detailed proof that the designs are identical down to the fraction of an inch.<br>
+    
+                [CALLER 2]: Now I am at a loss as to how an exact replica of this engine could have fallen from a plane in your country on the evening in question. I have charted the flight records from this aircraft and I can confirm that this plane was en route to San Francisco from Denver, Colorado on the night of October 2, 1988. It landed safely at approximately 4:30 in the morning. We have confirmation on this plane as having been fully operational for international and domestic flights for more than six years.<br>
+    
+                [CALLER 2]: I must tell you that we are all at a loss as to how this could have occurred. It appears to defy logical explanation and we are all quite astonished with the information we have retrieved.<br>
+    
+                [CALLER 2]: How would you like to proceed in this matter?<br>
+    
+                [CALLER 2]: Hello? Are you still there? Hello?<br>
+    
+                &lt;&lt;&lt;&lt;&lt;&lt;&lt;DISCONNECT<br>
+            </div>
+        </div>
+        <div class="scene" id="scene-3">
+            <div class="times-up text-dark" id="times-up" style="opacity: 0;">
+                time is up, donnie
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+    const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+    const scene1 = document.getElementById('scene-1');
+    const scene2 = document.getElementById('scene-2');
+    const scene3 = document.getElementById('scene-3');
+
+    const svg = document.getElementById("animation");
+    const phone = document.getElementById("phone");
+    const circle1 = document.getElementById("circle1");
+    const circle2 = document.getElementById("circle2");
+    const line1 = document.getElementById("line");
+    const line2 = document.getElementById("line2");
+    const dot = document.getElementById("dot");
+
+    //Set up the circle
+    //Animate the circle so the outline goes from nothing to full
+
+    const circumference1 = 2 * Math.PI * circle1.getAttribute("r");
+    const circumference2 = 2 * Math.PI * circle2.getAttribute("r");
+
+    // Set stroke-dasharray and stroke-dashoffset
+    circle1.style.strokeDasharray = circumference1;
+    circle1.style.strokeDashoffset = circumference1;
+    circle2.style.strokeDasharray = circumference2;
+    circle2.style.strokeDashoffset = circumference2;
+
+    // Rotate the circle 90 degrees counter-clockwise
+    circle1.setAttribute("transform", "rotate(180, 650, 300)");
+    circle2.setAttribute("transform", "rotate(180, 200, 160)");
+
+    // Set up the second line (initially hidden)
+    line2.style.visibility = "hidden";
+
+    
+    let frame = 0;
+    let isPaused = false;
+    let interval;
+
+    // Define the custom event
+    const animationCompleteEvent = new CustomEvent('animationComplete', {
+        detail: { message: 'Animation completed' }
+    });
+
+    function animate() {
+        frame++;
+
+        if (frame <= 20) {
+            phone.style.visibility = "visible";
+            //Flicker the dot
+            if (frame % 10 == 0) {
+                phone.style.visibility = "visible";
+            } else if (frame % 10 == 5) {
+                phone.style.visibility = "hidden";
+            }
+        }
+
+
+        else if (frame > 20 && frame <= 50) {
+            circle1.style.visibility = "visible";
+            circle1.style.strokeDashoffset = circumference1 - (frame - 20) / 30 * circumference1;
+        }
+
+        else if (frame > 50 && frame <= 275) {
+            line1.style.visibility = "visible";
+            line1.setAttribute("x2", 600 - frame);
+        }
+
+         // Initialize and animate the second line at -45 degrees
+        else if (frame > 275 && frame <= 400) {
+            line2.style.visibility = "visible";
+            line2.setAttribute("x1", 327 - (frame - 275));
+            line2.setAttribute("y1", 285 - (frame - 275));
+        }
+
+        //Now animate the second circle 
+        else if (frame > 400 && frame <= 500) {
+            circle2.style.visibility = "visible";
+            //Flicker the dot
+            if (frame % 10 == 0) {
+                dot.style.visibility = "visible";
+            } else if (frame % 10 == 5) {
+                dot.style.visibility = "hidden";
+            }
+            //Make if visible after a few iterations
+            if (frame > 440) {
+                circle2.style.visibility = "visible";
+                dot.style.visibility = "visible";
+                circle2.style.strokeDashoffset = circumference2 - frame / 100 * circumference2;
+            }
+
+        }
+
+        //Stop the animation
+        else if (frame > 500) {
+
+            circle2.style.strokeDashoffset = 0;
+            clearInterval(interval);
+            //Animate the document
+            animateDocument();
+
+            // Dispatch the event
+            document.dispatchEvent(animationCompleteEvent);
+            console.log('Dispatched animationComplete event');
+        }
+
+    }
+
+    phone.addEventListener('click', function() {
+        //Disable the phone click event
+        phone.style.pointerEvents = 'none';
+        interval = setInterval(animate, 7);
+        //Load MP3 file
+        const audio = new Audio('/mp3/transcript.mp3');
+        audio.play();
+        //loop the audio
+        audio.addEventListener('ended', function() {
+            this.currentTime = 0;
+            this.play();
+        }, false);
+    });
+
+    async function animateDocument() {
+
+        //Wait 2 seconds
+        await sleep(2000);
+
+        //Load MP3 file
+        const audio = new Audio('/mp3/keys.mp3');
+        audio.play();
+
+        document.getElementById('words').style.display = 'block';
+        ddScripts.animateText('words');
+
+    };
+
+    async function animateLaunch() {
+
+        await sleep(3250);
+        //Add a blinking cursor at the end of the text
+        const cursor = document.createElement('span');
+        cursor.classList.add('blink');
+        cursor.innerHTML = '_';
+        document.getElementById('words').appendChild(cursor);
+        document.getElementById('launch').style.transition = 'opacity 1s ease-in-out';
+        document.getElementById('launch').style.opacity = 1;
+    }
+
+    async function animateScenes() {
+
+        //Wait 1 second
+        await sleep(1000);
+
+        scene1.style.display = 'none';
+        scene2.style.display = 'block';
+
+        //Fade it in 
+        let element = document.querySelector('.aspect-ratio canvas');
+        element.style.backgroundImage = "url('/images/missing/level3/transcript.jpg')";
+        element.classList.add('fade-in');
+        
+        ddScripts.animateText('transcript');
+
+        //Wait 24 seconds
+        await sleep(24000);
+
+        scene2.style.display = 'none';
+        scene3.style.display = 'block';
+        document.getElementById('times-up').style.transition = 'opacity 1s ease-in-out';
+        document.getElementById('times-up').style.opacity = 1;
+
+    }
+
+    // Listen for the custom event
+    document.addEventListener('animationComplete', function(e) {
+        // Select the .faa-window element
+        var faaWindow = document.querySelector('.faa-window');
+
+        // Add the CSS styles
+        faaWindow.style.display = 'flex';
+        faaWindow.style.animation = 'reveal 1s forwards';
+        faaWindow.style.transformOrigin = 'top';
+
+        animateDocument();
+
+    });
+
+    document.addEventListener('wordsFinished', () => {
+        animateLaunch();
+    });
+
+    //If #launch is clicked, trigger the next scene
+    document.getElementById('launch').addEventListener('click', () => {
+        animateScenes();
+    });
+
+
+    
+
+
+});
+</script>
+{% endblock %}

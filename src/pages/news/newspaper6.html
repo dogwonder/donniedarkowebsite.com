@@ -1,0 +1,121 @@
+---
+permalink: /news/newspaper6.htm
+---
+
+{% set hasCredit = false %}
+
+{% extends "layouts/base.html" %}
+
+{% css %}
+table td img {
+  display: inline-block;
+  font-weight: 300;
+  line-height: 2;
+  text-align: center;
+
+  min-width: 200px;
+  min-height: 50px;
+  position: relative;
+}
+table td img:before {
+  content: '';
+  width: 100%;
+  height: calc(100% + 10px);
+  background-color: #ccc;
+  border-radius: 10px;
+  position: absolute;
+  top: 50%;
+  left: -2px;
+  transform: translateY(-50%);
+}
+table td img:after {
+  content: "\2639" " " attr(alt);
+  font-size: 18px;
+  color: rgb(100, 100, 100);
+  display: block;
+  position: absolute;
+  z-index: 2;
+  top: 5px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+{% endcss %}
+
+{% block content %}
+<table width="700" border="0" cellspacing="0" cellpadding="0" align="center">
+    <tbody><tr> 
+      <td>
+        <object>
+            <embed src="/news/files/top.swf" width="700" height="157" />
+        </object>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <table width="700" border="0" cellspacing="0" cellpadding="0" align="left">
+          <tbody><tr> 
+            <td valign="top"> 
+                <object>
+                    <embed src="/news/files/side.swf" width="164" height="800" />
+                </object>
+            </td>
+            <td valign="top"> 
+              <table border="0" cellspacing="0" cellpadding="10" align="left">
+                <tbody><tr> 
+                    <td valign="top"> 
+                        <p><span>Taken from the Middlesex Times-Dispatch (Fell's 
+                          Opinion Section ) <b>October 2, 1991</b><br>
+                          <span>Article ID 853287,1991,10,02,F076</span></span></p>
+                        <p><span><b><br>
+                          THE MYSTERY OF ENGINE X</b></span><b><span><span><br>
+                          </span></span></b><span>by Daniel Fell</span></p>
+                        <p><span>(MIDDLESEX)</span></p>
+                        <table border="0" cellspacing="0" cellpadding="10" align="left">
+                          <tbody><tr> 
+                            <td><img src="/news/files/images/fell.jpg" width="178" height="247"></td>
+                          </tr>
+                        </tbody></table>
+                        <p><br>
+                          Today is the three year anniversary of the events that occured 
+                          on October 2, 1988<br>
+                          <br>
+                          Engine X came falling from the sky, killing a young man. His 
+                          name, Darko, now part of our local legend, continues to be 
+                          the subject of endless speculation. <br>
+                          <br>
+                          His family has moved west to California. They did not return 
+                          this reporter's calls. This I understand, as the mystery of 
+                          that night must weigh so much more in their hearts and minds 
+                          than it does in ours.<br>
+                          <br>
+                          Attempts to retrieve information from the Federal Aviation 
+                          Administration have become futile, as their spokesperson simply 
+                          releases the same statement. <br>
+                          "The investigation is ongoing," he says. </p>
+                        <p><br>
+                          Rumors that President Bush has visited the secret wherehouse 
+                          in Washington that stores the engine have been the latest 
+                          to surface, and once again nothing can be confirmed.</p>
+                        <p>We are told of a vast conspiracy, of a plane that they know 
+                          exists. We are told of flight trajectories, serial numbers, 
+                          and low impact velocity. The technical jargon is endless and 
+                          fascinating. Yet there is no evidence. There is nothing but 
+                          Engine X, an artifact from that night.</p>
+                        <p> <br>
+                          A bomb that fell upon our quiet community has left behind 
+                          so many questions that we must now accept that there will 
+                          never be answers. </p>
+                        </td>
+                </tr>
+              </tbody></table>
+              <p>&nbsp;</p>
+              <p>&nbsp;</p>
+              </td>
+          </tr>
+        </tbody></table>
+      </td>
+    </tr>
+  </tbody></table>
+<p align="center"><img src="/news/files/banners/rockyHorror_468x60_B.gif" width="468" height="60"></p>
+{% endblock %}

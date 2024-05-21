@@ -1,0 +1,53 @@
+---
+permalink: /from/the/sky/index.html
+---
+
+{% css %}
+html body {
+    background-color: #ddddcc;
+    background: linear-gradient(to top, #ffffff 0%, #ffffff 400px, #ddddcc 500px, #ddddcc 100%);
+}
+p {
+    max-width: 60vw;
+    font-size: 14px;
+}
+p > a {
+    text-decoration: underline;
+}
+{% endcss %}
+
+{% extends "layouts/base.html" %}
+
+{% block content %}
+<div class="flex items-end h-full">
+    <div id="boundingBox"></div>
+    <object class="aspect-ratio">
+        <embed src="/from/the/sky/trampolin.swf" width="800" height="500">
+    </object>  
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let observer = new PerformanceObserver((list) => {
+    for (let entry of list.getEntries()) {
+        if (entry.name.includes('phone.swf')) {
+            fetch('/from/the/sky/phone.swf')
+                .then(response => {
+                    if (!response.ok) {
+                        // If the response is not successful, redirect
+                        window.location.href = '/from/the/sky/missing/document.html';
+                    }
+                    // Handle successful response
+                })
+                .catch(error => {
+                    // Handle network errors
+                    window.location.href = '/from/the/sky/missing/document.html';
+                });
+        }
+    }
+});
+
+observer.observe({ entryTypes: ['resource'] });
+</script>
+{% endblock %}

@@ -1,0 +1,65 @@
+@function px-to-em($px, $base-font-size: 16px) {
+    @return  math.div($px, $base-font-size) * 1em;
+}
+
+$sm: px-to-em(320px);
+$md: px-to-em(768px);
+$lg: px-to-em(1024px);
+$xl: px-to-em(1440px);
+$xxl: px-to-em(1920px);
+
+:root {
+    --body: 'Arial', sans-serif;
+    --times: 'Times New Roman', 'Times', serif;
+    --mono: 'Pixelated MS Sans Serif', monospace;
+
+    --dark: hsl(98, 0%, 0%);
+    --light: #ffffff;
+    
+    --color-primary: 356, 98%; //#fc0d1b 
+    --l: 52%;
+
+    --highlight: hsl(var(--color-primary),var(--l)); 
+    --hover: hsl(var(--color-primary),calc(var(--l) - 10%));
+    --visited: hsl(var(--color-primary),var(--l));
+
+    --focus: #ffdd00;
+
+    //Spacing
+    --space-xs: clamp(0.75rem, 0.69rem + 0.29vw, 0.9375rem);
+    --space-s: clamp(1rem, 0.92rem + 0.39vw, 1.25rem);
+    --space-m: clamp(1.5rem, 1.38rem + 0.58vw, 1.875rem);
+    --space-l: clamp(2rem, 1.84rem + 0.78vw, 2.5rem);
+    --space-xl: clamp(3rem, 2.77rem + 1.17vw, 3.75rem);
+    --space-2xl: clamp(4rem, 3.69rem + 1.55vw, 5rem);
+    --space-3xl: clamp(6rem, 5.53rem + 2.33vw, 7.5rem);
+
+    --space-xs-s: clamp(0.75rem, 0.59rem + 0.78vw, 1.25rem);
+    --space-s-m: clamp(1rem, 0.73rem + 1.36vw, 1.875rem);
+    --space-m-l: clamp(1.5rem, 1.19rem + 1.55vw, 2.5rem);
+    --space-l-xl: clamp(2rem, 1.46rem + 2.72vw, 3.75rem);
+    --space-l-2xl: clamp(2rem, 1.07rem + 4.66vw, 5rem);
+    --space-xl-2xl: clamp(3rem, 2.38rem + 3.11vw, 5rem);
+    --space-2xl-3xl: clamp(4rem, 2.91rem + 5.44vw, 7.5rem);
+
+    //Typpography
+    --font-size-sm: clamp(0.8rem, 0.16vw + 0.76rem, 0.89rem);
+    --font-size-base: clamp(1rem, 0.34vw + 0.92rem, 1.19rem);
+    --font-size-md: clamp(1.25rem, 0.6vw + 1.1rem, 1.58rem);
+    --font-size-lg: clamp(1.56rem, 0.99vw + 1.31rem, 2.11rem);
+    --font-size-xl: clamp(1.95rem, 1.56vw + 1.56rem, 2.81rem);
+    --font-size-xxl: clamp(2.44rem, 2.38vw + 1.85rem, 3.75rem);
+    --font-size-xxxl: clamp(3.05rem, 3.53vw + 2.17rem, 5rem);
+
+    --letter-spacing-base: 1rem * 0.02;
+    --letter-spacing-small: 0.0125em;
+
+    --line-height-small: 1.2;
+    --line-height-base: 1.5;
+
+    --word-spacing-base: 1rem * 0.04;
+
+    //Other
+    --border-radius: 0.5rem;
+    --containerWidth: 70rem; //1120px
+}

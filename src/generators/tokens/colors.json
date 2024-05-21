@@ -1,0 +1,36 @@
+{
+    "title": "Colors",
+    "description": "Hex color codes that can be shared, cross-platform. They can be converted at point of usage, such as HSL for web or CMYK for print.",
+    "items": [
+        {
+          "name": "Neon", 
+          "slug": "neon",
+          "color": "#00FFD9"
+        },
+        {
+          "name": "Blue", 
+          "slug": "blue",
+          "color": "#081248"
+        },
+        {
+          "name": "Teal", 
+          "slug": "teal",
+          "color": "#10827B"
+        },
+        {
+          "name": "Dark", 
+          "slug": "dark",
+          "color": "#000000"
+        },
+        {
+          "name": "Light",  
+          "slug": "light",
+          "color": "#FFFFFF"
+        },
+        {
+          "name": "Alt", 
+          "slug": "alt",
+          "color": "#FAFBFC"
+        }
+      ]
+}

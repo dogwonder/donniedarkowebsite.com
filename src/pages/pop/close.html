@@ -1,0 +1,28 @@
+---
+permalink: /pop/close.html
+---
+
+{% set hasCredit = false %}
+
+{% extends "layouts/base.html" %}
+
+{% block content %}
+{% endblock %}
+
+<!-- <meta http-equiv="refresh" content="0; URL=/are/you/sleep/golfing/index.html"> -->
+<!-- <meta http-equiv="refresh" content="0; URL=/from/the/sky/index.html"> -->
+
+{% block scripts %}
+<meta http-equiv="refresh" content="">
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var referrer = document.referrer;
+        var meta = document.querySelector('meta[http-equiv="refresh"]');
+        if (referrer.includes('pop/pop_level3.html')) {
+            meta.setAttribute('content', '0; URL=/from/the/sky/index.html');
+        } else {
+            meta.setAttribute('content', '0; URL=/are/you/sleep/golfing/index.html');
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,32 @@
+---
+permalink: /news/404.html
+---
+
+{% set hasCredit = false %}
+
+{% extends "layouts/base.html" %}
+
+{% block content %}
+<div id="swf" class="ruffle-container"></div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+window.RufflePlayer = window.RufflePlayer || {};
+window.RufflePlayer.config = {
+    fontSources: ["/fonts/fonts.swf"],
+    defaultFonts: {
+        sans: ["Courier New"],
+    },
+};
+window.addEventListener("load", (event) => {
+    const ruffle = window.RufflePlayer.newest();
+    const player = ruffle.createPlayer();
+    const container = document.getElementById("swf");
+    container.appendChild(player);
+    player.load({
+        url: "/news/iseeyou.swf", 
+    });
+});
+</script>
+{% endblock %}

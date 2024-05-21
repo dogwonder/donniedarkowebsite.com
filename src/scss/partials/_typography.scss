@@ -1,0 +1,60 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--dark);
+  line-height: 1;
+  margin-inline: 0;
+  margin-block: 1em 1rem;
+}
+
+%text,
+.text {
+  font-weight: bold;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  font-size: clamp(0.75rem, 0.9vw, 1.5rem);
+}
+
+%text-dark,
+.text-dark {
+  font-weight: bold;
+  text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+  font-size: clamp(0.75rem, 0.9vw, 1.5rem);
+}
+
+.exercise {
+  left: 50%;
+  position: absolute;
+  top: 5rem;
+  @media (min-width: $lg) {
+    left: 60%;
+  }
+}
+
+.credit {
+  margin: 1rem 0.5rem;
+  font-size: 0.8rem;
+  font-weight: bold;
+  position: absolute;
+  top: 0;
+  right: 0;
+  text-align: right;
+  color: var(--dark); 
+  a {
+    text-decoration: underline;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
+
+.dark {
+  .credit {
+    color: var(--light);
+    a {
+      color: inherit;
+    }
+  }
+}

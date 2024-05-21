@@ -1,0 +1,19 @@
+---
+permalink: /urls.html
+---
+
+{% extends "layouts/base.html" %}
+
+{% block content %}
+
+<!-- https://web.archive.org/web/*/http://archive.hi-res.net/donniedarko/* -->
+
+<ul>
+    {% for page in sitemap.urls %}
+      {% if page.type == "html" %}
+        <li><a href="https://web.archive.org/web/20140325204646/http://archive.hi-res.net/donniedarko/{{ page.url }}">{{ page.url }}</a></li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+
+{% endblock %}

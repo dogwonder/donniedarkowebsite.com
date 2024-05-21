@@ -1,0 +1,51 @@
+---
+permalink: /sparkle/motion/index.html
+---
+
+{% set isDark = true %}
+
+{% extends "layouts/base.html" %}
+
+{% css %}
+html body {
+    background-color: #333333 !important;
+    background: linear-gradient(to top, #000000 0%, #333333 var(--gradient-height, 500px), #333333 100%) !important;
+}
+{% endcss %}
+
+{% block content %}
+<div class="flex items-end justify-end h-full">
+  <div id="boundingBox"></div>
+  <object class="aspect-ratio">
+    <embed src="/sparkle/motion/phase2_end.swf" width="800" height="500">
+  </object>  
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function setGradientHeight() {
+  // Get the canvas element
+  const obj = document.getElementById('boundingBox');
+
+  // If no obj bail
+  if (!obj) return;
+
+  // Get the width and height of the canvas
+  let width = obj.clientWidth;
+  let height = obj.clientHeight;
+
+  // Get the distance from the top of the page to the canvas
+  let distanceFromTop = obj.getBoundingClientRect().top;
+
+  console.log(`Distance from top: ${distanceFromTop}`);
+  
+  // Change the CSS var --gradient to match the height of the canvas
+  document.documentElement.style.setProperty('--gradient-height', `${distanceFromTop}px`);
+}
+document.addEventListener('DOMContentLoaded', () => {
+  // Call the function
+  setGradientHeight();
+});
+</script>
+{% endblock %}

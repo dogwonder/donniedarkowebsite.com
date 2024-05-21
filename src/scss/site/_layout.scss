@@ -1,0 +1,99 @@
+
+html { font-family: var(--body), Helvetica, Arial, sans-serif; }
+
+//Global
+html {
+  font-size: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: var(--body);
+  font-weight: normal;
+  font-size: var(--font-size-base); 
+  line-height: var(--line-height-base);
+  letter-spacing: var(--letter-spacing-base);
+  word-spacing: var(--word-spacing--base);
+  text-align: left;
+  background-color: var(--light);
+  color: var(--dark);
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 100%;
+  &.dark {
+    background-color: var(--dark);
+    color: var(--light);
+  }
+}
+
+main {
+  height: 100%;
+}
+
+//Links
+a {
+  color: var(--dark);
+  text-decoration: underline;
+  text-decoration-thickness: unquote("max(0.0875em, .0625rem)");
+  text-underline-offset: 0.1em;
+  &:visited {
+    color: var(--dark);
+  }
+  &:hover {
+    text-decoration-color: var(--highlight);
+  }
+  &:active {
+    color: var(--dark);
+    text-decoration: none;
+  }
+  &:focus {
+    color: var(--dark);
+    background-color: var(--focus);
+    outline: 3px solid transparent;
+    box-shadow: 0 -2px var(--focus), 0 4px #0b0c0c;
+    text-decoration: none;
+  }
+}
+
+.scrollable-frames {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+.frames {
+  position: relative;
+  display: flex;
+  flex-grow: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+  align-items: stretch;
+  gap: 4ch;
+}
+.frame {
+  max-width: 400px;
+  flex-shrink: 0;
+  &__content {
+    font-size: 0.75rem;
+    color: #000000;
+    span {
+      color: var(--highlight);
+      display: inline-block;
+    }
+    a {
+      text-decoration: underline;
+    }
+  }
+}
+
+//Table layouts
+table {
+  td {
+    img {
+      width: 200%;
+    }
+  }
+  td, p {
+    font-family: var(--times);
+    font-size: 0.9375rem;
+  }
+}
