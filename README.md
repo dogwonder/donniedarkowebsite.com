@@ -14,13 +14,17 @@ I decided to rebuild a defunct website from 2001. Donniedarko.com.
 
 ### [Ruffle.js](https://ruffle.rs)
 
+```
 {% set swfFile = "/are/you/linker.swf" %}
 <div id="swf"></div>
+```
 
 OR
 
+```
 <object>
     <embed src="/are/you/sleep/golfing/golf.swf" width="800" height="500">
 </object>
+```
 ---
 
