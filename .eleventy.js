@@ -2,9 +2,6 @@ const { EleventyRenderPlugin } = require("@11ty/eleventy");
 const bundlerPlugin = require("@11ty/eleventy-plugin-bundle");
 const sass = require("sass");
 const path = require('node:path');
-const postcss = require('postcss');
-const autoprefixer = require('autoprefixer')
-const tailwindcss = require('tailwindcss')
 const lightningCSS = require("@11tyrocks/eleventy-plugin-lightningcss");
 const now = String(Date.now())
 
@@ -53,21 +50,6 @@ module.exports = eleventyConfig => {
           return result.css
         }
       },
-
-      // outputFileExtension: 'css',
-      // compile: async (inputContent, inputPath) => {
-      //   let parsed = path.parse(inputPath)
-      //   if (parsed.name.startsWith('_')) return //Only compile files that don't start with an underscore
-
-      //   return async () => {
-      //     let output = await postcss([
-      //       tailwindcss,
-      //       autoprefixer
-      //     ]).process(inputContent, { from: inputPath, parser: require('postcss-scss') });
-
-      //     return output.css;
-      //   }
-      // }
 
     })
 

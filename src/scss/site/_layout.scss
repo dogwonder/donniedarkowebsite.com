@@ -60,6 +60,7 @@ a {
   display: flex;
   width: 100%;
 }
+
 .frames {
   position: relative;
   display: flex;
@@ -69,6 +70,7 @@ a {
   align-items: stretch;
   gap: 4ch;
 }
+
 .frame {
   max-width: 400px;
   flex-shrink: 0;

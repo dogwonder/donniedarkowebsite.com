@@ -62,7 +62,7 @@
           autoplay: "on",
           unmuteOverlay: "hidden",
           openUrlMode: "allow", 
-          logLevel: "error"
+          logLevel: "info"
       };
     </script>
     
@@ -78,13 +78,8 @@
 
     
 <script>
+// https://github.com/ruffle-rs/ruffle/wiki/Frequently-Asked-Questions-For-Users#how-do-i-change-the-fonts-used-by-flash-on-my-website
 window.RufflePlayer = window.RufflePlayer || {};
-window.RufflePlayer.config = {
-    fontSources: ["/fonts/fonts.swf"],
-    defaultFonts: {
-        sans: ["Courier New"],
-    },
-};
 window.addEventListener("load", (event) => {
     const ruffle = window.RufflePlayer.newest();
     const player = ruffle.createPlayer();
