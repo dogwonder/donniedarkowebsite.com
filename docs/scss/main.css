@@ -133,13 +133,11 @@ h6 {
 .text {
   font-weight: bold;
   text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-  font-size: clamp(0.75rem, 0.9vw, 1.5rem);
 }
 
 .text-dark {
   font-weight: bold;
   text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
-  font-size: clamp(0.75rem, 0.9vw, 1.5rem);
 }
 
 .exercise {
@@ -268,6 +266,9 @@ a:focus {
 table td, table p {
   font-family: var(--times);
   font-size: 0.9375rem;
+}
+table td a {
+  text-decoration: underline;
 }
 
 .aspect-ratio {

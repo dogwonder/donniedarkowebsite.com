@@ -13,6 +13,7 @@ module.exports = eleventyConfig => {
     eleventyConfig.addPassthroughCopy({"src/images": "images"});
     eleventyConfig.addPassthroughCopy({"src/scripts": "scripts"});
     eleventyConfig.addPassthroughCopy({'./node_modules/alpinejs/dist/cdn.min.js': './scripts/alpine.js'})
+    eleventyConfig.addPassthroughCopy({'./node_modules/@ruffle-rs': './scripts/'})
     eleventyConfig.addPassthroughCopy({"src/files": "./"});
     eleventyConfig.addPassthroughCopy({"src/swf": "./"});
     eleventyConfig.addPassthroughCopy({"src/dns": "./"});

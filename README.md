@@ -14,6 +14,8 @@ I decided to rebuild a defunct website from 2001. Donniedarko.com.
 
 ### [Ruffle.js](https://ruffle.rs)
 
+[Configuration options](https://github.com/ruffle-rs/ruffle/wiki/Using-Ruffle#configuration-options)
+
 ```
 {% set swfFile = "/are/you/linker.swf" %}
 <div id="swf" class="ruffle-container"></div>

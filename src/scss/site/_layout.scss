@@ -93,4 +93,7 @@ table {
     font-family: var(--times);
     font-size: 0.9375rem;
   }
+  td a {
+    text-decoration: underline;
+  }
 }

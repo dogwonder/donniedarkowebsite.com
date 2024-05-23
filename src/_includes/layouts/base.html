@@ -69,20 +69,20 @@
     {% endif %}
 
     {% if isRuffle != false %}
-    <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+    <script src="{{ " /" | url }}scripts/ruffle/ruffle.js"></script>
     <script>
-      window.RufflePlayer.config = {
-          autoplay: "on",
-          unmuteOverlay: "hidden",
-          openUrlMode: "allow", 
-          logLevel: "error"
-      };
+    window.RufflePlayer = window.RufflePlayer || {};
+    window.RufflePlayer.config = {
+        autoplay: "on",
+        unmuteOverlay: "hidden",
+        openUrlMode: "allow", 
+        logLevel: "error"
+    };
     </script>
     {% endif %}
 
     {% if swfFile %}
     <script>
-      window.RufflePlayer = window.RufflePlayer || {};
       window.addEventListener("load", (event) => {
           const ruffle = window.RufflePlayer.newest();
           const player = ruffle.createPlayer();

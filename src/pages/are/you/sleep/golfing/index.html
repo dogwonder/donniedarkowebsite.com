@@ -21,14 +21,11 @@ permalink: /are/you/sleep/golfing/index.html
 }
 p {
     max-width: 60vw;
-    font-size: 14px;
+    font-size: 0.8rem;
 }
 p > a {
     text-decoration: underline;
     color: white !important;
-}
-.credit {
-    
 }
 {% endcss %}
 
@@ -46,30 +43,35 @@ p > a {
 
 {% block scripts %}
 <script>
-window.RufflePlayer = window.RufflePlayer || {};
-window.RufflePlayer.config = {
-    autoplay: "on",
-    unmuteOverlay: "hidden",
-    openUrlMode: "allow", 
-    logLevel: "error",
-    fontSources: ["/fonts/fonts.swf"],
-    defaultFonts: {
-        sans: ["Courier New"],
-    },
-};
-// Bug: SWF tried to open a URL, but opening URLs in the current tab is prevented by script access
-// console.table(window.RufflePlayer.config);
-window.addEventListener("load", (event) => {
-    const ruffle = window.RufflePlayer.newest();
-    const player = ruffle.createPlayer();
-    const container = document.getElementById("swf");
-    container.appendChild(player);
-    player.load({
-        url: "/are/you/sleep/golfing/golf.swf", 
-        parameters: "", 
+    // Extend the existing configuration
+    Object.assign(window.RufflePlayer.config, {
+        fontSources: ["/fonts/fonts.swf"],
+        defaultFonts: {
+            sans: ["Courier New"]
+        }
     });
-    player.style.width = "800px"; 
-    player.style.height = "500px";
-});
-</script>
+
+    // console.table(window.RufflePlayer.config);
+
+    window.addEventListener("load", (event) => {
+
+        const ruffle = window.RufflePlayer.newest();
+        const player = ruffle.createPlayer();
+        const container = document.getElementById("swf");
+        container.appendChild(player);
+        
+        player.load({
+            url: "/are/you/sleep/golfing/golf.swf", 
+            parameters: "", 
+        }).then(() => {
+            console.info("Ruffle successfully loaded the file");
+        }).catch((e) => {
+            console.error(`Ruffle failed to load the file: ${e}`);
+        });
+
+        player.style.width = "800px"; 
+        player.style.height = "500px";
+
+    });
+    </script>
 {% endblock %}

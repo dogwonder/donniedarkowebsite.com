@@ -677,6 +677,10 @@ video {
   max-width: 36rem;
 }
 
+.grow {
+  flex-grow: 1;
+}
+
 .border-collapse {
   border-collapse: collapse;
 }

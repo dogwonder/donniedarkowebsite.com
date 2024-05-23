@@ -14,13 +14,13 @@ title: 404 - Page not found
 {% block scripts %}
 <script>
 // https://github.com/ruffle-rs/ruffle/wiki/Frequently-Asked-Questions-For-Users#how-do-i-change-the-fonts-used-by-flash-on-my-website
-window.RufflePlayer = window.RufflePlayer || {};
-window.RufflePlayer.config = {
+// Extend the existing configuration
+Object.assign(window.RufflePlayer.config, {
     fontSources: ["/fonts/fonts.swf"],
     defaultFonts: {
-        sans: ["Courier New"],
-    },
-};
+        sans: ["Courier New"]
+    }
+});
 window.addEventListener("load", (event) => {
     const ruffle = window.RufflePlayer.newest();
     const player = ruffle.createPlayer();

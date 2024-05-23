@@ -74,7 +74,7 @@
                 class="iframe-modal text-center window relative max-w-xl w-full bg-white shadow-lg overflow-y-auto"
             >
                 <div class="title-bar">
-                  <div class="title-bar-text"></div>
+                  <div class="title-bar-text">WARNING!</div>
                   <div class="title-bar-controls">
                       <button aria-label="Close" @click="window1Open = false, window2Open = true"></button>
                     </div>
@@ -106,7 +106,7 @@
             class="iframe-modal window relative max-w-xl w-full bg-white shadow-lg overflow-y-auto h-full"
         >
             <div class="title-bar">
-                <div class="title-bar-text"></div>
+                <div class="title-bar-text">Middlesex Times Dispatch October3, 1988 - MISSING PLANE LOSES ENGINE</div>
                 <div class="title-bar-controls">
                     <button aria-label="Close" @click="$dialog.close()"></button>
                 </div>
@@ -135,20 +135,21 @@
     
     <script defer src="https://unpkg.com/@alpinejs/ui@3.13.1-beta.0/dist/cdn.min.js"></script>
     <script defer src="https://unpkg.com/@alpinejs/focus@3.13.1/dist/cdn.min.js"></script>
-    <script defer src=" /scripts/alpine.js?v=1716470753068"></script>
+    <script defer src=" /scripts/alpine.js?v=1716478256719"></script>
     
 
     
 
     
-    <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+    <script src=" /scripts/ruffle/ruffle.js"></script>
     <script>
-      window.RufflePlayer.config = {
-          autoplay: "on",
-          unmuteOverlay: "hidden",
-          openUrlMode: "allow", 
-          logLevel: "error"
-      };
+    window.RufflePlayer = window.RufflePlayer || {};
+    window.RufflePlayer.config = {
+        autoplay: "on",
+        unmuteOverlay: "hidden",
+        openUrlMode: "allow", 
+        logLevel: "error"
+    };
     </script>
     
 
