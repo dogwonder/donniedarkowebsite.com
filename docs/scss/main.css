@@ -265,9 +265,6 @@ a:focus {
   text-decoration: underline;
 }
 
-table td img {
-  width: 200%;
-}
 table td, table p {
   font-family: var(--times);
   font-size: 0.9375rem;

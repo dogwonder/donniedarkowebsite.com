@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>donniedarko.com - redux</title>
-    
+    <title>404 - Page not found</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex">
@@ -62,7 +61,7 @@
           autoplay: "on",
           unmuteOverlay: "hidden",
           openUrlMode: "allow", 
-          logLevel: "info"
+          logLevel: "error"
       };
     </script>
     
@@ -80,6 +79,12 @@
 <script>
 // https://github.com/ruffle-rs/ruffle/wiki/Frequently-Asked-Questions-For-Users#how-do-i-change-the-fonts-used-by-flash-on-my-website
 window.RufflePlayer = window.RufflePlayer || {};
+window.RufflePlayer.config = {
+    fontSources: ["/fonts/fonts.swf"],
+    defaultFonts: {
+        sans: ["Courier New"],
+    },
+};
 window.addEventListener("load", (event) => {
     const ruffle = window.RufflePlayer.newest();
     const player = ruffle.createPlayer();
