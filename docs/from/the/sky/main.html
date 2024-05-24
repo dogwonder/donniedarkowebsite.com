@@ -8,7 +8,10 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-frank.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-frank.png">
     
-    <style>
+    <style>html body {
+    background-color: #ddddcc;
+    background: linear-gradient(to top, #ffffff 0%, #ffffff var(--gradient-height-min, 350px), #ddddcc var(--gradient-height-max, 500px), #ddddcc 100%) !important;
+}
 @font-face {
       font-family: "Pixelated MS Sans Serif";
       font-style: normal;
@@ -43,53 +46,20 @@
     <main>
       <div class="container full">
         
-
-<div class="scrollable-frames mt-5">
-  <div class="frames p-2">
-    <div class="frame">
-      <img class="frame__image mb-2" src="/images/aid/no1.jpg" width="216" height="126">
-      <p class="frame__content">
-        <span>1.</span> 
-        click on bullseye
-      </p>
-    </div>
-    <div class="frame">
-      <img class="frame__image mb-2" src="/images/aid/no1b.jpg" width="216" height="127">
-      <p class="frame__content">
-        <span>2.</span> 
-        click on <b>proceed</b>
-      </p>
-    </div>
-    <div class="frame">
-      <img class="frame__image mb-2" src="/images/aid/no1c.jpg" width="144" height="155">
-      <p class="frame__content">
-        <span>3.</span> 
-        if you want to cheat: pop-up w. will ask for password = <span color="#3300CC">breathe</span> 
-      / if not <b>proceed</b>...
-      </p>
-    </div>
-    <div class="frame">
-      <img class="frame__image mb-2" src="/images/aid/no1d.jpg" width="216" height="129">
-      <p class="frame__content">
-        <span>4.</span> 
-        (screen will forward automatically)
-      </p>
-    </div>
-    <div class="frame">
-      <img class="frame__image mb-2" src="/images/aid/no2a.jpg" width="216" height="127">
-      <p class="frame__content">
-        <span>5.</span> 
-        detention center report on DARKO, DONALD J. [D.O.B. 5-28-27] - asks "C:&gt;MORE?(Y/N)_" 
-      <b>type Y</b>, (N doesn't work/go anywhere). This brings you to the police 
-      report, asks (Y/N) again, <b>type Y</b>. ....... <a href="aid2.html">go to 
-      next section</a>
-      </p>
-    </div>
-  </div>
+<div class="flex items-end h-full">
+    <object class="aspect-ratio" id="gradient">
+        <embed src="/from/the/sky/trampolin.swf" width="800" height="500">
+    </object>  
 </div>
 
-
       </div>
+      
+      <div class="credit">
+    <p>
+        Credit: Co-Created by Richard Kelly and <a href="https://alexandrajugovic.com/donniedarko">Hi-ReS!</a> in 2001<br>
+        <a href="https://dogwonder.co.uk/2024/04/reviving-a-legend-rebuilding-the-donnie-darko-website">About this project</a>
+    </p>
+</div>
       
       
     </main>
@@ -122,6 +92,11 @@
     <script src="/scripts/min/app.min.js"></script>
 
     
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  ddScripts.setGradientHeight('gradient', '0.7');
+});
+</script>
 
 
     <!--Bundle SVG-->

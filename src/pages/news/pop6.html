@@ -12,6 +12,9 @@ html body {
 .iframe-modal {
     min-width: 720px;
 }
+.iframe-modal-warning {
+    min-width: 480px;
+}
 {% endcss %}
 
 {% extends "layouts/base.html" %}
@@ -19,7 +22,7 @@ html body {
 {% block content %}
 
 <div class="flex items-center justify-center h-screen">
-    <p class="text-center">Close the window to continue</p>
+    <p class="text-center close"><a href="javascript:void(0)" onclick="window.close()">close</a> the window to continue</p>
 </div>
 
 <div x-data="{ window1Open: true, window2Open: false }">
@@ -40,7 +43,7 @@ html body {
             <div
                 x-dialog:panel
                 x-transition
-                class="iframe-modal text-center window relative max-w-xl w-full bg-white shadow-lg overflow-y-auto"
+                class="iframe-modal iframe-modal-warning text-center window relative max-w-xl w-full bg-white shadow-lg overflow-y-auto"
             >
                 <div class="title-bar">
                   <div class="title-bar-text">WARNING!</div>
@@ -50,7 +53,7 @@ html body {
                 </div>
   
                 <!-- Body -->
-                <div class="p-1">
+                <div class="p-4">
                     The following information may give you knowledge which you may not want to have prior to seeing the movie!
                 </div>
   

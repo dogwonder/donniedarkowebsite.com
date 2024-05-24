@@ -14,12 +14,21 @@ h6 {
 .text {
   font-weight: bold;
   text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  letter-spacing: var(--letter-spacing-big); 
 }
 
 %text-dark,
 .text-dark {
   font-weight: bold;
   text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+  letter-spacing: var(--letter-spacing-big); 
+}
+
+.close {
+  letter-spacing: var(--letter-spacing-big); 
+  > a {
+    text-decoration: underline;
+  }
 }
 
 .exercise {
@@ -39,7 +48,8 @@ h6 {
   top: 0;
   right: 0;
   text-align: right;
-  color: var(--dark); 
+  color: var(--dark);
+  letter-spacing: var(--letter-spacing-big); 
   a {
     text-decoration: underline;
     &:hover {

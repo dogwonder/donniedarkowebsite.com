@@ -13,18 +13,23 @@ permalink: /are/you/sleep/golfing/index.html
 }
 .ruffle-container p > a {
     text-decoration: underline;
-    color: red !important;
+    color: var(--highlight) !important;
 }
 .ruffle-container p > a:hover {
     filter: url(#noise);
     animation: .3s linear forwards noise infinite;
+}
+.ruffle-container p > a:focus {
+    background-color: transparent;
+    outline: none;
+    box-shadow: none;
 }
 {% endcss %}
 
 {% block content %}
 <div class="flex items-start justify-end flex-col h-full">
     <div class="text-right ruffle-container">
-        <p class="text m-2 mb-4"><a href="main.html" target="_blank">Are you sleep golfing?</a></p>
+        <p class="text m-2 mb-4"><a href="main.html" target="_blank">are you sleep golfing?</a></p>
     </div>
 </div>
 {% endblock %}

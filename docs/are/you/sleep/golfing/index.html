@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title></title>
+    <title>donniedarko.com - redux</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex">
@@ -14,11 +14,16 @@
 }
 .ruffle-container p > a {
     text-decoration: underline;
-    color: red !important;
+    color: var(--highlight) !important;
 }
 .ruffle-container p > a:hover {
     filter: url(#noise);
     animation: .3s linear forwards noise infinite;
+}
+.ruffle-container p > a:focus {
+    background-color: transparent;
+    outline: none;
+    box-shadow: none;
 }
 @font-face {
       font-family: "Pixelated MS Sans Serif";
@@ -56,7 +61,7 @@
         
 <div class="flex items-start justify-end flex-col h-full">
     <div class="text-right ruffle-container">
-        <p class="text m-2 mb-4"><a href="main.html" target="_blank">Are you sleep golfing?</a></p>
+        <p class="text m-2 mb-4"><a href="main.html" target="_blank">are you sleep golfing?</a></p>
     </div>
 </div>
 

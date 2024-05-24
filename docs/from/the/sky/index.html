@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title></title>
+    <title>donniedarko.com - redux</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex">
@@ -12,12 +12,17 @@
     background-color: #ddddcc;
     background: linear-gradient(to top, #ffffff 0%, #ffffff var(--gradient-height-min, 350px), #ddddcc var(--gradient-height-max, 500px), #ddddcc 100%) !important;
 }
-p {
+.ruffle-container p {
     max-width: 60vw;
-    font-size: 14px;
+    font-size: 0.8rem;
 }
-p > a {
+.ruffle-container p > a {
     text-decoration: underline;
+    color: var(--dark) !important;
+}
+.ruffle-container p > a:hover {
+    filter: url(#noise);
+    animation: .3s linear forwards noise infinite;
 }
 @font-face {
       font-family: "Pixelated MS Sans Serif";
@@ -53,10 +58,10 @@ p > a {
     <main>
       <div class="container full">
         
-<div class="flex items-end h-full">
-    <object class="aspect-ratio" id="gradient">
-        <embed src="/from/the/sky/trampolin.swf" width="800" height="500">
-    </object>  
+<div class="flex items-start justify-end flex-col h-full">
+    <div class="text-right ruffle-container">
+        <p class="text-dark m-2 mb-4"><a href="main.html" target="_blank">pay close attention, you could miss something</a></p>
+    </div>
 </div>
 
       </div>
@@ -99,12 +104,6 @@ p > a {
     <script src="/scripts/min/app.min.js"></script>
 
     
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  ddScripts.setGradientHeight('gradient', '0.7');
-});
-</script>
-
 
     <!--Bundle SVG-->
     <svg width="0" height="0" aria-hidden="true" style="position: absolute;">

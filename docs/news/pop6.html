@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title></title>
+    <title>donniedarko.com - redux</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex">
@@ -13,6 +13,9 @@
 }
 .iframe-modal {
     min-width: 720px;
+}
+.iframe-modal-warning {
+    min-width: 480px;
 }
 @font-face {
       font-family: "Pixelated MS Sans Serif";
@@ -50,7 +53,7 @@
         
 
 <div class="flex items-center justify-center h-screen">
-    <p class="text-center">Close the window to continue</p>
+    <p class="text-center close"><a href="javascript:void(0)" onclick="window.close()">close</a> the window to continue</p>
 </div>
 
 <div x-data="{ window1Open: true, window2Open: false }">
@@ -71,7 +74,7 @@
             <div
                 x-dialog:panel
                 x-transition
-                class="iframe-modal text-center window relative max-w-xl w-full bg-white shadow-lg overflow-y-auto"
+                class="iframe-modal iframe-modal-warning text-center window relative max-w-xl w-full bg-white shadow-lg overflow-y-auto"
             >
                 <div class="title-bar">
                   <div class="title-bar-text">WARNING!</div>
@@ -81,7 +84,7 @@
                 </div>
   
                 <!-- Body -->
-                <div class="p-1">
+                <div class="p-4">
                     The following information may give you knowledge which you may not want to have prior to seeing the movie!
                 </div>
   
@@ -135,7 +138,7 @@
     
     <script defer src="https://unpkg.com/@alpinejs/ui@3.13.1-beta.0/dist/cdn.min.js"></script>
     <script defer src="https://unpkg.com/@alpinejs/focus@3.13.1/dist/cdn.min.js"></script>
-    <script defer src=" /scripts/alpine.js?v=1716548255011"></script>
+    <script defer src=" /scripts/alpine.js?v=1716554889652"></script>
     
 
     
