@@ -50,9 +50,23 @@ a {
     color: var(--dark);
     background-color: var(--focus);
     outline: 3px solid transparent;
-    box-shadow: 0 -2px var(--focus), 0 4px #0b0c0c;
+    box-shadow: 0 -2px var(--focus), 0 4px var(--dark);
+    filter: none;
+    text-shadow: none;
     text-decoration: none;
   }
+}
+
+.dark {
+  a {
+    &:focus {
+      color: var(--dark) !important;
+      background-color: var(--light);
+      outline: 3px solid transparent;
+      box-shadow: 0 -2px var(--light), 0 4px var(--highlight);
+    }
+  }
+
 }
 
 .scrollable-frames {

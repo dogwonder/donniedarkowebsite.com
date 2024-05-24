@@ -4,114 +4,28 @@ permalink: /are/you/sleep/golfing/index.html
 
 {% set isDark = true %}
 
+{% extends "layouts/base.html" %}
+
 {% css %}
-[data-url] {
-    position: absolute;
-    background-color: transparent;
-    z-index: 999;
-    width: 44px;
-    height: 44px;
-    right: 36%;
-    top: 12.95%;
-}
-p {
+.ruffle-container p {
     max-width: 60vw;
     font-size: 0.8rem;
 }
-p > a {
+.ruffle-container p > a {
     text-decoration: underline;
-    color: white !important;
+    color: red !important;
+    filter: blur(0.7px);
+}
+.ruffle-container p > a:hover {
+    filter: url(#noise);
+    animation: .3s linear forwards noise infinite;
 }
 {% endcss %}
 
-{% extends "layouts/base.html" %}
-
 {% block content %}
 <div class="flex items-start justify-end flex-col h-full">
-
-    <!-- <p class="text m-2">
-        <svg class="icon mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
-        <a href="/sparkle/motion/index.html">After this part has finished (Red lines) go to the next step</a>
-    </p> -->
-    
-    <div id="swf" class="ruffle-container">
-        <a data-url hidden href="/sparkle/motion/index.html"></a>
+    <div class="text-right ruffle-container">
+        <p class="text m-2 mb-4"><a href="main.html" target="_blank">Are you sleep golfing?</a></p>
     </div>
 </div>
-{% endblock %}
-
-{% block scripts %}
-<script>
-    // Extend the existing configuration
-    Object.assign(window.RufflePlayer.config, {
-        fontSources: ["/fonts/fonts.swf"],
-        defaultFonts: {
-            sans: ["Courier New"]
-        }
-    });
-
-    // console.table(window.RufflePlayer.config);
-
-    window.addEventListener("load", (event) => {
-
-        const ruffle = window.RufflePlayer.newest();
-        const player = ruffle.createPlayer();
-        const container = document.getElementById("swf");
-        container.appendChild(player);
-        
-        player.load({
-            url: "/are/you/sleep/golfing/golf.swf", 
-            parameters: "", 
-        }).then(() => {
-            console.info("Ruffle successfully loaded the file");
-        }).catch((e) => {
-            console.error(`Ruffle failed to load the file: ${e}`);
-        });
-
-        player.style.width = "800px"; 
-        player.style.height = "500px";
-
-        // player.addEventListener('loadedmetadata', () => {
-        //     const totalFrames = player.metadata.numFrames;
-        //     const uncompressedLength = player.metadata.uncompressedLength;
-        //     console.log(`Total frames: ${totalFrames}`);
-        //     console.log(`Uncompressed length: ${uncompressedLength}`);
-        // });
-
-        
-
-        let hasRun = false;
-
-        let observer = new PerformanceObserver((list) => {
-            if (hasRun) return; // Exit early if the condition has already been met
-
-            for (let entry of list.getEntries()) {
-                if (entry.name.includes('license.swf')) {
-                    hasRun = true; // Set the flag to true to prevent further checks
-
-                    fetch('/are/you/sleep/golfing/license.swf')
-                        .then(response => {
-                            if (response.ok) {
-                                console.log('License file is available');
-                                //Wait 5 seconds before revealing the link
-                                setTimeout(() => {
-                                    document.querySelector('[data-url]').removeAttribute('hidden');
-                                }, 5000);
-                            }
-                            // Handle successful response
-                        })
-                        .catch(error => {
-                            // Handle error
-                            console.log(error);
-                        });
-
-                    break; // Exit the loop early since the condition has been met
-                }
-            }
-        });
-
-        observer.observe({ entryTypes: ['resource'] });
-
-    });
-    </script>
 {% endblock %}
