@@ -18,7 +18,7 @@ I decided to rebuild a defunct website from 2001. Donniedarko.com.
 
 ```
 {% set swfFile = "/are/you/linker.swf" %}
-<div id="swf" class="ruffle-container"></div>
+<div id="swf"></div>
 ```
 
 OR

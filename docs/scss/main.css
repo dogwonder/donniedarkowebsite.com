@@ -271,6 +271,23 @@ table td a {
   text-decoration: underline;
 }
 
+.ruffle-container {
+  display: block;
+  width: 100vw;
+  position: relative;
+}
+
+.ruffle-container ruffle-player {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 800/500;
+}
+
+@media (min-width: 1280px) {
+  .ruffle-container {
+    width: 60vw;
+  }
+}
 .aspect-ratio {
   display: flex;
   width: 100vw;

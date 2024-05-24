@@ -8,19 +8,14 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-frank.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-frank.png">
     
-    <style>.ruffle-container {
-    display:block;
-    width: 100vw;
-}
-.ruffle-container ruffle-player {
-    width: 100% !important;
-    height: auto !important;
-    aspect-ratio: 800 / 500;
-}
-@media (min-width: 1280px) {
-    .ruffle-container {
-        width: 60vw;
-    }
+    <style>[data-url] {
+    position: absolute;
+    background-color: transparent;
+    z-index: 999;
+    width: 44px;
+    height: 44px;
+    right: 36%;
+    top: 12.95%;
 }
 p {
     max-width: 60vw;
@@ -65,11 +60,15 @@ p > a {
       <div class="container full">
         
 <div class="flex items-start justify-end flex-col h-full">
-    <p class="text m-2">
-        <svg class="icon mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
+
+    <!-- <p class="text m-2">
+        <svg class="icon mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
         <a href="/sparkle/motion/index.html">After this part has finished (Red lines) go to the next step</a>
-    </p>
-    <div id="swf" class="ruffle-container"></div>
+    </p> -->
+    
+    <div id="swf" class="ruffle-container">
+        <a data-url hidden href="/sparkle/motion/index.html"></a>
+    </div>
 </div>
 
       </div>
@@ -141,6 +140,47 @@ p > a {
 
         player.style.width = "800px"; 
         player.style.height = "500px";
+
+        // player.addEventListener('loadedmetadata', () => {
+        //     const totalFrames = player.metadata.numFrames;
+        //     const uncompressedLength = player.metadata.uncompressedLength;
+        //     console.log(`Total frames: ${totalFrames}`);
+        //     console.log(`Uncompressed length: ${uncompressedLength}`);
+        // });
+
+        
+
+        let hasRun = false;
+
+        let observer = new PerformanceObserver((list) => {
+            if (hasRun) return; // Exit early if the condition has already been met
+
+            for (let entry of list.getEntries()) {
+                if (entry.name.includes('license.swf')) {
+                    hasRun = true; // Set the flag to true to prevent further checks
+
+                    fetch('/are/you/sleep/golfing/license.swf')
+                        .then(response => {
+                            if (response.ok) {
+                                console.log('License file is available');
+                                //Wait 5 seconds before revealing the link
+                                setTimeout(() => {
+                                    document.querySelector('[data-url]').removeAttribute('hidden');
+                                }, 5000);
+                            }
+                            // Handle successful response
+                        })
+                        .catch(error => {
+                            // Handle error
+                            console.log(error);
+                        });
+
+                    break; // Exit the loop early since the condition has been met
+                }
+            }
+        });
+
+        observer.observe({ entryTypes: ['resource'] });
 
     });
     </script>

@@ -8,13 +8,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-frank.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-frank.png">
     
-    <style>body {
-    overflow-y: hidden;
-}
-.iframe-modal  {
-  max-width: 730px !important;
-}
-@font-face {
+    <style>@font-face {
       font-family: "Pixelated MS Sans Serif";
       font-style: normal;
       font-weight: 400;
@@ -43,63 +37,25 @@
     <script defer data-domain="donniedarkowebsite.com" src="https://plausible.io/js/script.js"></script>
 
   </head>
-  <body class="">
+  <body class="dark">
 
     <main>
       <div class="container full">
         
 
-<div class="flex items-center justify-center h-screen">
-    <p class="text-center">Close the window to continue</p>
-</div>
-
-<div x-data="{ open: true }" class="flex justify-center">
-
-  <!-- Modal -->
-  <div
-      x-dialog
-      x-model="open"
-      style="display: none"
-      class="fixed inset-0 overflow-y-auto z-10"
-  >
-      <!-- Overlay -->
-      <div x-dialog:overlay x-transition.opacity class="fixed inset-0 bg-black bg-opacity-50"></div>
-
-      <!-- Panel -->
-      <div class="relative min-h-screen flex items-center justify-center p-4">
-          <div
-              x-dialog:panel
-              x-transition
-              class="iframe-modal window relative max-w-xl w-full bg-white shadow-lg overflow-y-auto"
-          >
-              <div class="title-bar">
-                <div class="title-bar-text">Middlesex Times Dispatch November 11, 1991 - CONNIE NAMED PRESIDENT OF CUNNING VISIONS</div>
-                <div class="title-bar-controls">
-                    <button aria-label="Close" @click="$dialog.close()"></button>
-                  </div>
-              </div>
-
-              <!-- Body -->
-              <div class="p-1">
-                <iframe src="/news/newspaper5.htm" width="100%" height="800px" frameborder="0" scrolling="yes"></iframe>
-              </div>
-
-          </div>
       </div>
-  </div>
+      
+      <div class="credit">
+    <p>
+        Credit: Co-Created by Richard Kelly and <a href="https://alexandrajugovic.com/donniedarko">Hi-ReS!</a> in 2001<br>
+        <a href="https://dogwonder.co.uk/2024/04/reviving-a-legend-rebuilding-the-donnie-darko-website">About this project</a>
+    </p>
 </div>
-
-
-      </div>
       
       
     </main>
     
     
-    
-    <script defer src="https://unpkg.com/@alpinejs/ui@3.13.1-beta.0/dist/cdn.min.js"></script>
-    <script defer src="https://unpkg.com/@alpinejs/focus@3.13.1/dist/cdn.min.js"></script>
-    <script defer src=" /scripts/alpine.js?v=1716544433947"></script>
     
 
     
@@ -127,7 +83,6 @@
     <script src="/scripts/min/app.min.js"></script>
 
     
-
 
     <!--Bundle SVG-->
     <svg width="0" height="0" aria-hidden="true" style="position: absolute;">
