@@ -10,7 +10,7 @@
     
     <style>html body {
     background-color: #ddddcc;
-    background: linear-gradient(to top, #ffffff 0%, #ffffff 400px, #ddddcc 500px, #ddddcc 100%);
+    background: linear-gradient(to top, #ffffff 0%, #ffffff var(--gradient-height-min, 350px), #ddddcc var(--gradient-height-max, 500px), #ddddcc 100%) !important;
 }
 p {
     max-width: 60vw;
@@ -54,7 +54,7 @@ p > a {
       <div class="container full">
         
 <div class="flex items-end h-full">
-    <object class="aspect-ratio">
+    <object class="aspect-ratio" id="gradient">
         <embed src="/from/the/sky/trampolin.swf" width="800" height="500">
     </object>  
 </div>
@@ -99,6 +99,12 @@ p > a {
     <script src="/scripts/min/app.min.js"></script>
 
     
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  ddScripts.setGradientHeight('gradient', '0.7');
+});
+</script>
+
 
     <!--Bundle SVG-->
     <svg width="0" height="0" aria-hidden="true" style="position: absolute;">

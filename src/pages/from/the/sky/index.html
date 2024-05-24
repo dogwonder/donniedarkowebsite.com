@@ -5,7 +5,7 @@ permalink: /from/the/sky/index.html
 {% css %}
 html body {
     background-color: #ddddcc;
-    background: linear-gradient(to top, #ffffff 0%, #ffffff 400px, #ddddcc 500px, #ddddcc 100%);
+    background: linear-gradient(to top, #ffffff 0%, #ffffff var(--gradient-height-min, 350px), #ddddcc var(--gradient-height-max, 500px), #ddddcc 100%) !important;
 }
 p {
     max-width: 60vw;
@@ -20,8 +20,16 @@ p > a {
 
 {% block content %}
 <div class="flex items-end h-full">
-    <object class="aspect-ratio">
+    <object class="aspect-ratio" id="gradient">
         <embed src="/from/the/sky/trampolin.swf" width="800" height="500">
     </object>  
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  ddScripts.setGradientHeight('gradient', '0.7');
+});
+</script>
 {% endblock %}

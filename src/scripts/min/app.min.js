@@ -17,50 +17,30 @@ var ddScripts = {
           )} / ${object.getAttribute("height")}`;
         });
 
-    },
+  },
 
-  animateText: function(element, audioFile) {
-      const text = document.getElementById(element);
-      // If no text is found bail
-      if (!text) return;
+  setGradientHeight: function(element, amount) {
+    
+    // Get the canvas element
+    const obj = document.getElementById(element);
   
-      const words = text.innerHTML.split(' ');
-      text.innerHTML = '';
+    // If no obj bail
+    if (!obj) return;
   
-      let audio = this.createAudio(audioFile);
+    // Get the width and height of the canvas
+    let width = obj.clientWidth;
+    let height = obj.clientHeight;
   
-      let wordPromises = words.map((word, i) => this.animateWord(word, i, text));
+    // Get the distance from the top of the page to the canvas
+    let objectHeightMin = height * amount;
+    let objectHeightMax = height;
   
-      Promise.all(wordPromises).then(() => {
-          this.finishAnimation(audio);
-      });
-  },
-  
-  createAudio: function(audioFile) {
-      let audio;
-      if (audioFile) {
-          audio = new Audio(audioFile);
-          audio.play();
-      }
-      return audio;
-  },
-  
-  animateWord: function(word, i, text) {
-      return new Promise((resolve) => {
-          setTimeout(() => {
-              text.innerHTML += word + ' ';
-              resolve();
-          }, i * 10);
-      });
-  },
-  
-  finishAnimation: function(audio) {
-      if (audio) {
-          audio.pause();
-      }
-      const event = new CustomEvent('wordsFinished');
-      document.dispatchEvent(event);
-      console.log('wordsFinished');
+    console.log(`Height Min: ${objectHeightMin}`);
+    console.log(`Height Max: ${objectHeightMax}`);
+    
+    // Change the CSS var --gradient to match the height of the canvas
+    document.documentElement.style.setProperty('--gradient-height-min', `${objectHeightMin}px`);
+    document.documentElement.style.setProperty('--gradient-height-max', `${objectHeightMax}px`);
   }
 
 }
@@ -68,5 +48,6 @@ var ddScripts = {
 document.addEventListener("DOMContentLoaded", function() {
 
   ddScripts.ruffleEmbeds();
+  ddScripts.setGradientHeight();
 
 }); 
