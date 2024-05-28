@@ -1,0 +1,134 @@
+---
+permalink: missing/are/you/sleep/golfing/1.html
+---
+
+{% set isRuffle = false %}
+{% set isDark = true %}
+
+{% css %}
+.aspect-ratio {
+    position: relative;
+    aspect-ratio: 800 / 500;
+}
+.aspect-ratio canvas {
+    width: 100%;
+    height: 100%;
+    background-image: url("/images/missing/level2/exercise-1.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+}
+.correct {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+.correct span {
+    font-size: 4rem;
+    color: white;
+    font-weight: bold;
+    text-shadow: 3px 3px #222;
+    animation: blink 0.7s steps(5, start) infinite;
+    -webkit-animation: blink 0.7s steps(5, start) infinite;
+    margin-block-start: 4rem;
+}
+@keyframes blink {
+    to {
+        visibility: hidden;
+    }
+}
+{% endcss %}
+
+{% extends "layouts/base.html" %}
+{% block content %}
+<div class="flex items-end h-full">
+    <div class="aspect-ratio">
+        <canvas id="image" width="800" height="500"></canvas>
+        <div id="exercise-1" class="exercise exercise-1 text">
+            Lifeline Exercise #1<br><br>
+            Juanita has an important math test<br>
+            today. She has known about it for<br> 
+            several weeks, but has not studied. In<br>
+            order to keep from failing the class<br>
+            Juanita decides that she will cheat on<br>
+            the math test.<br><br>
+            Please make your mark on the Lifeline.</p>
+        </div>
+        <div class="correct" style="display:none;"><span>correct answer</span></div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script src="/scripts/missing.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    missingScripts.animateText('exercise-1');
+    
+    const image = document.getElementById('image');
+    const ctx = image.getContext('2d');
+    const color = 'white';
+
+    //Get the width and height of the canvas
+    let width = image.clientWidth;
+    let height = image.clientHeight;
+
+    //Apply the new width and height for the canvas [FIXES BLUR ISSUE]
+    image.width = width;
+    image.height = height;
+
+    let rect = image.getBoundingClientRect(); 
+
+    let isDrawing = false;
+    let lastX = 0;
+    let lastY = 0;
+    let lineCount = 0;
+
+    function drawLine(x1, y1, x2, y2) {
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.strokeStyle = color; // Set the stroke color
+        ctx.stroke();
+    }
+
+    image.addEventListener('mousedown', (event) => {
+        isDrawing = true;
+        const rect = image.getBoundingClientRect();
+        lastX = event.clientX - rect.left;
+        lastY = event.clientY - rect.top;
+    });
+
+    image.addEventListener('mousemove', (event) => {
+        if (isDrawing) {
+            const rect = image.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            drawLine(lastX, lastY, x, y);
+            lastX = x;
+            lastY = y;
+            console.log(lineCount);
+        }
+    });
+
+    image.addEventListener('mouseup', () => {
+        isDrawing = false;
+        lineCount++;
+        if (lineCount >= 2) {
+            document.querySelector('.correct').style.display = 'flex';
+            setTimeout(() => {
+                window.location.href = '2.html';
+            }, 2000);
+            
+        }
+    });
+    
+
+});
+</script>
+{% endblock %}
