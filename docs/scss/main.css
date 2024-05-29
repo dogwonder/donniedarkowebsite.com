@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* https://hankchizljaw.com/wrote/a-modern-css-reset/ */
 /* Box sizing rules */
 *,
@@ -245,15 +246,16 @@ a:focus {
 }
 
 .scrollable-frames {
+  width: 100%;
   position: relative;
   display: flex;
-  width: 100%;
 }
 
 .frames {
   position: relative;
   display: flex;
   flex-grow: 1;
+  /* ↓ We only want horizontal scrolling */
   overflow-x: auto;
   overflow-y: hidden;
   align-items: stretch;
