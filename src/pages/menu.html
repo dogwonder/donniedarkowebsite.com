@@ -6,11 +6,28 @@ permalink: /menu.html
 
 {% block content %}
 <div class="flex items-end justify-end h-full">
-  <object class="aspect-ratio">
-    <embed src="/menu.swf" width="800" height="500">
-  </object>  
+  <div id="swf" class="ruffle-container"></div>
 </div>
 {% endblock %}
 
 {% block scripts %}
+<script>
+// Extend the existing configuration
+// Object.assign(window.RufflePlayer.config, {
+//     logLevel: "error", 
+//     fontSources: ["/fonts/courier.swf"],
+//     defaultFonts: {
+//         sans: ["Courier New"]
+//     }
+// });
+window.addEventListener("load", (event) => {
+    const ruffle = window.RufflePlayer.newest();
+    const player = ruffle.createPlayer();
+    const container = document.getElementById("swf");
+    container.appendChild(player);
+    player.load({
+        url: "/menu.swf", 
+    });
+});
+</script>
 {% endblock %}

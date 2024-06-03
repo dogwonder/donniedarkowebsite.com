@@ -608,10 +608,6 @@ video {
   float: right;
 }
 
-.m-2 {
-  margin: 0.5rem;
-}
-
 .m-56 {
   margin: 14rem;
 }
@@ -623,10 +619,6 @@ video {
 
 .mb-2 {
   margin-bottom: 0.5rem;
-}
-
-.mb-4 {
-  margin-bottom: 1rem;
 }
 
 .ml-2 {
@@ -770,10 +762,6 @@ video {
 
 .text-center {
   text-align: center;
-}
-
-.text-right {
-  text-align: right;
 }
 
 .text-xs {

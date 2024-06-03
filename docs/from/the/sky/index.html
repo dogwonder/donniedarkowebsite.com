@@ -9,20 +9,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-frank.png">
     
     <style>html body {
-    background-color: #ddddcc;
-    background: linear-gradient(to top, #ffffff 0%, #ffffff var(--gradient-height-min, 350px), #ddddcc var(--gradient-height-max, 500px), #ddddcc 100%) !important;
-}
-.ruffle-container p {
-    max-width: 60vw;
-    font-size: 0.8rem;
-}
-.ruffle-container p > a {
-    text-decoration: underline;
-    color: var(--dark) !important;
-}
-.ruffle-container p > a:hover {
-    filter: url(#noise);
-    animation: .3s linear forwards noise infinite;
+    background-color: #666666 !important;
 }
 @font-face {
       font-family: "Pixelated MS Sans Serif";
@@ -53,15 +40,15 @@
     <script defer data-domain="donniedarkowebsite.com" src="https://plausible.io/js/script.js"></script>
 
   </head>
-  <body class="">
+  <body class="dark">
 
     <main>
       <div class="container full">
         
-<div class="flex items-start justify-end flex-col h-full">
-    <div class="text-right ruffle-container">
-        <p class="text-dark m-2 mb-4"><a href="main.html" target="_blank">pay close attention, you could miss something >></a></p>
-    </div>
+<div class="flex items-center justify-center flex-col h-full">
+    <a href="main.html" target="_blank" class="red-cross">
+        <span class="visually-hidden">Click to advance</span>   
+    </a>
 </div>
 
       </div>

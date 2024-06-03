@@ -63,3 +63,38 @@
   height: 1em;
   fill: white;
 }
+
+.red-cross {
+  position: relative;
+  width: 5em;
+  height: 5em;
+  display: inline-block;
+  z-index: 2;
+  &:hover {
+    cursor: pointer;
+    filter: url(#noise);
+    animation: .3s linear forwards noise infinite;
+  }
+  
+  &:focus {
+    outline: none;
+    background-color: transparent;
+  }
+  
+  &:before, &:after {
+    content: '';
+    position: absolute;
+    background: red;
+    width: 100%;
+    height: 1.1em;
+  }
+  
+  &:before {
+    transform: rotate(0deg);
+  }
+  
+  &:after {
+    transform: rotate(-90deg);
+  }
+}
+
