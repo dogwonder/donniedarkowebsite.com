@@ -450,8 +450,9 @@ table td a {
   animation: 0.3s linear forwards noise infinite;
 }
 .red-cross:focus {
-  outline: none;
-  background-color: transparent;
+  outline: none !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
 }
 .red-cross:before, .red-cross:after {
   content: "";

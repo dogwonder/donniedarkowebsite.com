@@ -77,8 +77,9 @@
   }
   
   &:focus {
-    outline: none;
-    background-color: transparent;
+    outline: none  !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
   }
   
   &:before, &:after {
