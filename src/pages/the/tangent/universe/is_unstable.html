@@ -11,14 +11,115 @@ body main .credit {
   text-align: left;
   margin-inline-start: 1rem;
 }
+
+[data-popup] {
+  position: absolute;
+  background-color: transparent;
+  opacity: 0.5;
+  z-index: 999;
+}
+[data-popup]:focus {
+  background-color: transparent;
+  outline: none;
+  box-shadow: none;
+}
+[data-popup="thebook.swf"] {
+  width: 44px;
+  height: 44px;
+  right: 39%;
+  top: 20%;
+}
+[data-popup="gran-donnie.swf"] {
+  width: 45%;
+  height: 100%;
+  right: 0;
+  top: 0;
+}
+[data-popup="level2.swf"] {
+  width: 154px;
+  height: 44px;
+  right: 80%;
+  top: 64%;
+}
+
 {% endcss %}
 
 {% extends "layouts/base.html" %}
 
 {% block content %}
 <div class="flex items-start justify-end h-full">
-  <object class="aspect-ratio">
-      <embed src="/the/tangent/universe/philosophy.swf" width="800" height="500" />
-  </object>  
+  <div id="swf" class="ruffle-container">
+    <span data-popup="thebook.swf" hidden></span>
+    <span data-popup="gran-donnie.swf" hidden></span>
+    <a data-popup="level2.swf" hidden href="/menu.html" ></a>
+  </div>  
 </div>
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+// Unhandled FSCommand: showmenu
+// web/src/navigator.rs:151 SWF tried to open a URL, but opening URLs in the current tab is prevented by script access
+// Extend the existing configuration
+window.addEventListener("load", () => {
+    const ruffle = window.RufflePlayer.newest();
+    const player = ruffle.createPlayer();
+    const container = document.getElementById("swf");
+    container.appendChild(player);
+    player.load({ url: "/the/tangent/universe/philosophy.swf" });
+
+    let hasRunGranDonnie = false;
+    let hasRunBook = false;
+
+    const handleFetchResponse = (response, element) => {
+        if (response.ok) {
+            console.log(`The ${element} file is available`);
+            document.querySelector(`[data-popup="${element}"]`).removeAttribute('hidden');
+        }
+    };
+
+    const observeSWF = (entryName, flag, url, element, callback = null) => {
+        return new PerformanceObserver((list) => {
+            if (flag.value) return;
+
+            for (let entry of list.getEntries()) {
+                if (entry.name.includes(entryName)) {
+                    flag.value = true;
+                    fetch(url)
+                        .then(response => {
+                            handleFetchResponse(response, element);
+                            if (callback) callback();
+                        })
+                        .catch(error => console.log(error));
+                    break;
+                }
+            }
+        });
+    };
+
+    const observeGranDonnie = observeSWF(
+        'gran-donnie.swf',
+        { value: hasRunGranDonnie },
+        '/the/tangent/universe/gran-donnie.swf',
+        'gran-donnie.swf',
+        () => observeBook.observe({ entryTypes: ['resource'] }) // Start observing book after gran-donnie
+    );
+
+    const observeBook = observeSWF(
+        'thebook.swf',
+        { value: hasRunBook },
+        '/the/tangent/universe/thebook.swf',
+        'thebook.swf',
+        () => {
+            document.querySelector(`[data-popup="gran-donnie.swf"]`).setAttribute('hidden', '');
+            setTimeout(() => {
+                document.querySelector(`[data-popup="level2.swf"]`).removeAttribute('hidden');
+            }, 12000);
+        }
+    );
+
+    observeGranDonnie.observe({ entryTypes: ['resource'] });
+});
+</script>
 {% endblock %}
