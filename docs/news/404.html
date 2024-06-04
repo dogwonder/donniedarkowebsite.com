@@ -8,7 +8,22 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-frank.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-frank.png">
     
-    <style>@font-face {
+    <style>.four-oh-four-container {
+  display:block;
+  width: 100vw;
+  position: relative;
+}
+.four-oh-four-container ruffle-player {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 800 / 500;
+}
+@media (min-width: 1280px) {
+    .four-oh-four-container {
+        width: 60vw;
+    } 
+}
+@font-face {
       font-family: "Pixelated MS Sans Serif";
       font-style: normal;
       font-weight: 400;
@@ -42,7 +57,7 @@
     <main>
       <div class="container full">
         
-<div id="swf"></div>
+<div id="swf" class="four-oh-four-container"></div>
 
       </div>
       

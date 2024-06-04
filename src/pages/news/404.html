@@ -7,8 +7,26 @@ title: 404 - Page not found
 
 {% extends "layouts/base.html" %}
 
+{% css %}
+.four-oh-four-container {
+  display:block;
+  width: 100vw;
+  position: relative;
+}
+.four-oh-four-container ruffle-player {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 800 / 500;
+}
+@media (min-width: 1280px) {
+    .four-oh-four-container {
+        width: 60vw;
+    } 
+}
+{% endcss %}
+
 {% block content %}
-<div id="swf"></div>
+<div id="swf" class="four-oh-four-container"></div>
 {% endblock %}
 
 {% block scripts %}
