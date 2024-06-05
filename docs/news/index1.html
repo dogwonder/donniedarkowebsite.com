@@ -7,6 +7,7 @@
     <meta name="robots" content="noindex">
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-frank.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-frank.png">
+    <meta property="og:image" content="/images/og-image.jpg" />
     
     <style>
 @font-face {
@@ -147,8 +148,10 @@
         autoplay: "on",
         unmuteOverlay: "hidden",
         openUrlMode: "allow", 
-        logLevel: "error"
+        logLevel: "error", 
+        quality: "high",
     };
+    console.table(window.RufflePlayer.config);
     </script>
     
 

@@ -30,7 +30,7 @@ body main .credit {
   top: 20%;
 }
 [data-popup="gran-donnie.swf"] {
-  width: 45%;
+  width: 60%;
   height: 100%;
   right: 0;
   top: 0;
@@ -41,7 +41,9 @@ body main .credit {
   right: 80%;
   top: 64%;
 }
-
+body:has([data-popup="gran-donnie.swf"]:not([hidden])) {
+  cursor: none;
+}
 {% endcss %}
 
 {% extends "layouts/base.html" %}
