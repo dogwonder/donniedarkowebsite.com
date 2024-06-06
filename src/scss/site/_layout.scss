@@ -111,6 +111,15 @@ table {
   td a {
     text-decoration: underline;
   }
+  td {
+    img {
+      object-fit: cover;
+      width: 100%;
+    }
+    table.image {
+      margin-inline-start: 1rem;
+    }
+  }
 }
 
 //Ruffle container

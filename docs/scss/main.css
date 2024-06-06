@@ -285,6 +285,13 @@ table td, table p {
 table td a {
   text-decoration: underline;
 }
+table td img {
+  object-fit: cover;
+  width: 100%;
+}
+table td table.image {
+  margin-inline-start: 1rem;
+}
 
 .ruffle-container {
   display: block;
