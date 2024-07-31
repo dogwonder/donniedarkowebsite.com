@@ -33,10 +33,6 @@
     <!-- 98.css -->
     <link rel="stylesheet" href="{{ "/" | url }}css/98.css" />
 
-    {% if hasKeyboard %}
-    <link rel="stylesheet" href="{{ "/" | url }}css/simple-keyboard.css" />
-    {% endif %}
-
     {% block styles %}{% endblock %}
 
     <script defer data-domain="donniedarkowebsite.com" src="https://plausible.io/js/script.js"></script>
@@ -53,9 +49,6 @@
       {% if hasCredit != false %}
       {% include "partials/credit.html" %}
       {% endif %}
-      {% if hasKeyboard %}
-      {% include "partials/keyboard.html" %}
-      {% endif %}
     </main>
     
     
@@ -63,10 +56,6 @@
     <script defer src="https://unpkg.com/@alpinejs/ui@3.13.1-beta.0/dist/cdn.min.js"></script>
     <script defer src="https://unpkg.com/@alpinejs/focus@3.13.1/dist/cdn.min.js"></script>
     <script defer src="{{ " /" | url }}scripts/alpine.js?v={% version %}"></script>
-    {% endif %}
-
-    {% if hasKeyboard %}
-    <script defer src="{{ " /" | url }}scripts/min/keyboard.min.js?v={% version %}"></script>
     {% endif %}
 
     {% if isRuffle != false %}

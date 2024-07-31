@@ -11,8 +11,7 @@
     "scripts:concat": "concat ./src/scripts/app.js -o ./src/scripts/min/app.min.js",
     "scripts:minify": "uglifyjs ./src/scripts/min/app.min.js --compress --output ./src/scripts/app.min.js",
     "scripts": "run-p scripts:*",
-    "bundle": "browserify -t [ babelify --presets [ @babel/preset-env ] ] ./src/scripts/keyboard.js -o ./src/scripts/min/keyboard.min.js",
-    "build": "NODE_ENV=production npm run-s clean css scripts && NODE_ENV=production npx eleventy && NODE_ENV=production npm run bundle && NODE_ENV=production npx tailwindcss build ./src/css/tailwind.css -o ./docs/css/tailwind.css"
+    "build": "NODE_ENV=production npm run-s clean css scripts && NODE_ENV=production npx eleventy && NODE_ENV=production npx tailwindcss build ./src/css/tailwind.css -o ./docs/css/tailwind.css"
   },
   "dependencies": {
     "@11ty/eleventy": "^2.0.1",
