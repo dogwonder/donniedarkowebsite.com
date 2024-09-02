@@ -7,7 +7,6 @@ npm-debug.*
 .DS_Store
 Thumbs.db
 .sass-cache
-.cache
 
 # Node modules and output
 node_modules
