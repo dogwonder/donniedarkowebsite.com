@@ -83,6 +83,7 @@ select {
   --mono: "Pixelated MS Sans Serif", monospace;
   --dark: hsl(98, 0%, 0%);
   --light: #ffffff;
+  --red: #ea3323;
   --color-primary: 356, 98%;
   --l: 52%;
   --highlight: hsl(var(--color-primary),var(--l));
@@ -171,6 +172,15 @@ h6 {
 }
 .credit a:hover {
   text-decoration: none;
+}
+
+.visitors {
+  font-family: monospace;
+  background-color: var(--dark);
+  color: var(--red);
+  padding: 2px 4px;
+  margin-block-start: 4px;
+  display: inline-block;
 }
 
 .dark .credit {

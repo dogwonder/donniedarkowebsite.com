@@ -58,6 +58,15 @@ h6 {
   }
 }
 
+.visitors {
+  font-family: monospace;
+  background-color: var(--dark);
+  color: var(--red);
+  padding: 2px 4px;
+  margin-block-start: 4px;
+  display: inline-block;
+}
+
 .dark {
   .credit {
     color: var(--light);
