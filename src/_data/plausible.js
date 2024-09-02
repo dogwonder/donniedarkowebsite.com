@@ -4,7 +4,7 @@ module.exports = async function () {
     try {
 
          // Determine the authorization key based on the environment
-         const authKey = process.env.NODE_ENV === 'production' ? secrets.GITHUB_SECRET_PLAUSIBLE_KEY : process.env.PLAUSIBLE_KEY;
+         const authKey = process.env.PLAUSIBLE_KEY;
 
 
         // https://developer.github.com/v3/repos/#get
