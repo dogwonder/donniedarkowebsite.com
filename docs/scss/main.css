@@ -81,6 +81,7 @@ select {
   --body: "Arial", sans-serif;
   --times: "Times New Roman", "Times", serif;
   --mono: "Pixelated MS Sans Serif", monospace;
+  --mono-alt: "DepartureMono", monospace;
   --dark: hsl(98, 0%, 0%);
   --light: #ffffff;
   --red: #ea3323;

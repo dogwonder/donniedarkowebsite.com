@@ -1,18 +1,17 @@
-const { EleventyRenderPlugin } = require("@11ty/eleventy");
-const bundlerPlugin = require("@11ty/eleventy-plugin-bundle");
-const sass = require("sass");
-const path = require('node:path');
-const HumanReadable = require("human-readable-numbers");
-const lightningCSS = require("@11tyrocks/eleventy-plugin-lightningcss");
-const now = String(Date.now())
-
 // env variables
 require('dotenv').config();
 
-// Create a helpful production flag
-const isProduction = process.env.NODE_ENV === 'production';
+// Other dependencies
+const now = String(Date.now())
+const sass = require("sass");
+const path = require('node:path');
+const HumanReadable = require("human-readable-numbers");
 
-module.exports = eleventyConfig => { 
+module.exports = async function(eleventyConfig) {
+    
+    const {EleventyRenderPlugin} = await import("@11ty/eleventy");
+    const { default: bundlerPlugin } = await import("@11ty/eleventy-plugin-bundle");
+    const { default: lightningCSS } = await import("@11tyrocks/eleventy-plugin-lightningcss");
 
     eleventyConfig.addPassthroughCopy({"src/images": "images"});
     eleventyConfig.addPassthroughCopy({"src/scripts": "scripts"});
@@ -87,15 +86,14 @@ module.exports = eleventyConfig => {
     return now
   });
 
-  return {
-    markdownTemplateEngine: 'njk',
-    dataTemplateEngine: 'njk',
-    htmlTemplateEngine: 'njk',
-    dir: {
-      input: 'src',
-      output: 'docs'
-    }
-  };
+}
 
-
+module.exports.config = {
+  dir: {
+    input: 'src',
+    output: 'docs'
+  },
+  markdownTemplateEngine: "njk",
+  htmlTemplateEngine: "njk",
+  dataTemplateEngine: "njk"
 }

@@ -14,11 +14,10 @@
     "build": "NODE_ENV=production npm run-s clean css scripts && NODE_ENV=production npx eleventy && NODE_ENV=production npx tailwindcss build ./src/css/tailwind.css -o ./docs/css/tailwind.css"
   },
   "dependencies": {
-    "@11ty/eleventy": "^2.0.1",
-    "@11ty/eleventy-fetch": "^4.0.0",
-    "@11ty/eleventy-plugin-bundle": "^1.0.4",
-    "@11ty/eleventy-plugin-webc": "^0.11.1",
-    "@11tyrocks/eleventy-plugin-lightningcss": "^1.2.0",
+    "@11ty/eleventy": "^3.0.0",
+    "@11ty/eleventy-fetch": "^4.0.1",
+    "@11ty/eleventy-plugin-bundle": "^3.0.0",
+    "@11tyrocks/eleventy-plugin-lightningcss": "^1.4.0",
     "@babel/core": "^7.23.3",
     "@babel/preset-env": "^7.23.3",
     "@ruffle-rs/ruffle": "^0.1.0-nightly.2024.5.22",
