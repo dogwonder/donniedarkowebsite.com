@@ -8,9 +8,9 @@ jobs:
   build_deploy:
     runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@main
       - name: Build
-        uses: dogwonder/donniedarkowebsite.com@master
+        uses: dogwonder/donniedarkowebsite.com@main
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
