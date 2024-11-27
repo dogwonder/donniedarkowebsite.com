@@ -1,0 +1,19 @@
+name: Eleventy Build
+on:
+  schedule:
+    # Runs every day
+    - cron: '0 0 * * *'
+
+jobs:
+  build_deploy:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@master
+      - name: Build
+        uses: dogwonder/donniedarkowebsite.com@master
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          publish_dir: docs
+          publish_branch: gh-pages
+          github_token: ${{ secrets.GITHUB_TOKEN }}
