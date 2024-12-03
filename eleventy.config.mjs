@@ -10,7 +10,6 @@ import HumanReadable from 'human-readable-numbers';
 // Import Eleventy plugins
 import { EleventyRenderPlugin } from "@11ty/eleventy";
 import bundlerPlugin from "@11ty/eleventy-plugin-bundle";
-import lightningCSS from "@11tyrocks/eleventy-plugin-lightningcss";
 
 // Capture the current timestamp
 const now = String(Date.now());
@@ -43,7 +42,6 @@ export default async function(eleventyConfig) {
     // Register Plugins
     eleventyConfig.addPlugin(EleventyRenderPlugin);
     eleventyConfig.addPlugin(bundlerPlugin);
-    eleventyConfig.addPlugin(lightningCSS);
 
     // Bundles
     eleventyConfig.addBundle("css");
