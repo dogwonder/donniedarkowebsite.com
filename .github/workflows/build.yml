@@ -1,9 +1,9 @@
 name: Build and Deploy
+
 on:
-  schedule:
-    # Runs every day
-    - cron: '0 0 * * *'
   workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
 jobs:
   build-and-deploy:
     concurrency: ci-${{ github.ref }} # Recommended if you intend to make multiple deployments in quick succession.
@@ -33,3 +33,6 @@ jobs:
           branch: gh-pages # The branch the action should deploy to.
           folder: docs # The folder the action should deploy.
           commit_message: Generate monthly build
+
+
+          
