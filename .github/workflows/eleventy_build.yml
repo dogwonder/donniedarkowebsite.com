@@ -9,7 +9,9 @@ on:
 jobs:
   build_deploy:
     runs-on: ubuntu-latest
-
+    permissions:
+      id-token: write
+      contents: read
     steps:
       # Step 1: Checkout repository
       - name: Checkout
