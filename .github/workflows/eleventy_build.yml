@@ -33,6 +33,6 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: docs
-          publish_branch: main
+          publish_branch: gh-pages
           allow_empty_commit: true  # Optional: if there's no change, allow an empty commit
           force_orphan: true       # Optional: force push if the branch doesn't exist
