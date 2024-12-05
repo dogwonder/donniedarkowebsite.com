@@ -1,6 +1,7 @@
 name: Eleventy Build
 
 on:
+  workflow_dispatch:  # Allows manual trigger for testing
   schedule:
     # Runs every day at midnight UTC
     - cron: '0 0 * * *'
