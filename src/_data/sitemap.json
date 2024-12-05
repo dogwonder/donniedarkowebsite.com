@@ -1,0 +1,286 @@
+{
+  "urls": [
+    {
+      "url": "book.swf", 
+      "type": "swf" 
+    },
+    {
+      "url": "clouds.swf", 
+      "type": "swf"
+    },
+    {
+      "url": "empty.html",
+      "type": "html"
+    },
+    {
+      "url": "from/the/sky/back.jpg", 
+      "type": "file"
+    },
+    {
+      "url": "from/the/sky/empty.html", 
+      "type": "html"
+    },
+    {
+      "url": "from/the/sky/trampolin.html", 
+      "type": "html"
+    },
+    {
+      "url": "from/the/sky/trampolin.swf", 
+      "type": "swf"
+    },
+    {
+      "url": "info/pop_info.html", 
+      "type": "html"
+    },
+    {
+      "url": "intro.html", 
+      "type": "html"
+    },
+    {
+      "url": "intro.swf", 
+      "type": "swf"
+    },
+    {
+      "url": "menu.html", 
+      "type": "html"
+    },
+    {
+      "url": "menu.swf",
+      "type": "swf"
+    },
+    {
+      "url": "news/404.html", 
+      "type": "html"
+    },
+    {
+      "url": "news/files/banners/indepth_468x60_1.gif", 
+      "type": "file"
+    },
+    {
+      "url": "news/files/images/love-cover.jpg", 
+      "type": "file"
+    },
+    {
+      "url": "news/files/images/magnifier.gif", 
+      "type": "file"
+    },
+    {
+      "url": "news/files/images/monitoff02_small.jpg", 
+      "type": "file"
+    },
+    {
+      "url": "news/files/images/roberta.jpg", 
+      "type": "file"
+    },
+    {
+      "url": "news/files/images/sarahWalters.jpg", 
+      "type": "file"
+    },
+    {
+      "url": "news/files/side.swf", 
+      "type": "swf"
+    },
+    {
+      "url": "news/files/top.swf", 
+      "type": "swf"
+    },
+    {
+      "url": "news/header.swf", 
+      "type": "swf"
+    },
+    {
+      "url": "news/iseeyou.swf",
+      "type": "swf"
+    },
+    {
+      "url": "news/newspaper2.htm", 
+      "type": "html"
+    },
+    {
+      "url": "news/newspaper3.htm", 
+      "type": "html"
+    },
+    {
+      "url": "news/newspaper4.htm", 
+      "type": "html"
+    },
+    {
+      "url": "news/newspaper6.htm", 
+      "type": "html"
+    },
+    {
+      "url": "news/pop1.html", 
+      "type": "html"
+    },
+    {
+      "url": "news/pop2.html", 
+      "type": "html"
+    },
+    {
+      "url": "news/pop3.html", 
+      "type": "html"
+    },
+    {
+      "url": "news/pop6.html", 
+      "type": "html"
+    },
+    {
+      "url": "news/index1.html", 
+      "type": "html"
+    },
+    {
+      "url": "news/index2.html", 
+      "type": "html"
+    },
+    {
+      "url": "news/index3.html", 
+      "type": "html"
+    },
+    {
+      "url": "news/index4.html", 
+      "type": "html"
+    },
+    {
+      "url": "news/index5.html", 
+      "type": "html"
+    },
+    {
+      "url": "news/index6.html", 
+      "type": "html"
+    },
+    {
+      "url": "news/header.html", 
+      "type": "html"
+    },
+    {
+      "url": "pop/go_level2.html", 
+      "type": "html"
+    },
+    {
+      "url": "pop/level2.html", 
+      "type": "html"
+    },
+    {
+      "url": "pop/pop_level2.html", 
+      "type": "html"
+    },
+    {
+      "url": "pop/level3.html", 
+      "type": "html"
+    },
+    {
+      "url": "pop/go_level3.html", 
+      "type": "html"
+    },
+    {
+      "url": "pop/pass2.swf",
+      "type": "swf"
+    },
+    {
+      "url": "pop/pass3.swf",
+      "type": "swf"
+    },
+    {
+      "url": "pop/pop_level3.html",
+      "type": "html"
+    },
+    {
+      "url": "the/tangent/smurf.swf",
+      "type": "swf"
+    },
+    {
+      "url": "the/tangent/universe/dad.swf",
+      "type": "swf"
+    },
+    {
+      "url": "the/tangent/universe/donnie.swf",
+      "type": "swf"
+    },
+    {
+      "url": "the/tangent/universe/gran-donnie.swf",
+      "type": "swf"
+    },
+    {
+      "url": "the/tangent/universe/philosophy.swf",
+      "type": "swf"
+    },
+    {
+      "url": "the/tangent/universe/straight.swf",
+      "type": "swf"
+    },
+    {
+      "url": "the/tangent/universe/thebook.swf",
+      "type": "swf"
+    },
+    {
+      "url": "are/index.html", 
+      "type": "html", 
+      "type": "folder"
+    },
+    {
+      "url": "are/you", 
+      "type": "folder"
+    },
+    {
+      "url": "are/you/sleep", 
+      "type": "folder"
+    },
+    {
+      "url": "are/you/sleep/golfing", 
+      "type": "folder"
+    },
+    {
+      "url": "CV/index.html", 
+      "type": "html"
+    },
+    {
+      "url": "from/index.html", 
+      "type": "html"
+    },
+    {
+      "url": "from/the", 
+      "type": "folder"
+    },
+    {
+      "url": "from/the/sky", 
+      "type": "folder"
+    },
+    {
+      "url": "further.html", 
+      "type": "html"
+    },
+  
+    {
+      "url": "pop/close.html", 
+      "type": "html"
+    },
+    {
+      "url": "sparkle", 
+      "type": "folder"
+    },
+    {
+      "url": "sparkle/motion", 
+      "type": "folder"
+    },
+    {
+      "url": "the/index.html", 
+      "type": "html"
+    },
+    {
+      "url": "the/tangent/index.html", 
+      "type": "folder"
+    },
+    {
+      "url": "the/tangent/universe/empty.html", 
+      "type": "html"
+    },
+    {
+      "url": "the/tangent/universe/is_unstable.html", 
+      "type": "html"
+    },
+    {
+      "url": "the/tangent/universe/main.html", 
+      "type": "html"
+    }
+  ]
+}

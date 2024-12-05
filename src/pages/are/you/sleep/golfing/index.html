@@ -1,0 +1,21 @@
+---
+permalink: /are/you/sleep/golfing/index.html
+---
+
+{% set isDark = true %}
+
+{% extends "layouts/base.html" %}
+
+{% css %}
+html body {
+    background-color: #666666 !important;
+}
+{% endcss %}
+
+{% block content %}
+<div class="flex items-center justify-center flex-col h-full">
+    <a href="main.html" target="_blank" class="red-cross">
+        <span class="visually-hidden">Click to advance</span>   
+    </a>
+</div>
+{% endblock %}

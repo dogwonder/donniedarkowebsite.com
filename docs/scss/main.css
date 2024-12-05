@@ -1,0 +1,489 @@
+@charset "UTF-8";
+/* https://hankchizljaw.com/wrote/a-modern-css-reset/ */
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove default padding */
+ul[class],
+ol[class] {
+  padding: 0;
+}
+
+/* Remove default margin */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul[class],
+ol[class],
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+/* Set core body defaults */
+body {
+  min-height: 100vh;
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+}
+
+/* Remove list styles on ul, ol elements with a class attribute */
+ul[class],
+ol[class] {
+  list-style: none;
+}
+
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+
+/* Make images easier to work with */
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Natural flow and rhythm in articles by default */
+article > * + * {
+  margin-top: 1em;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Remove _all_ animations and transitions for people that prefer not to see them */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-play-state: paused !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+:root {
+  --body: "Arial", sans-serif;
+  --times: "Times New Roman", "Times", serif;
+  --mono: "Pixelated MS Sans Serif", monospace;
+  --mono-alt: "DepartureMono", monospace;
+  --dark: hsl(98, 0%, 0%);
+  --light: #ffffff;
+  --red: #ea3323;
+  --green: #00ff00;
+  --color-primary: 356, 98%;
+  --l: 52%;
+  --highlight: hsl(var(--color-primary),var(--l));
+  --hover: hsl(var(--color-primary),calc(var(--l) - 10%));
+  --visited: hsl(var(--color-primary),var(--l));
+  --focus: #ffdd00;
+  --space-xs: clamp(0.75rem, 0.69rem + 0.29vw, 0.9375rem);
+  --space-s: clamp(1rem, 0.92rem + 0.39vw, 1.25rem);
+  --space-m: clamp(1.5rem, 1.38rem + 0.58vw, 1.875rem);
+  --space-l: clamp(2rem, 1.84rem + 0.78vw, 2.5rem);
+  --space-xl: clamp(3rem, 2.77rem + 1.17vw, 3.75rem);
+  --space-xs-s: clamp(0.75rem, 0.59rem + 0.78vw, 1.25rem);
+  --space-s-m: clamp(1rem, 0.73rem + 1.36vw, 1.875rem);
+  --space-m-l: clamp(1.5rem, 1.19rem + 1.55vw, 2.5rem);
+  --space-l-xl: clamp(2rem, 1.46rem + 2.72vw, 3.75rem);
+  --font-size-sm: clamp(0.8rem, 0.16vw + 0.76rem, 0.89rem);
+  --font-size-base: clamp(1rem, 0.34vw + 0.92rem, 1.19rem);
+  --font-size-md: clamp(1.25rem, 0.6vw + 1.1rem, 1.58rem);
+  --font-size-lg: clamp(1.56rem, 0.99vw + 1.31rem, 2.11rem);
+  --font-size-xl: clamp(1.95rem, 1.56vw + 1.56rem, 2.81rem);
+  --letter-spacing-base: 1rem * 0.05;
+  --letter-spacing-small: 0.0125em;
+  --letter-spacing-big: 0.075em;
+  --line-height-small: 1.2;
+  --line-height-base: 1.5;
+  --word-spacing-base: 1rem * 0.04;
+  --border-radius: 0.5rem;
+  --containerWidth: 70rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--dark);
+  line-height: 1;
+  margin-inline: 0;
+  margin-block: 1em 1rem;
+}
+
+.text {
+  font-weight: bold;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  letter-spacing: var(--letter-spacing-big);
+}
+
+.text-dark {
+  font-weight: bold;
+  text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+  letter-spacing: var(--letter-spacing-big);
+}
+
+.close {
+  letter-spacing: var(--letter-spacing-big);
+}
+.close > a {
+  text-decoration: underline;
+}
+
+.exercise {
+  left: 50%;
+  position: absolute;
+  top: 5rem;
+}
+@media (min-width: 64em) {
+  .exercise {
+    left: 60%;
+  }
+}
+
+.credit {
+  margin: 1rem 0.5rem;
+  font-size: 0.8rem;
+  font-weight: bold;
+  position: absolute;
+  top: 0;
+  right: 0;
+  text-align: right;
+  color: var(--dark);
+  letter-spacing: var(--letter-spacing-big);
+}
+.credit a {
+  text-decoration: underline;
+}
+.credit a:hover {
+  text-decoration: none;
+}
+
+.visitors {
+  font-family: monospace;
+  background-color: var(--dark);
+  color: var(--green);
+  padding: 3px 6px;
+  margin-block-start: 4px;
+  display: inline-block;
+  box-shadow: inset 0.2em 0.2em 0.2em 0 rgba(255, 255, 255, 0.7), inset -0.2em -0.2em 0.2em 0 rgba(0, 0, 0, 0.7);
+}
+
+.dark .credit {
+  color: var(--light);
+}
+.dark .credit a {
+  color: inherit;
+}
+
+html {
+  font-family: var(--body), Helvetica, Arial, sans-serif;
+}
+
+html {
+  font-size: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: var(--body);
+  font-weight: normal;
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  letter-spacing: var(--letter-spacing-base);
+  word-spacing: var(--word-spacing--base);
+  text-align: left;
+  background-color: var(--light);
+  color: var(--dark);
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 100%;
+}
+body.dark {
+  background-color: var(--dark);
+  color: var(--light);
+}
+
+main {
+  height: 100%;
+}
+
+a {
+  color: var(--dark);
+  text-decoration: underline;
+  text-decoration-thickness: max(0.0875em, .0625rem);
+  text-underline-offset: 0.1em;
+}
+a:visited {
+  color: var(--dark);
+}
+a:hover {
+  text-decoration-color: var(--highlight);
+}
+a:active {
+  color: var(--dark);
+  text-decoration: none;
+}
+a:focus {
+  color: var(--light);
+  background-color: var(--highlight);
+  outline: 3px solid transparent;
+  box-shadow: 0 -2px var(--highlight), 0 4px var(--dark);
+  filter: none;
+  text-shadow: none;
+  text-decoration: none;
+}
+
+.dark a:focus {
+  color: var(--dark) !important;
+  background-color: var(--light);
+  outline: 3px solid transparent;
+  box-shadow: 0 -2px var(--light), 0 4px var(--highlight);
+}
+
+.scrollable-frames {
+  width: 100%;
+  position: relative;
+  display: flex;
+}
+
+.frames {
+  position: relative;
+  display: flex;
+  flex-grow: 1;
+  /* ↓ We only want horizontal scrolling */
+  overflow-x: auto;
+  overflow-y: hidden;
+  align-items: stretch;
+  gap: 4ch;
+}
+
+.frame {
+  max-width: 400px;
+  flex-shrink: 0;
+}
+.frame__content {
+  font-size: 0.75rem;
+  color: #000000;
+}
+.frame__content span {
+  color: var(--highlight);
+  display: inline-block;
+}
+.frame__content a {
+  text-decoration: underline;
+}
+
+table td, table p {
+  font-family: var(--times);
+  font-size: 0.9375rem;
+}
+table td a {
+  text-decoration: underline;
+}
+table td img {
+  object-fit: cover;
+  width: 100%;
+}
+table td table.image {
+  margin-inline-start: 1rem;
+}
+
+.ruffle-container {
+  display: block;
+  width: 100vw;
+  position: relative;
+}
+
+.ruffle-container ruffle-player {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 800/500;
+}
+
+@media (min-width: 1280px) {
+  .ruffle-container {
+    width: 60vw;
+  }
+}
+.aspect-ratio {
+  display: flex;
+  width: 100vw;
+}
+@media (min-width: 64em) {
+  .aspect-ratio {
+    width: 60vw;
+  }
+}
+.aspect-ratio ruffle-embed {
+  width: 100%;
+  height: 100vh;
+}
+.aspect-ratio > img {
+  width: 100%;
+  height: 100%;
+}
+
+.interlace {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.interlace:before {
+  content: "";
+  z-index: 2;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) 1px, transparent 2px, transparent 3px);
+}
+
+@keyframes noise {
+  0% {
+    filter: url(#noise1);
+  }
+  33% {
+    filter: url(#noise2);
+  }
+  66% {
+    filter: url(#noise3);
+  }
+  to {
+    filter: url(#noise1);
+  }
+}
+.keyboard {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 1rem;
+}
+@media (min-width: 48em) {
+  .keyboard {
+    display: none;
+  }
+}
+
+.icon-keyboard {
+  width: 2.4rem;
+  height: auto;
+  margin: 0.25rem;
+}
+
+.toggle-keyboard {
+  display: flex;
+  align-items: center;
+  gap: 1ch;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.visually-hidden {
+  height: 1px;
+  width: 1px;
+  position: absolute !important;
+  overflow: hidden;
+  padding: 0;
+  /* many screen reader and browser combinations announce broken words as they would appear visually */
+  word-wrap: normal !important;
+  white-space: nowrap;
+  clip: rect(0, 0, 0, 0);
+  -webkit-clip-path: inset(50%);
+  clip-path: inset(50%);
+  border: 0;
+}
+.visually-hidden:focus {
+  background-color: #f1f1f1;
+  border-radius: 3px;
+  box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);
+  clip: auto !important;
+  -webkit-clip-path: none;
+  clip-path: none;
+  color: var(--teal-dark);
+  display: block;
+  font-weight: 700;
+  height: auto;
+  right: 5px;
+  line-height: normal;
+  padding: 15px 23px 14px;
+  text-decoration: none;
+  top: 5px;
+  width: auto;
+  z-index: 100000;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  max-width: var(--containerWidth);
+  position: relative;
+  margin: 0;
+  padding: var(--space-m);
+}
+
+.container.full {
+  padding: 0;
+  max-width: 100%;
+}
+
+.stack > * + * {
+  margin-block-start: var(--space-m);
+}
+
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  fill: white;
+}
+
+.red-cross {
+  position: relative;
+  width: 5em;
+  height: 5em;
+  display: inline-block;
+  z-index: 2;
+}
+.red-cross:hover {
+  cursor: pointer;
+  filter: url(#noise);
+  animation: 0.3s linear forwards noise infinite;
+}
+.red-cross:focus {
+  outline: none !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+.red-cross:before, .red-cross:after {
+  content: "";
+  position: absolute;
+  background: red;
+  width: 100%;
+  height: 1.1em;
+}
+.red-cross:before {
+  transform: rotate(0deg);
+}
+.red-cross:after {
+  transform: rotate(-90deg);
+}

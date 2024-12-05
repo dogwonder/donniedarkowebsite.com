@@ -1,0 +1,85 @@
+---
+permalink: /missing/are/you/sleep/golfing/6.html
+---
+
+{% set isDark = true %}
+
+{% css %}
+.aspect-ratio {
+    position: relative;
+}
+.crosshair {
+    position: absolute;
+    right: 30%;
+    bottom: 20%;
+    font-size: 1.4rem;
+}
+.crosshair:hover {
+    cursor: pointer;
+    filter: url(#noise);
+}
+.crosshair svg {
+    width: 1.2rem;
+    height: 1.2rem;
+}
+.window {
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    right: 20%;
+    bottom: 10%;
+    display: none;
+}
+.window img {
+    width: 100%;
+    height: calc(100% - 22px);
+    object-fit: cover;
+}
+.interlace:hover {
+    cursor: pointer;
+    filter: url(#noise);
+    animation: .3s linear forwards noise infinite;
+}
+{% endcss %}
+
+{% extends "layouts/base.html" %}
+
+{% block content %}
+<div class="flex items-end h-full">
+    <div class="aspect-ratio">
+        <img src="/images/missing/level2/sleepgolfing-bg-3.jpg">
+        <span id="popup" class="crosshair">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 219 219"><defs><style>.cross-1{fill:none;stroke:#ffffff;stroke-miterlimit:10;stroke-width:20px}</style></defs><circle cx="109.5" cy="109.5" r="51.1" class="cross-1"/><path d="M110.96 0v58.4M110.96 160.6V219M219 108.04h-58.4M58.4 108.04H0" class="cross-1"/></svg>
+        </span>
+        <div class="window">
+            <div class="title-bar">
+                <div class="title-bar-text px-1">Microsoft Explorer</div>
+                <div class="title-bar-controls">
+                    <button aria-label="Minimize"></button>
+                    <button aria-label="Maximize"></button>
+                    <button aria-label="Close"></button>    
+                </div>
+              </div>
+              <div class="interlace" data-url="/missing/are/you/sleep/golfing/7.html">
+                <img src="/images/missing/level2/sleepgolfing-wallet.jpg">
+              </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/scripts/missing.js"></script>
+<script>
+//If click on #popup then show .window
+document.getElementById('popup').addEventListener('click', event => {
+    document.querySelector('.window').style.display = 'block';
+})
+//If click on .interlace then go to data-url
+document.querySelectorAll('.interlace').forEach(item => {
+    item.addEventListener('click', event => {
+        window.location.href = item.dataset.url;
+    })
+})
+</script>
+{% endblock %}

@@ -1,0 +1,117 @@
+---
+permalink: /missing/are/you/sleep/golfing/7.html
+---
+
+{% set isDark = true %}
+
+{% css %}
+.lines {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+.line {
+    height: 3px;
+    width: 0;
+    background: #be2538;
+    transform: rotate(-45deg);
+    transform-origin: left;
+    animation: grow 1s linear forwards;
+    position: absolute;
+    bottom: 0;
+    margin-block-start: var(--line-height, 60%);
+    left: var(--line-offset, 60%);
+    --line-animation: 60%;
+}
+.line-100 {
+    --line-animation: 10%;
+}
+.line-200 {
+    --line-animation: 20%;
+}
+.line-300 {
+    --line-animation: 30%;
+}
+.line-400 {
+    --line-animation: 40%;
+}
+.line-500 {
+    --line-animation: 50%;
+}
+.line-600 {
+    --line-animation: 60%;
+}
+.line-700 {
+    --line-animation: 70%;
+}
+.target {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+.target span {
+    opacity: 0;
+    display: block;
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #be2538;
+    right: 0;
+    top: 4px;
+    position: relative;
+}
+.target span:hover {
+    cursor: pointer;
+}
+@keyframes grow {
+    to {
+        width: var(--line-animation);
+    }
+}
+{% endcss %}
+
+{% extends "layouts/base.html" %}
+
+{% block content %}
+<div class="flex items-end h-full">
+    <div class="aspect-ratio">
+        <div class="lines">
+            <div class="line opacity-30 line-100" style="--line-offset: 6%"></div>
+            <div class="line opacity-20 line-200" style="--line-offset: 8%"></div>
+            <div class="line opacity-50 line-200" style="--line-offset: 10%"></div>
+            <div class="line opacity-70 line-300" style="--line-offset: 15%"></div>
+            <div class="line opacity-30 line-700" style="--line-offset: 16%"></div>
+            <div class="line opacity-20 line-100" style="--line-offset: 17%"></div>
+            <div class="line opacity-20 line-200" style="--line-offset: 18%"></div>
+            <div class="line opacity-90 line-100" style="--line-offset: 19%"></div>
+            <div class="line opacity-70 line-200" style="--line-offset: 21%"></div>
+            <div class="line opacity-60 line-300" style="--line-offset: 22%"></div>
+            <div class="target line opacity-95 line-500" style="--line-offset: 24.5%"><span></span></div>
+            <div class="line opacity-20 line-200" style="--line-offset: 29.5%"></div>
+            <div class="line opacity-70 line-300" style="--line-offset: 32%"></div>
+            <div class="line opacity-40 line-200" style="--line-offset: 40%"></div>
+            <div class="line opacity-10 line-200" style="--line-offset: 42%"></div>
+            <div class="line opacity-10 line-300" style="--line-offset: 45%"></div>
+            <div class="line opacity-30 line-100" style="--line-offset: 50%"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/scripts/missing.js"></script>
+<script>
+    //After 1 second change the opacity of the target to 1 and link it on and off
+    setTimeout(() => {
+        document.querySelector('.target span').style.opacity = 1;
+        //Toggle the opacity of the target on and off every 0.5 seconds
+        setInterval(() => {
+            document.querySelector('.target span').style.opacity = document.querySelector('.target span').style.opacity == 1 ? 0 : 1;
+        }, 500);
+        document.querySelector('.target span').addEventListener('click', () => {
+            window.location.href = '/sparkle/motion/index.html';
+        });
+    }, 2000);
+</script>
+{% endblock %}

@@ -1,0 +1,33 @@
+//Interlace effect
+.interlace {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    &:before {
+        content: "";
+        z-index: 2;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+        background: repeating-linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.2) 1px, transparent 2px,  transparent 3px);
+    }
+}
+
+//Turbulence
+@keyframes noise {
+	0% {
+		filter: url(#noise1)
+	}
+	33% {
+		filter: url(#noise2)
+	}
+	66% {
+		filter: url(#noise3)
+	}
+	to {
+		filter: url(#noise1)
+	}
+}

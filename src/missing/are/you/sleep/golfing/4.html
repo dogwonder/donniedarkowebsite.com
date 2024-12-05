@@ -1,0 +1,29 @@
+---
+permalink: /missing/are/you/sleep/golfing/4.html
+---
+
+{% set isDark = true %}
+
+{% css %}
+{% endcss %}
+
+{% extends "layouts/base.html" %}
+
+{% block content %}
+<div class="flex items-end h-full">
+    <div class="aspect-ratio">
+        <div class="interlace">
+            <img class="" src="/images/missing/level2/sleepgolfing-bg-1.jpg">
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/scripts/missing.js"></script>
+<script>
+    document.addEventListener('click', () => {
+        window.location.href = '/missing/are/you/sleep/golfing/5.html';
+    }); 
+</script>
+{% endblock %}

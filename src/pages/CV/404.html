@@ -1,0 +1,52 @@
+---
+permalink: /CV/404.html
+title: 404 - Page not found
+---
+
+{% set hasCredit = false %}
+
+{% extends "layouts/base.html" %}
+
+{% css %}
+.four-oh-four-container {
+  display:block;
+  width: 100vw;
+  position: relative;
+}
+.four-oh-four-container ruffle-player {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 800 / 500;
+}
+@media (min-width: 1280px) {
+    .four-oh-four-container {
+        width: 60vw;
+    } 
+}
+{% endcss %}
+
+{% block content %}
+<div id="swf" class="four-oh-four-container"></div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// https://github.com/ruffle-rs/ruffle/wiki/Frequently-Asked-Questions-For-Users#how-do-i-change-the-fonts-used-by-flash-on-my-website
+// Extend the existing configuration
+Object.assign(window.RufflePlayer.config, {
+    fontSources: ["/fonts/courier.swf"],
+    defaultFonts: {
+        sans: ["Courier New"]
+    }
+});
+window.addEventListener("load", (event) => {
+    const ruffle = window.RufflePlayer.newest();
+    const player = ruffle.createPlayer();
+    const container = document.getElementById("swf");
+    container.appendChild(player);
+    player.load({
+        url: "/CV/iseeyou.swf", 
+    });
+});
+</script>
+{% endblock %}

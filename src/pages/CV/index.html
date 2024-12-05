@@ -1,0 +1,125 @@
+---
+permalink: /CV/index.html
+title: "Cunning Visions Inc."
+---
+
+{% set hasCredit = false %}
+
+{% css %}
+body {
+    background-image: url("/images/cv/background.jpg");
+}
+table {
+    margin-block-start: 1rem;
+}
+table tr td, 
+p  {
+    font-family: Verdana, arial, sans-serif !important;
+    font-size: 10px !important;
+}
+
+table tr td {
+    vertical-align: top;
+}
+.banner {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 20px;
+    justify-content: space-between;
+}
+.banner > div {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    width: 100%;
+}
+.banner > img {
+    width: auto;
+}
+.welcome p {
+    margin-block-end: 1rem;
+}
+.welcome div img {
+    margin: 0 auto;
+}
+{% endcss %}
+
+{% extends "layouts/base.html" %}
+
+{% block content %}
+<table width="700" border="0" cellspacing="0" cellpadding="0">
+    <tbody>
+        <!-- <tr>
+            <td>
+                <object>
+                    <embed src="/CV/header.swf" width="700" height="157" />
+                </object>
+            </td>
+        </tr> -->
+        <tr> 
+            <td>
+                <img src="/images/cv/cvisions_03.jpg" alt="Cunning Visions Inc." width="588" height="64">
+            </td>
+        </tr>
+        <tr> 
+            <td>
+                <div class="banner">
+                    <img src="/images/cv/cvisions_05.jpg" width="51" height="78">
+                    <div>
+                        <div>
+                            <p class="mb-2"><strong>Cunning Visions Inc.</strong>, P.O.Box 872 , Middlesex, VA 47807, U.S.A.</p>
+                            <img src="/images/cv/cvisions_07.jpg" width="314" height="45">
+                        </div>
+                        <a href="http://www.redcross.org/" target="_blank"><img src="/images/cv/redcross.gif" width="30" height="30" border="0"></a>
+                    </div>
+                    
+                    <img src="/images/cv/USA.gif" width="80" height="50"> 
+                </div>
+            </td>
+        <tr>
+            <td>
+            <table width="700" border="0" cellspacing="0" cellpadding="0" align="left">
+                <tbody>
+                    <td width="128">
+                        <a href="404.html"><img src="/images/cv/cvisions_11.jpg" width="128" height="24" alt="news"></a>
+                        <a href="404.html"><img src="/images/cv/cvisions_14.jpg" width="128" height="24" alt="shop"></a>
+                        <a href="404.html"><img src="/images/cv/cvisions_15.jpg" width="128" height="24" alt="programs"></a>
+                        <a href="404.html"><img src="/images/cv/cvisions_16.jpg" width="128" height="24" alt="history"></a>
+                        <a href="404.html"><img src="/images/cv/cvisions_17.jpg" width="128" height="24" alt="Jim Cunningham"></a>
+
+                        <img src="/images/cv/spacer.gif" width="128" height="24">
+
+                        <a href="404.html"><img src="/images/cv/cvisions_19.jpg" width="128" height="24" alt="Cunning Visions by Jim Cunningham"></a>
+                        <a href="404.html"><img src="/images/cv/cvisions_20.jpg" width="128" height="24" alt="Attitudinal Beliefs by Jim Cunningham"></a>
+                    </td>
+                    <td>
+                        <div class="mx-5 welcome">
+                        <p>Welcome to <strong>Cunning Visions'</strong> home on the World Wide Web!</p>
+
+                        <div class="float-right flex flex-col text-center ml-2">
+                            <img src="/images/cv/dont-sass-me.gif" width="128" height="24" alt="Don't Sass me! by Linda Connie">
+                            <p><strong>Linda Connie</strong>,<br><em>President of Cunning Visions</em></p>
+                        </div>
+                        
+                        <p>Much work and thought has gone into this website, to communicate <strong>Jim Cunningham</strong>'s beliefs and ideas the best we can.</p>
+                        <p>Learn about the late <strong>Jim Cunningham</strong> and his amazing life, read what others had to say about him and his books, take a simple test in the <strong>"Love and Fear"-Quiz.</strong></p>
+                        <p>Any <a href="404.html">feedback</a> is very welcome, because you will help us to make this site the best it can be.</p>
+                        <p>And please always remember, especially in these troubling times, that we are here to help you to leave the path of <strong>FEAR</strong> and realize that through <strong>LOVE</strong> we can achieve everything.</p>
+                        <p>I hope you will share our Vision.</p>
+                        <p>Yours truly<br>Linda Connie</p>
+                        </div>
+                    </td>
+                    <td width="140" bgcolor="#E7E7E7" class="p-3">
+                        <p>join our <b><a href="404.html">newsletter</a></b> today to learn about the latest news from <b>Cunning Visions</b></p>
+                        <p>see <b>Cunning Visions</b> President <b>Linda Connie</b> live in a city near you.</p>
+                        <p>if you would like Linda to speak at a school or convention, <b><a href="404.html">contact us</a></b> today</p>
+                        <p>buy <b>Linda Connie</b>'s latest book<b><br><br></b><b class="text-red-500">"Don't Sass Me!"</b><br><br> as well as her Bestsellers<b> "Ego Reflections"</b> and <b>"Love or Shove ?"</b></p>
+                    </td>
+                </tbody>
+            </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+{% endblock %}

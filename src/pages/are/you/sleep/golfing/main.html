@@ -1,0 +1,121 @@
+---
+permalink: /are/you/sleep/golfing/main.html
+---
+
+{% set isDark = true %}
+
+{% css %}
+[data-url] {
+    position: absolute;
+    background-color: transparent;
+    z-index: 999;
+    width: 44px;
+    height: 44px;
+    right: 36%;
+    top: 12.95%;
+}
+p {
+    max-width: 60vw;
+    font-size: 0.8rem;
+}
+p > a {
+    text-decoration: underline;
+    color: white !important;
+}
+{% endcss %}
+
+{% extends "layouts/base.html" %}
+
+{% block content %}
+<div class="flex items-start justify-end flex-col h-full">
+    <div id="swf" class="ruffle-container">
+        <a data-url hidden href="/news/pop4.html" target="_blank"></a>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Extend the existing configuration
+    Object.assign(window.RufflePlayer.config, {
+        fontSources: ["/fonts/courier.swf"],
+        defaultFonts: {
+            sans: ["Courier New"]
+        }
+    });
+
+    // console.table(window.RufflePlayer.config);
+
+    window.addEventListener("load", (event) => {
+
+        const ruffle = window.RufflePlayer.newest();
+        const player = ruffle.createPlayer();
+        const container = document.getElementById("swf");
+        container.appendChild(player);
+        
+        player.load({
+            url: "/are/you/sleep/golfing/golf.swf", 
+            parameters: "", 
+        }).then(() => {
+            console.info("Ruffle successfully loaded the file");
+        }).catch((e) => {
+            console.error(`Ruffle failed to load the file: ${e}`);
+        });
+
+        player.style.width = "800px"; 
+        player.style.height = "500px";
+
+        // player.addEventListener('loadedmetadata', () => {
+        //     const totalFrames = player.metadata.numFrames;
+        //     const uncompressedLength = player.metadata.uncompressedLength;
+        //     console.log(`Total frames: ${totalFrames}`);
+        //     console.log(`Uncompressed length: ${uncompressedLength}`);
+        // });
+        
+
+        let hasRun = false;
+
+        let observer = new PerformanceObserver((list) => {
+            if (hasRun) return; // Exit early if the condition has already been met
+
+            for (let entry of list.getEntries()) {
+
+                if (entry.name.includes('license.swf')) {
+                    hasRun = true; // Set the flag to true to prevent further checks
+
+                    fetch('/are/you/sleep/golfing/license.swf')
+                        .then(response => {
+                            if (response.ok) {
+                                console.log('License file is available');
+                                //Wait 5 seconds before revealing the link
+                                setTimeout(() => {
+                                    document.querySelector('[data-url]').removeAttribute('hidden');
+                                }, 5000);
+                            }
+                            // Handle successful response
+                        })
+                        .catch(error => {
+                            // Handle error
+                            console.log(error);
+                        });
+
+                    break; // Exit the loop early since the condition has been met
+                }
+            }
+        });
+
+        observer.observe({ entryTypes: ['resource'] });
+
+        let clickCount = 0;
+        document.querySelector('[data-url]').addEventListener('click', function() {
+            clickCount++;
+            if (clickCount > 1) {
+                event.preventDefault();
+                this.setAttribute('href', '/sparkle/motion/index.html');
+            }
+        });
+        
+
+    });
+    </script>
+{% endblock %}
