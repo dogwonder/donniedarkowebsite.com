@@ -1,0 +1,39 @@
+name: Build and Deploy
+
+on:
+  schedule:
+    # Runs at 00:05 on the 1st of every month
+    - cron: '5 0 1 * *'
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    concurrency: ci-${{ github.ref }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies & build project
+        run: |
+          npm ci
+          npm run build
+
+      - name: 🚀 Deploy to GitHub Pages
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          branch: main
+          folder: docs
+          commit_message: "chore: generate monthly build"
