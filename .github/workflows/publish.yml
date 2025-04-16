@@ -2,8 +2,8 @@ name: Build and Deploy
 
 on:
   schedule:
-    # Runs at 00:05 on the 1st of every month
-    - cron: '5 0 1 * *'
+    # Runs at 06:42 on every day
+    - cron: '42 6 * * *'
   workflow_dispatch:
 
 jobs:
