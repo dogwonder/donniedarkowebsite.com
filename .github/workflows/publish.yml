@@ -36,4 +36,4 @@ jobs:
         with:
           branch: main
           folder: docs
-          commit_message: "chore: generate monthly build"
+          commit_message: "chore: generate daily build"
