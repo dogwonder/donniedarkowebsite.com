@@ -5,13 +5,13 @@
   "scripts": {
     "clean": "trash \"./docs/\"",
     "watch:eleventy": "npx eleventy --serve",
-    "watch:tailwind": "npx @tailwindcss/cli -i ./src/css/tailwind.css -o ./docs/css/tailwind.css --watch",
+    "watch:tailwind": "npx tailwindcss -i ./src/css/tailwind.css -o ./docs/css/tailwind.css --watch",
     "watch:scripts": "onchange \"./src/scripts/app.js\" -- npm run scripts:concat",
     "watch": "run-p watch:*",
     "scripts:concat": "concat ./src/scripts/app.js -o ./src/scripts/min/app.min.js",
     "scripts:minify": "uglifyjs ./src/scripts/min/app.min.js --compress --output ./src/scripts/app.min.js",
     "scripts": "run-p scripts:*",
-    "build": "NODE_ENV=production npm run-s clean css scripts && NODE_ENV=production npx eleventy && NODE_ENV=production npx @tailwindcss/cli -i ./src/css/tailwind.css -o ./docs/css/tailwind.css --build"
+    "build": "NODE_ENV=production npm run-s clean css scripts && NODE_ENV=production npx eleventy && NODE_ENV=production npx tailwindcss build ./src/css/tailwind.css -o ./docs/css/tailwind.css --build"
   },
   "dependencies": {
     "@11ty/eleventy": "^3.0.0",
@@ -39,7 +39,7 @@
     "sass": "^1.86.3",
     "simple-keyboard": "^3.8.48",
     "slugify": "^1.6.6",
-    "tailwindcss": "^4.1.4",
+    "tailwindcss": "^3.3.5",
     "trash-cli": "^6.0.0",
     "uglify-js": "^3.19.3"
   }
