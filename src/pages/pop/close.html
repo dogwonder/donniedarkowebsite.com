@@ -11,11 +11,11 @@ permalink: /pop/close.html
 
 {% block scripts %}
 <script>
-    var ref = document.referrer;
-    var target = ref.includes('pop/pop_level3.html')
-      ? '/from/the/sky/index.html'
-      : '/are/you/sleep/golfing/index.html';
-    // immediate, cross-browser redirect:
-    window.location.replace(target);
-  </script>
+var ref = document.referrer;
+var target = ref.includes('pop/pop_level3.html')
+    ? '/from/the/sky/index.html'
+    : '/are/you/sleep/golfing/index.html';
+// immediate, cross-browser redirect:
+window.location.replace(target);
+</script>
 {% endblock %}
