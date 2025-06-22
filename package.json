@@ -11,7 +11,7 @@
     "scripts:concat": "concat ./src/scripts/app.js -o ./src/scripts/min/app.min.js",
     "scripts:minify": "uglifyjs ./src/scripts/min/app.min.js --compress --output ./src/scripts/app.min.js",
     "scripts": "run-p scripts:*",
-    "build": "NODE_ENV=production npm run-s clean css scripts && NODE_ENV=production npx eleventy && NODE_ENV=production npx tailwindcss ./src/css/tailwind.css -o ./docs/css/tailwind.css --build"
+    "build": "NODE_ENV=production npm run-s clean css scripts && NODE_ENV=production npx eleventy && NODE_ENV=production npx tailwindcss -i ./src/css/tailwind.css -o ./docs/css/tailwind.css --build"
   },
   "dependencies": {
     "@11ty/eleventy": "^3.0.0",
