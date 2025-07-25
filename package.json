@@ -11,7 +11,7 @@
     "scripts:concat": "concat ./src/scripts/app.js -o ./src/scripts/min/app.min.js",
     "scripts:minify": "uglifyjs ./src/scripts/min/app.min.js --compress --output ./src/scripts/app.min.js",
     "scripts": "run-p scripts:*",
-    "build": "NODE_ENV=production npm run-s clean css scripts && NODE_ENV=production npx eleventy && NODE_ENV=production npx tailwindcss -i ./src/css/tailwind.css -o ./docs/css/tailwind.css --build"
+    "build": "NODE_ENV=production npm run-s clean css scripts && NODE_ENV=production npx eleventy && NODE_ENV=production npx tailwindcss build ./src/css/tailwind.css -o ./docs/css/tailwind.css"
   },
   "dependencies": {
     "@11ty/eleventy": "^3.0.0",
@@ -19,9 +19,7 @@
     "@11ty/eleventy-plugin-bundle": "^3.0.1",
     "@babel/core": "^7.26.10",
     "@babel/preset-env": "^7.26.9",
-    "@ruffle-rs/ruffle": "^0.1.0-nightly.2025.4.15",
-    "@tailwindcss/cli": "^4.1.4",
-    "@tailwindcss/postcss": "^4.1.4",
+    "@ruffle-rs/ruffle": "^0.2.0-nightly.2025.7.25",
     "alpinejs": "^3.14.9",
     "autoprefixer": "^10.4.21",
     "babelify": "^10.0.0",
