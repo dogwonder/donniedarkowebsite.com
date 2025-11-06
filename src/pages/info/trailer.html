@@ -1,0 +1,29 @@
+---
+permalink: /info/trailer.html
+---
+
+{% set isDark = true %}
+
+{% css %}
+p, a {
+    color: #A9BED4 !important;
+}
+{% endcss %}
+
+{% extends "layouts/base.html" %}
+
+{% block content %}
+
+<div class="h-screen flex items-center justify-center">
+    <div>
+        <p class="mb-4">see the <a href="index.html"><span class="font-bold">playdates</span></a></p>
+         <video width="640" height="292" controls>
+            <source src="{{ "/" | url }}images/Donnie_Darko_small.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+   
+</div>
+
+</div>
+{% endblock %}

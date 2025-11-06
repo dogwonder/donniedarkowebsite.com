@@ -1,0 +1,74 @@
+<html>
+<head>
+<title>the tangent universe</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<frameset rows="600,*" border="0" framespacing="0" frameborder="NO"> 
+  <frame src="main.html" noresize scrolling="NO" frameborder="NO" marginwidth="0" marginheight="0">
+  <frame src="empty.html">
+</frameset>
+<noframes>
+<body bgcolor="#000000" text="#000000" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<!-- START OF WEBTRENDS LIVE TAG -->
+<!-- Copyright 2001 NetIQ Corporation -->
+<!--  For privacy concerns, check our Privacy Policy at http://www.webtrendslive.com/privacy_policy.htm -->
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+// Modification of this code is not allowed and will permanently disable your account!
+// SiteName:  Donnie Darko
+function wtl_Tag5_110164()
+{
+	var SERVER= "";
+	var CONTENTGROUP= "";
+	
+	var wtl_URL= document.URL;
+	var wtl_Title= document.title;
+
+	function D8( d)
+	{
+		var fwd=0, seed= new Date('01/01/2000'), key= "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+		var s= key.charAt( d.getFullYear()-2000)+key.charAt( d.getMonth()+1)+key.charAt( d.getDate());
+		s+= key.charAt( d.getHours())+key.charAt( d.getMinutes())+key.charAt( d.getSeconds());
+		while( seed.getDay()!=fwd) seed= new Date(seed.getTime() + 86400000);
+		var w= Math.floor( (d.getTime()-(seed.getTime()+86400000)) / 604800000 );
+		s+= key.charAt( (w-(w%16))/16 );
+		s+= key.charAt( w%16);
+		return s;
+	}
+	
+	function A( B, C)
+	{
+		W+="&"+B+"="+escape(C);
+	}
+
+	var t = new Date();
+	var W="http"+(document.URL.indexOf('https:')==0?'s':'')+"://statse.webtrendslive.com/S110164/button5.asp?tagver=5&si=110164&fw=0";
+	A( "server", typeof(SERVER)== "string" ? SERVER : "");
+	A( "Group", typeof(CONTENTGROUP)== "string" ? CONTENTGROUP : "");
+	A( "tz", t.getTimezoneOffset());
+	A( "ch", t.getHours());
+	A( "cl", D8(t));
+	A( "ti", typeof(wtl_Title)== "string" ? wtl_Title : document.title);
+	A( "url", typeof(wtl_URL)== "string" ? wtl_URL : document.URL);
+	A( "rf", window.document.referrer);
+	A( "js", "Yes");
+	A( "ul", navigator.appName=="Netscape" ? navigator.language : navigator.userLanguage);
+	if(typeof(screen)=="object")
+	{
+	A( "sr", screen.width+"x"+screen.height);
+	A( "cd", screen.colorDepth);
+	A( "jo", navigator.javaEnabled()?"Yes":"No");
+	}
+	if( W.length>2048 && navigator.userAgent.indexOf('MSIE')>=0)
+		W= W.substring( 0, 2043)+"&tu=1";
+
+	document.write('<IMG ID="WTL_TAG" BORDER="0" WIDTH="1" HEIGHT="1" SRC="'+W+'">');
+}
+
+wtl_Tag5_110164();
+//-->
+</SCRIPT>
+<!-- END OF WEBTRENDS LIVE TAG --> 
+</body>
+</noframes> 
+</html>

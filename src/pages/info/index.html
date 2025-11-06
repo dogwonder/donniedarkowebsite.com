@@ -1,0 +1,24 @@
+---
+permalink: /info/index.html
+---
+
+{% set isDark = true %}
+
+{% css %}
+p, a {
+    color: #A9BED4 !important;
+}
+{% endcss %}
+
+{% extends "layouts/base.html" %}
+
+{% block content %}
+
+<div class="h-screen flex items-center justify-center">
+    <div>
+        <p>view 
+      the <span class="font-bold"><a href="/info/trailer.html">trailer</a></span><br>
+      see the <a href="/info/playdates.html"><span class="font-bold">playdates</span></a></p>
+    </div>
+</div>
+{% endblock %}
