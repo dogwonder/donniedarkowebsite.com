@@ -1,0 +1,37 @@
+{
+  "$comment": "Global runner config. Per-step overrides live in the steps file. The base URL is prepended to any relative `navigate` path in a step.",
+
+  "baseUrl": "http://localhost:8080",
+  "startUrl": "/",
+
+  "viewport": { "width": 1280, "height": 800 },
+  "deviceScaleFactor": 1,
+
+  "ruffle": {
+    "$comment": "How to find Ruffle's canvas. Playwright CSS pierces open shadow roots, so a bare `canvas` selector reaches inside whichever Ruffle wrapper holds it (<ruffle-player> from createPlayer(), or <ruffle-object>/<ruffle-embed> from the <object>/<embed> polyfill — the homepage uses the latter). Leave playerSelector empty to match either. canvasSize is the authored Flash stage size used to sanity-check readiness.",
+    "playerSelector": "",
+    "canvasSelector": "canvas",
+    "canvasSize": { "width": 800, "height": 500 },
+    "readyTimeoutMs": 30000,
+    "readyConsoleText": "Ruffle successfully loaded the file"
+  },
+
+  "settle": {
+    "$comment": "Defaults for animation-settle gating. A step's wait block can override any of these.",
+    "pollIntervalMs": 150,
+    "stableFrames": 4,
+    "diffThreshold": 0.0025,
+    "pixelmatchThreshold": 0.12,
+    "matchThreshold": 0.02,
+    "maxWaitMs": 15000,
+    "initialSettleMs": 1500
+  },
+
+  "output": {
+    "dir": "output",
+    "screenshotsSubdir": "screenshots",
+    "video": true,
+    "html": "walkthrough.html",
+    "title": "Donnie Darko — Illustrated Playthrough"
+  }
+}

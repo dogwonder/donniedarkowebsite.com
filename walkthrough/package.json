@@ -1,0 +1,21 @@
+{
+  "name": "ruffle-walkthrough",
+  "version": "0.1.0",
+  "description": "Drive a Ruffle/Flash game with Playwright and auto-generate an illustrated HTML walkthrough.",
+  "type": "module",
+  "private": true,
+  "bin": {
+    "walkthrough": "./src/cli.js"
+  },
+  "scripts": {
+    "install:browser": "playwright install chromium",
+    "run": "node src/cli.js",
+    "run:headed": "node src/cli.js --headed",
+    "generate": "node src/cli.js --generate-only"
+  },
+  "dependencies": {
+    "pixelmatch": "^6.0.0",
+    "playwright": "^1.50.0",
+    "pngjs": "^7.0.0"
+  }
+}

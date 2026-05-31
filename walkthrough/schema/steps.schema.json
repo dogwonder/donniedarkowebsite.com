@@ -1,0 +1,177 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://donniedarkowebsite.com/walkthrough/steps.schema.json",
+  "title": "Ruffle Walkthrough Steps",
+  "description": "Ordered, calibrated list of playthrough steps. Coordinates are in CANVAS-LOCAL space (origin = top-left of the Ruffle stage, in the authored stage units, e.g. 0..800 x 0..500). The runner converts them to page coordinates using the live canvas bounding box.",
+  "type": "object",
+  "required": ["steps"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "description": "Free-form metadata about this playthrough (title, source guide, author).",
+      "additionalProperties": true
+    },
+    "defaults": {
+      "$ref": "#/definitions/waitOverrides",
+      "description": "Wait defaults applied to every step unless the step overrides them. Merged on top of config.json's settle block."
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/step" }
+    }
+  },
+  "definitions": {
+    "step": {
+      "type": "object",
+      "required": ["id", "caption"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Stable unique id, e.g. \"01\" or \"intro-bullseye\". Used for screenshot filenames."
+        },
+        "section": {
+          "type": "string",
+          "description": "Human-readable grouping label (e.g. \"Intro\", \"Tangent Universe\"). Used as a heading in the generated HTML."
+        },
+        "caption": {
+          "type": "string",
+          "description": "Prose shown under the screenshots in the walkthrough."
+        },
+        "navigate": {
+          "type": "string",
+          "description": "Optional URL (absolute, or relative to config.baseUrl) to load BEFORE this step's action. Use at page/SWF boundaries. The runner re-waits for Ruffle readiness after navigating."
+        },
+        "action": { "$ref": "#/definitions/action" },
+        "wait": { "$ref": "#/definitions/wait" },
+        "captureBefore": {
+          "type": "boolean",
+          "default": true,
+          "description": "Capture a 'before' screenshot prior to the action."
+        },
+        "keepPopup": {
+          "type": "boolean",
+          "default": false,
+          "description": "If this step's action opens a browser tab (a news article / info popup via Flash getURL), the runner screenshots it and by default CLOSES it (closing the tab continues the game). Set true to leave it open (rare)."
+        },
+        "note": {
+          "type": "string",
+          "description": "Calibration note for humans; not rendered. Use for TODOs, passwords, gotchas."
+        }
+      }
+    },
+    "action": {
+      "type": "object",
+      "description": "What input to perform. Omit for a navigate-only or observe-only step.",
+      "required": ["type"],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": ["click", "doubleclick", "key", "type", "drag", "move", "none"],
+          "description": "click/doubleclick/move/drag use canvas-local x,y. key presses a single key. type sends a string (into a focused Flash text field). none = navigate/observe only."
+        },
+        "x": { "type": "number", "description": "Canvas-local X for click/move/drag-start." },
+        "y": { "type": "number", "description": "Canvas-local Y for click/move/drag-start." },
+        "to": {
+          "type": "object",
+          "description": "Drag end point (canvas-local).",
+          "required": ["x", "y"],
+          "properties": { "x": { "type": "number" }, "y": { "type": "number" } }
+        },
+        "button": {
+          "enum": ["left", "right", "middle"],
+          "default": "left",
+          "description": "Mouse button for click/doubleclick. Note: Ruffle intercepts right-click for its context menu unless the SWF requests showmenu:false."
+        },
+        "key": {
+          "type": "string",
+          "description": "Playwright key name for type=key, e.g. \"Enter\", \"y\", \"ArrowLeft\"."
+        },
+        "text": {
+          "type": "string",
+          "description": "String to type for type=type (passwords, answers). Typed char-by-char into the focused field."
+        },
+        "focusX": { "type": "number", "description": "For key/type: optional canvas-local X to click first, to focus the target text field." },
+        "focusY": { "type": "number", "description": "For key/type: optional canvas-local Y to click first, to focus the target text field." },
+        "pressEnter": {
+          "type": "boolean",
+          "default": false,
+          "description": "For type=type: press Enter after the text (submit a password field)."
+        },
+        "dragSteps": {
+          "type": "integer",
+          "default": 12,
+          "description": "Intermediate mouse-move steps for a drag."
+        },
+        "repeat": {
+          "type": "integer",
+          "default": 1,
+          "description": "For click/doubleclick: perform the click this many times (e.g. to advance an animation montage where each click steps once). Extra clicks on a non-interactive end-state are harmless no-ops."
+        },
+        "repeatIntervalMs": {
+          "type": "integer",
+          "default": 2000,
+          "description": "Delay between repeated clicks."
+        },
+        "hoverMs": {
+          "type": "integer",
+          "default": 0,
+          "description": "Move the pointer onto the target and dwell this many ms before clicking, so Flash rollover-activated buttons enter their 'over' state first. Needed for the Level 1 menu circles."
+        },
+        "delayBeforeMs": {
+          "type": "integer",
+          "default": 0,
+          "description": "Pause before performing the action (lets a just-navigated SWF reach an interactive frame)."
+        }
+      }
+    },
+    "wait": {
+      "allOf": [
+        { "$ref": "#/definitions/waitOverrides" },
+        {
+          "type": "object",
+          "properties": {
+            "mode": {
+              "enum": ["diff-stable", "match-reference", "fixed", "none"],
+              "default": "diff-stable",
+              "description": "diff-stable: wait until the canvas stops changing. match-reference: wait until the canvas matches a reference still. fixed: just wait fixedMs. none: don't wait."
+            },
+            "reference": {
+              "type": "string",
+              "description": "For match-reference: path (relative to the steps file) to a reference PNG of the settled end-state."
+            },
+            "region": {
+              "type": "object",
+              "description": "Optional canvas-local sub-region to diff/screenshot instead of the full stage. Useful when only part of the stage animates.",
+              "required": ["x", "y", "width", "height"],
+              "properties": {
+                "x": { "type": "number" },
+                "y": { "type": "number" },
+                "width": { "type": "number" },
+                "height": { "type": "number" }
+              }
+            },
+            "fixedMs": {
+              "type": "integer",
+              "description": "For mode=fixed: how long to wait."
+            }
+          }
+        }
+      ]
+    },
+    "waitOverrides": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "pollIntervalMs": { "type": "integer", "description": "Ms between settle samples." },
+        "stableFrames": { "type": "integer", "description": "Consecutive low-diff samples required to call it settled." },
+        "diffThreshold": { "type": "number", "description": "Max fraction of changed pixels (0..1) for two samples to count as 'same'." },
+        "pixelmatchThreshold": { "type": "number", "description": "Per-pixel color tolerance passed to pixelmatch (0..1). Higher = more forgiving of antialiasing/noise." },
+        "matchThreshold": { "type": "number", "description": "For match-reference: max diff fraction vs the reference to count as a match." },
+        "maxWaitMs": { "type": "integer", "description": "Hard cap; on timeout the runner proceeds anyway and flags the step." },
+        "minWaitMs": { "type": "integer", "description": "Floor: refuse to declare 'settled' before this many ms have elapsed. Prevents latching onto a brief static moment early in a slow animation (e.g. a long auto-forwarding sequence)." }
+      }
+    }
+  }
+}

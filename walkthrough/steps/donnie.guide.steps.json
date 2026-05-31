@@ -1,0 +1,178 @@
+{
+  "meta": {
+    "title": "Donnie Darko — Illustrated Playthrough",
+    "source": "src/aid/aid1.html … aid9.html (43-step guide)",
+    "calibration": "ALL coordinates below are PLACEHOLDERS (canvas-local, 0..800 x 0..500). Replace x/y from the stills/video. Likewise verify every `navigate` URL and tune wait thresholds. Steps marked `action.type:none` just wait for an auto-forwarding animation.",
+    "passwords": { "level1": "breathe", "obituaryGuide": "sparrow", "frank": "smurf", "wallet": "ling ling", "level3": "rose" }
+  },
+
+  "defaults": { "mode": "diff-stable" },
+
+  "steps": [
+    { "id": "01", "section": "Intro", "caption": "Click the bullseye to begin.",
+      "action": { "type": "click", "x": 478, "y": 250 },
+      "wait": { "mode": "diff-stable", "maxWaitMs": 12000 },
+      "note": "CALIBRATED 2026-05-30 against live site. Red bullseye in the Win98 popup. startUrl loads intro.swf (polyfilled <object><embed>)." },
+
+    { "id": "02", "section": "Intro", "caption": "Click the target again to proceed.",
+      "action": { "type": "click", "x": 478, "y": 250 },
+      "wait": { "mode": "diff-stable", "diffThreshold": 0.02, "maxWaitMs": 12000 },
+      "note": "CALIBRATED 2026-05-30. Same reticle position as step 1 (intro is repeated bullseye clicks). diffThreshold loosened — intro background animates (scanlines/glass)." },
+
+    { "id": "03", "section": "Intro", "caption": "(Optional cheat) A pop-up asks for a password — enter “breathe”. Otherwise just proceed.",
+      "action": { "type": "type", "text": "breathe", "focusX": 400, "focusY": 260, "pressEnter": true },
+      "wait": { "mode": "diff-stable", "maxWaitMs": 8000 },
+      "note": "Optional. If you skip the cheat, change action.type to none and click PROCEED instead. TODO field coords." },
+
+    { "id": "04", "section": "Intro", "caption": "The screen forwards automatically.",
+      "action": { "type": "none" },
+      "wait": { "mode": "diff-stable", "maxWaitMs": 20000, "stableFrames": 6 },
+      "note": "Pure animation gate — no input. Lengthen maxWaitMs if the intro is long." },
+
+    { "id": "05", "section": "Intro", "caption": "Detention-centre report on DARKO, DONALD J. asks “C:>MORE?(Y/N)”. Type Y, then Y again at the police report. (N goes nowhere.)",
+      "action": { "type": "key", "key": "y" },
+      "wait": { "mode": "diff-stable", "maxWaitMs": 12000 },
+      "note": "Two Y prompts in sequence. This step presses Y once; you'll likely need a second key step (id 05b) for the police report — split during calibration." },
+
+    { "id": "06", "section": "Level 1 — Menu", "caption": "At the main menu, click the “o” circle for level one (the active one).",
+      "action": { "type": "click", "x": 380, "y": 240 },
+      "note": "TODO coords. Likely same loaded movie as the intro (menu.swf/clouds.swf) — no navigate." },
+
+    { "id": "07", "section": "Level 1 — Menu", "caption": "“things aren't that simple” — click the “o” circle (“she died alone”).",
+      "action": { "type": "click", "x": 380, "y": 240 }, "note": "TODO coords." },
+
+    { "id": "08", "section": "Level 1 — Menu", "caption": "A Middlesex Times Dispatch obituary for Roberta Sparrow pops up.",
+      "action": { "type": "none" },
+      "wait": { "mode": "diff-stable", "maxWaitMs": 10000 },
+      "note": "Observe-only; the popup opened from step 07." },
+
+    { "id": "09", "section": "Level 1 — Menu", "caption": "Close the obituary, then click the second “o” circle (“let no one know I gave you this”) — opens an obituary for Dr. Kenneth Monnitoff. Close it.",
+      "action": { "type": "click", "x": 420, "y": 240 },
+      "note": "TODO coords. Closing the popup is a separate click — split into 09a (close) / 09b (second circle) during calibration." },
+
+    { "id": "10", "section": "Level 1 — Menu", "caption": "A third circle appears (“a guide in a time of great danger”). Click it; the password prompt “her name was that of a bird” = “sparrow”.",
+      "action": { "type": "type", "text": "sparrow", "focusX": 400, "focusY": 260, "pressEnter": true },
+      "note": "TODO: click the circle first (action 10a:click), then type the password. Password = sparrow." },
+
+    { "id": "11", "section": "Level 1 — Menu", "caption": "Karen P. Monnitoff's letter (gift of the book of time travel). Click the screen.",
+      "action": { "type": "click", "x": 400, "y": 250 }, "note": "TODO coords." },
+
+    { "id": "12", "section": "Level 1 — Menu", "caption": "“DO YOU BELIEVE IN TIME TRAVEL?” — click the question to reach the Tangent area.",
+      "action": { "type": "click", "x": 400, "y": 250 }, "note": "TODO coords. In-Flash link drives the navigation." },
+
+    { "id": "13", "section": "Level 1 — Menu", "caption": "Click the boxes — a Frank box appears saying “smurf” (a password). Close it; leads to the Tangent Universe.",
+      "action": { "type": "click", "x": 400, "y": 250 }, "note": "TODO coords. Remember the word: smurf." },
+
+    { "id": "14", "section": "Tangent Universe", "navigate": "/the/tangent/universe/main.html",
+      "caption": "Click the red dot — a popup opens; click inside it; another opens; click inside the second; a third opens between them; click inside it.",
+      "action": { "type": "click", "x": 400, "y": 250 },
+      "wait": { "mode": "diff-stable", "maxWaitMs": 12000 },
+      "note": "VERIFY URL. Sequence of nested popups = several clicks — split into 14a..14d during calibration." },
+
+    { "id": "15", "section": "Tangent Universe", "caption": "The 3 popups close, 4 new boxes open — click boxes until they start to fade away.",
+      "action": { "type": "click", "x": 400, "y": 250 }, "note": "Repeated clicks; calibrate count." },
+
+    { "id": "16", "section": "Tangent Universe", "caption": "“you found me… remember the word?” — password = “smurf”.",
+      "action": { "type": "type", "text": "smurf", "focusX": 400, "focusY": 260, "pressEnter": true }, "note": "TODO field coords." },
+
+    { "id": "17", "section": "Tangent Universe", "caption": "4 smurf boxes appear — click any box; they change to Donnie's letter to Roberta Sparrow. Click the word “breathe”.",
+      "action": { "type": "click", "x": 400, "y": 250 }, "note": "TODO: word coords for “breathe”." },
+
+    { "id": "18", "section": "Tangent Universe", "caption": "The smurf boxes go away and a popup of Roberta appears. Close the window.",
+      "action": { "type": "click", "x": 430, "y": 180 }, "note": "TODO close-button coords." },
+
+    { "id": "19", "section": "Tangent Universe", "caption": "Click the red dot — “The Philosophy of Time Travel”. Clicking each dot reveals its book page on the right; moving the cursor across it makes it more visible.",
+      "action": { "type": "click", "x": 400, "y": 250 },
+      "wait": { "mode": "diff-stable", "maxWaitMs": 12000 },
+      "note": "Exploratory section. Original guide exits by reloading and choosing level 2 (next step navigates there)." },
+
+    { "id": "20", "section": "Level 2 — Sleep Golfing", "navigate": "/",
+      "caption": "Back at the main menu, click the “o” for level two.",
+      "action": { "type": "click", "x": 420, "y": 240 }, "note": "Reload to menu then click level-two circle. TODO coords." },
+
+    { "id": "21", "section": "Level 2 — Sleep Golfing", "caption": "“enter the password from level 1” = “breathe”.",
+      "action": { "type": "type", "text": "breathe", "focusX": 400, "focusY": 260, "pressEnter": true }, "note": "TODO field coords." },
+
+    { "id": "22", "section": "Level 2 — Sleep Golfing", "navigate": "/are/you/sleep/golfing/index.html",
+      "caption": "Click the cross — goes to the “are you sleepgolfing?” section.",
+      "action": { "type": "click", "x": 400, "y": 250 }, "note": "VERIFY URL (index.html vs main.html). TODO coords." },
+
+    { "id": "23", "section": "Level 2 — Sleep Golfing", "caption": "At the golf course, click the red square (“don't be a prisoner of fear”) — pops a Jim Cunningham article. Close it.",
+      "action": { "type": "click", "x": 400, "y": 250 }, "note": "TODO coords; closing the article is a follow-up click." },
+
+    { "id": "24", "section": "Level 2 — Sleep Golfing", "caption": "Another red square (“wake up donnie!”) appears — click it. Stripes + Donnie/2 golfers appear (“place an x on the lifeline”). Click the 2 golfers.",
+      "action": { "type": "click", "x": 300, "y": 260 }, "note": "TODO: red square then golfers coords (two clicks)." },
+
+    { "id": "25", "section": "Level 2 — Sleep Golfing", "caption": "Chalkboard screen — click the TV. Exercise #1 appears; mark the correct spot on the lifeline (a wrong mark won't advance). Repeat for exercise #2.",
+      "action": { "type": "click", "x": 400, "y": 250 },
+      "wait": { "mode": "diff-stable", "maxWaitMs": 15000 },
+      "note": "Puzzle with required correct answers — multiple precise clicks. Calibrate the correct lifeline marks from the video." },
+
+    { "id": "26", "section": "Level 2 — Confrontation", "caption": "Donnie's confrontation with his teacher — click TV-Frank; an ASCII bunny overlaps Donnie. Click TV-Frank again.",
+      "action": { "type": "click", "x": 400, "y": 250 }, "note": "Two clicks on TV-Frank. TODO coords." },
+
+    { "id": "27", "section": "Level 2 — Confrontation", "caption": "Frank popups fill the screen spelling “WAKE UP DONNIE”. Click inside one of the windows; the screen forwards.",
+      "action": { "type": "click", "x": 400, "y": 250 }, "note": "TODO coords." },
+
+    { "id": "28", "section": "Level 2 — Sleep Golfing", "caption": "Back at the golf course: “do you think he was sleepgolfing?” — click Donnie.",
+      "action": { "type": "click", "x": 400, "y": 250 }, "note": "TODO coords." },
+
+    { "id": "29", "section": "Level 2 — Sleep Golfing", "caption": "Donnie wakes up; click the white arrow. Popup asks “who found the wallet?” — enter “ling ling” (or skip; it advances either way).",
+      "action": { "type": "type", "text": "ling ling", "focusX": 400, "focusY": 260, "pressEnter": true },
+      "note": "TODO: click white arrow first (29a), then type. Password optional." },
+
+    { "id": "30", "section": "Level 2 — Sidewalk", "caption": "Sidewalk screen (“i've been waiting for you”). Click the “o” dot — a popup of Donnie looking at Jim's wallet appears. Click inside it.",
+      "action": { "type": "click", "x": 400, "y": 250 }, "note": "TODO coords; two clicks (dot, then inside popup)." },
+
+    { "id": "31", "section": "Level 2 — Sidewalk", "caption": "Red lines remain — click the blinking red dot at the tip of the longest line. Pops a Cunning Visions article.",
+      "action": { "type": "click", "x": 400, "y": 250 }, "note": "TODO blinking-dot coords." },
+
+    { "id": "32", "section": "Level 2 — Sparkle Motion", "navigate": "/sparkle/motion/index.html",
+      "caption": "Burn it down / Sparkle Motion. Click the dot at top — a picture of Donnie walking home appears. Right-click the screen and play/forward the animation of Donnie finding the wallet.",
+      "action": { "type": "click", "x": 400, "y": 120 },
+      "note": "VERIFY URL. The play step needs a RIGHT-click (Ruffle context menu / play) — add a 32b step with action.button:right. TODO coords." },
+
+    { "id": "33", "section": "Level 2 — Sparkle Motion", "caption": "Auto-popup of Jim's licence with rollovers (45a Rose Street, Middlesex, VA 23245). Click inside the window.",
+      "action": { "type": "click", "x": 400, "y": 250 }, "note": "Note the address — Rose Street → level 3 password is “rose”." },
+
+    { "id": "34", "section": "Level 2 — Sparkle Motion", "caption": "Sparkle Motion dancers / fire popups / “burn it down now you know where he lives”. Click inside the popups.",
+      "action": { "type": "click", "x": 400, "y": 250 }, "note": "Multiple popup clicks." },
+
+    { "id": "35", "section": "Level 2 — Sparkle Motion", "caption": "Popup of Donnie at the fire. Click inside it.",
+      "action": { "type": "click", "x": 400, "y": 250 }, "note": "TODO coords." },
+
+    { "id": "36", "section": "Level 2 — Sparkle Motion", "caption": "“burn it down donnie.” Automatically forwards back to the main menu.",
+      "action": { "type": "none" },
+      "wait": { "mode": "diff-stable", "maxWaitMs": 20000, "stableFrames": 6 },
+      "note": "Animation gate, no input." },
+
+    { "id": "37", "section": "Level 3 — From the Sky", "navigate": "/",
+      "caption": "At the main menu, click the “o” for level three.",
+      "action": { "type": "click", "x": 440, "y": 240 }, "note": "TODO coords." },
+
+    { "id": "38", "section": "Level 3 — From the Sky", "caption": "Popup: “The password for Level three is the name of the street he lives in… like the flower.” = “rose”.",
+      "action": { "type": "type", "text": "rose", "focusX": 400, "focusY": 260, "pressEnter": true }, "note": "TODO field coords." },
+
+    { "id": "39", "section": "Level 3 — From the Sky", "navigate": "/from/the/sky/index.html",
+      "caption": "“They made me do it!” / From the Sky. Click the location (Middlesex).",
+      "action": { "type": "click", "x": 400, "y": 250 }, "note": "VERIFY URL. TODO location coords." },
+
+    { "id": "40", "section": "Level 3 — From the Sky", "caption": "Popup of a chandelier — click inside it. A JS spoiler warning / article on the missing plane's engine pops up. Close the article.",
+      "action": { "type": "click", "x": 400, "y": 250 }, "note": "TODO coords; closing the article is a follow-up click." },
+
+    { "id": "41", "section": "Level 3 — From the Sky", "caption": "Click the telephone symbol inside the chandelier popup. FAA info appears — click “launch the document” at the bottom.",
+      "action": { "type": "click", "x": 400, "y": 250 },
+      "wait": { "mode": "diff-stable", "maxWaitMs": 12000 },
+      "note": "Two clicks (phone icon, then launch). If it doesn't show, a reload is sometimes needed." },
+
+    { "id": "42", "section": "Level 3 — From the Sky", "caption": "Engine phone-conversation transcript plays; the screen then changes automatically.",
+      "action": { "type": "none" },
+      "wait": { "mode": "diff-stable", "maxWaitMs": 30000, "stableFrames": 6 },
+      "note": "Long audio/animation gate. phone.swf is MP3 dialogue — may run a while." },
+
+    { "id": "43", "section": "Level 3 — The End", "caption": "“time is up, donnie. /// fin. kaput. done. the end.”",
+      "action": { "type": "none" },
+      "wait": { "mode": "diff-stable", "maxWaitMs": 20000, "stableFrames": 6 },
+      "note": "Final settled end-state." }
+  ]
+}

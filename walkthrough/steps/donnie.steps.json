@@ -1,0 +1,105 @@
+{
+  "meta": {
+    "title": "Donnie Darko — Illustrated Playthrough",
+    "source": "Calibrated against the live site (http://localhost:8080). Narrative cross-referenced with src/aid/aid1.html … aid9.html. See steps/donnie.guide.steps.json for the original 43-step guide.",
+    "structure": "actual click-by-click flow",
+    "notes": "Canvas-local coords (authored stage 0..800 x 0..500; rendered at 768x480, mapper scales). The intro montage and several screens animate perpetually (scanlines / a live-ticking counter), so those steps use mode:fixed — diff-stable can't settle on a never-static canvas. Static end-states use diff-stable.",
+    "passwords": { "level1": "breathe", "obituaryGuide": "sparrow", "frank": "smurf", "wallet": "ling ling", "level3": "rose" }
+  },
+
+  "defaults": { "mode": "diff-stable", "diffThreshold": 0.012, "stableFrames": 4, "maxWaitMs": 14000 },
+
+  "steps": [
+    { "id": "intro-enter", "section": "Intro",
+      "caption": "The site opens on a Win98 pop-up cycling through distorted portraits, with a red bullseye target. Click the bullseye repeatedly to advance the intro montage.",
+      "action": { "type": "click", "x": 478, "y": 250, "repeat": 4, "repeatIntervalMs": 2300 },
+      "wait": { "mode": "fixed", "fixedMs": 2500 },
+      "note": "CALIBRATED 2026-05-30. Bullseye is a fixed authored target at (478,250); each click advances one frame. ~3 clicks reach the proceed screen; the 4th is a harmless no-op. Montage scanlines animate constantly → mode:fixed." },
+
+    { "id": "intro-proceed", "section": "Intro",
+      "caption": "The montage settles on “The Tangent Universe collapsed 8981 days … ago.” Click the red “.proceed.” link.",
+      "action": { "type": "click", "x": 658, "y": 280 },
+      "wait": { "mode": "fixed", "fixedMs": 2500 },
+      "note": "CALIBRATED. The seconds counter ticks live, so this screen never diff-settles → mode:fixed. .proceed. link at ~(658,280)." },
+
+    { "id": "intro-otherwise", "section": "Intro",
+      "caption": "A pop-up offers “if you have been here before, enter the Level 1 password” with a text field, or “otherwise proceed here”. As a first-time visitor, click “otherwise proceed here”. The screen then forwards automatically, assembling an animated text collage that resolves into a scanned detention-centre report on DARKO, DONALD J.",
+      "action": { "type": "click", "x": 310, "y": 240 },
+      "wait": { "mode": "diff-stable", "diffThreshold": 0.01, "stableFrames": 5, "minWaitMs": 42000, "maxWaitMs": 60000 },
+      "note": "CALIBRATED. The Level-1 password (breathe) cheat would go in the field at ~(310,205). The collage auto-forwards (~40s) to the static document (matches aid no2a.jpg). minWaitMs floors the wait so diff-stable can't latch onto the brief static gap before the collage builds." },
+
+    { "id": "intro-document", "section": "Intro",
+      "caption": "Click the detention report to open the terminal affidavit: “AFFIDAVIT FOR WARRANT OF ARREST AND DETENTION … OFFENSE OF: ATTEMPTED ESCAPE - CLASS A”, ending with the prompt “C:>MORE ? (Y/N)”.",
+      "action": { "type": "click", "x": 400, "y": 250 },
+      "wait": { "mode": "fixed", "fixedMs": 3000 },
+      "note": "CALIBRATED. Green terminal text (blinking cursor) → mode:fixed." },
+
+    { "id": "intro-more-1", "section": "Intro",
+      "caption": "Type Y at the “C:>MORE ? (Y/N)” prompt to read the arresting officer's statement (Donnie found asleep in a field, sleepwalking), which ends with another “C:>MORE ? (Y/N)”.",
+      "action": { "type": "key", "key": "y" },
+      "wait": { "mode": "fixed", "fixedMs": 3500 },
+      "note": "CALIBRATED. Keyboard reaches Ruffle via focused player. N does nothing in the original; Y advances." },
+
+    { "id": "intro-more-2", "section": "Intro",
+      "caption": "Type Y again. The report dissolves into the Level 1 main menu — a cloudscape with a lone figure and several red crosshair hotspots labelled “something”, “close”, “I”, “want”…",
+      "action": { "type": "key", "key": "y" },
+      "wait": { "mode": "diff-stable", "diffThreshold": 0.02, "maxWaitMs": 16000 },
+      "note": "CALIBRATED 2026-05-30. Reaches the menu (matches aid no2c.jpg). Clouds drift subtly → looser threshold." },
+
+    { "id": "menu-level1", "section": "Level 1 — Menu",
+      "caption": "On the cloudscape menu, the drifting words are decoration; the three fixed red crosshairs are the level selectors. Hover the lower-centre crosshair (Level 1) and click — the screen tears apart into “THINGS AREN'T THAT SIMPLE!”, beginning Level 1.",
+      "action": { "type": "click", "x": 547, "y": 416, "hoverMs": 400 },
+      "wait": { "mode": "diff-stable", "diffThreshold": 0.02, "maxWaitMs": 16000 },
+      "note": "CALIBRATED 2026-05-30, reproducible 2/2 (23% diff). clouds.swf button 0092 'level 1 is active' fires an internal go→_level2 (loads book.swf), so it works; levels 2 & 3 are gated until the prior level is completed. Crosshair must be clicked precisely (red-detected centre); hover initiates the rollover." },
+
+    { "id": "l1-obituary1", "section": "Level 1 — Obituaries",
+      "caption": "A thin red line leads up to the top-left. Click the first circle there — a Middlesex Times Dispatch obituary for Roberta Sparrow opens in a new browser tab. Note the surname (“a bird”), then close the tab to continue.",
+      "action": { "type": "click", "x": 45, "y": 45, "hoverMs": 250 },
+      "wait": { "mode": "fixed", "fixedMs": 1500 },
+      "note": "CALIBRATED 2026-05-30. Opens news/pop1.html in a NEW TAB; the runner screenshots then closes it (closing continues the game). Roberta Sparrow obituary → password 'her name was that of a bird' = sparrow." },
+
+    { "id": "l1-obituary2", "section": "Level 1 — Obituaries",
+      "caption": "A second circle further down the red line opens a second obituary (Dr Kenneth Monnitoff) in a new tab. Read it and close it; a third circle then appears.",
+      "action": { "type": "click", "x": 270, "y": 135, "hoverMs": 250 },
+      "wait": { "mode": "fixed", "fixedMs": 1500 },
+      "note": "CALIBRATED 2026-05-30. Opens news/pop2.html in a NEW TAB. After both obituaries a 3rd red crosshair appears at (490,151)." },
+
+    { "id": "l1-guide-circle", "section": "Level 1 — The Guide",
+      "caption": "After both obituaries, a third red circle appears at upper-centre over the skeletal figure (“a guide in a time of great danger”). Click it: a banner unfurls reading “her name was that of a bird *******” — a seven-letter password prompt. The obituary named her Roberta Sparrow, so the answer is the bird: sparrow.",
+      "action": { "type": "click", "x": 490, "y": 151, "hoverMs": 300 },
+      "wait": { "mode": "fixed", "fixedMs": 4000 },
+      "note": "CALIBRATED 2026-05-31. Red-detected 3rd crosshair at canvas (490,151). Reveals the 'her name was that of a bird *******' hint (book.swf, readonly TextField9). The seven asterisks are a STATIC hint, not a live field — they never change. Banner text animates in → mode:fixed." },
+
+    { "id": "l1-sparrow", "section": "Level 1 — The Guide",
+      "caption": "In the small password field below the hint, type the answer — sparrow — and press Enter. The banner reshapes into a letter: Karen P. Monnitoff (Library of Congress) forwarding “The Philosophy of Time Travel” by Roberta Sparrow to Elizabeth, with instructions to hide it where it can never be found.",
+      "action": { "type": "type", "text": "sparrow", "pressEnter": true, "focusX": 235, "focusY": 221 },
+      "wait": { "mode": "fixed", "fixedMs": 6000 },
+      "note": "CALIBRATED 2026-05-31. The pass field (book.swf EditText id 0120, password) sits inside the 'box' clip placed at root (211.95,209), field-local (1,4.25) → stage ~(213,213). Click-to-focus at (235,221) — earlier clicks at y≈155-185 hit the readonly hint ABOVE the field and never focused it. A per-frame loop checks `this.pass eq \"sparrow\"` and, on match, gotoAndStop(3)+_root.spear.gotoAndPlay → Monnitoff letter (matches aid l213.jpg). Typing does NOT clear the asterisk hint (separate field); Enter commits. Reaching this in a fresh full run leaves the field empty, so no pre-clear needed." },
+
+    { "id": "l1-letter-continue", "section": "Level 1 — The Guide",
+      "caption": "Click anywhere on the letter to continue. The page clears to white and a single red line of text fades in at lower-right: “DO YOU BELIEVE IN TIME TRAVEL ?”.",
+      "action": { "type": "click", "x": 400, "y": 250 },
+      "wait": { "mode": "fixed", "fixedMs": 3500 },
+      "note": "CALIBRATED 2026-05-31. Click on the letter body advances book.swf to the question screen (matches aid l214.jpg). The red question sits at lower-right, roughly canvas (590-775, 310)." },
+
+    { "id": "l1-timetravel", "section": "Level 1 — The Guide",
+      "caption": "Click the red “DO YOU BELIEVE IN TIME TRAVEL ?” question. The site navigates into the Tangent area: a dark room where the shadowy figure of Frank looms behind three Win98 pop-up windows spelling out a phrase — “remember”, “one”, “word”.",
+      "action": { "type": "click", "x": 646, "y": 311, "hoverMs": 250, "repeat": 5, "repeatIntervalMs": 2000 },
+      "awaitNavMs": 8000,
+      "wait": { "mode": "fixed", "fixedMs": 5000 },
+      "note": "CALIBRATED 2026-05-31. Red-detected question text at canvas (646,311). This click NAVIGATES to a NEW page/SWF (the tangent area; a fresh Ruffle instance loads) — it is NOT a same-page transition. The three boxes read 'remember / one / word' (matches aid l215.jpg / step 13). NAVIGATION BOUNDARY: the next steps run on the new page in the live flow; do NOT use a `navigate` reload here — the tangent SWF is inert when loaded standalone. The hardware-accel overlay re-appears after the nav and must be re-suppressed before the next click." },
+
+    { "id": "tangent-remember-one-word", "section": "Level 1 — Tangent",
+      "caption": "Three Win98 pop-up windows are open, spelling the phrase “remember / one / word”. Close the first window (“remember”) using the X in its title bar. All three windows close together and a new pop-up appears, lower-right: the shadowy figure of Frank with a single word — “smurf”. Remember it.",
+      "action": { "type": "click", "x": 212, "y": 262, "hoverMs": 250 },
+      "wait": { "mode": "fixed", "fixedMs": 3500 },
+      "note": "CALIBRATED 2026-05-31 (probe-l1-xhair3 --tangent + owner's screen recording). smurf.swf has ONE Stop at the 3-window frame (39): clicking ANY window's X fires button 0013 (this._visible=0; this.gotoAndPlay(12); _root.play()), and frame 40 REMOVEs all three windows at once → builds the Frank window (JPEG id 0023) + 'smurf' text (id 0025) → Stop at frame 48. So a single close reveals Frank; there is no intermediate 'only window 3 left' state in this rebuild. X of the 'remember' window = title-bar close button at canvas (212,262) (rightmost of the _ □ X cluster; the window spans ~x30-225). Frank window animates in → mode:fixed." },
+
+    { "id": "tangent-frank-smurf", "section": "Level 1 — Tangent",
+      "caption": "Close the Frank pop-up (“smurf”) using the X in its title bar. The screen tears into a red fracture and the site navigates into the Tangent Universe — a destabilised mirror world (philosophy.swf), with the figure suspended at the top of the frame.",
+      "action": { "type": "click", "x": 775, "y": 262, "hoverMs": 250 },
+      "awaitNavMs": 6000,
+      "wait": { "mode": "fixed", "fixedMs": 6000 },
+      "note": "CALIBRATED 2026-05-31. The Frank window sits lower-right (~x562-787); its CLOSE X is at canvas (775,262) — ~13px left of the right border, the rightmost of the _ □ X cluster. NB earlier clicks at x≈745-758 hit the minimize/maximize buttons (no-op) — the X is further right at ~775. Closing it fires _root.play() → frames 49-54 → GetUrl 'universe/is_unstable.html'. NAVIGATION BOUNDARY: this loads a fresh SWF (philosophy.swf); the runner waits for the new Ruffle + re-suppresses the hw-accel overlay automatically. Per owner: on is_unstable.html the next Win98 window relocates to the TOP-RIGHT at the same 800×500 canvas. Red transition animates → mode:fixed (6s)." }
+  ]
+}
