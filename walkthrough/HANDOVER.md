@@ -281,6 +281,148 @@ revealed ~12s after the book). Level 2's own puzzles (lifeline `aid/lev2g.jpg`, 
 Level 3 (`rose`, via the book chapters) are not yet calibrated. A full
 `node src/cli.js` run now drives homepage → … → the tangent "password to level 2" window.
 
+---
+
+## LEVEL 2 — first section ("sleep golfing" / the Lifeline Exercise) — MAPPED 2026-06-01
+
+Owner-provided briefing + video (`~/Desktop/CleanShot 2026-06-01 at 11.40.20.mp4`,
+87s, frames in `/tmp/ddL2`). NOT yet calibrated into steps — this is the recon map.
+
+**ENTRY FLOW (owner's notes, confirmed against the HTML):**
+1. `/menu.html` → the **Level 2** crosshair is now active (clouds.swf).
+2. A **Win98 modal** opens asking for a password → **`breathe`** (the L1 reward word).
+3. Submitting opens a NEW TAB: `/are/you/sleep/golfing/index.html` — a **large red cross**
+   centred on screen. It's a plain HTML link: `<a href="main.html" target="_blank"
+   class="red-cross">`. Click it.
+4. NEW TAB: `/are/you/sleep/golfing/main.html` — **this is the real Level 2.** The golf.swf
+   player is positioned **bottom-left** of the viewport (`flex items-start justify-end`).
+
+**`main.html` mechanics (read from the page source):**
+- Loads `golf.swf` (800×500, renders 768×480) into `#swf` via JS, autoplay on. **DRIVABLE
+  STANDALONE** — `node src/calibrate.js --url /are/you/sleep/golfing/main.html --wait 6000`
+  works with no warm-start (capture in `output/calibrate/are_you_sleep_golfing_main_html-*`).
+- An overlay `<a data-url href="/news/pop4.html" target="_blank">` sits at **right:36%,
+  top:12.95%, 44×44, z-index 999** — hidden until **5 s after `license.swf` loads**, then
+  revealed. It is the **Level-2 EXIT gateway**: **1st click** opens the pop4.html news popup
+  (new tab); **2nd click** rewrites its href to **`/sparkle/motion/index.html`** and navigates
+  there = the next section. (Same overlay-eats-canvas-clicks risk as the tangent — may need
+  `[data-popup]/[data-url]{pointer-events:none}` neutralize for canvas clicks underneath it.)
+
+**`golf.swf` internals (swfdump -a):** v5, 122 frames @25fps, 800×500.
+- The puzzle is **Jim Cunningham's Lifeline Exercise** (`aid/lev2g.jpg` = "Welcome to the
+  Jim Cunningham's Lifeline Exercise", a **FEAR |⊢———————⊣| LOVE** chalkboard spectrum with
+  tick marks + a TV showing "Lifeline Exercise #N"). Instructions: *"You will be presented
+  with several situations … asked to make an X on the lifeline as to the appropriate position
+  between Love and Fear. Click on 'X' arrow to continue."*
+- Clips: `bar` (id 0007, the spectrum), `controller` (id 0010 — the draggable X), `dates`
+  (id 0016 — the ticking date counter, bottom-left). Letter-placement uses spring physics
+  (`acc/vx/vy/tx/ty`, `attachMovie`+`substring`) — the sentence flies into place letter by
+  letter as the X is positioned. The `id`/`_x` comparison branches pick which sentence shows.
+- Sentence pool (from button constantpools): "place an x on the lifeline", "do you think he
+  was sleepgolfing?", "i'm not afraid anymore", "don't be a prisoner of fear", "wake up,
+  donnie!". Advance buttons: **0091** (`getURL ../../../../news/pop3.html` + part2), **0093**
+  (donnie), **0122** (`go _level2` → `getURL draw.swf` into `_level2`), **0124** (`go _level3`
+  → `getURL birds.swf` into `_level3`). So in-SWF there are `draw.swf` (level-2 continue) and
+  `birds.swf` (level-3) branches, plus `street.swf`/`love.swf`/`fear.swf` sub-movies.
+
+**VIDEO walkthrough beats (the intended first-section solution):**
+1. ~0–10s: golf course at night, golf cart bottom-left, **date counter ticking** (10-02-1988…).
+2. ~12–21s: blackboard slides up → **Lifeline instructions** (FEAR⟷LOVE bar + TV).
+3. ~25–40s: **"Lifeline Exercise #2"** — situation text ("Lisa Ling finds a wallet…"); the
+   **X is placed on the FEAR side** of the bar (video shows the cursor placing it left of centre).
+   Multiple exercises; the video demonstrates each intended X position.
+4. ~50–60s: payoff — **Donnie sleepgolfing** (figures in blue lying on the green) while the
+   sentence ("do you think he was sleepgolfing?" / "wake up donnie") assembles in flying letters.
+5. ~60–80s: **WAR** (big red stacked letters) + Win98 windows (wallet `sleepgolfing-wallet.jpg`,
+   a fire/explosion image), a **news popup** (woman's photo → `pop3.html`/`pop4.html`).
+6. ~84s: a popup/onward page (blue + orange logo) — the exit (pop4.html, then sparkle/motion).
+
+**PROBE FINDINGS (2026-06-01, `src/probe-golf.js`, headless on main.html — drivable standalone):**
+- golf.swf does NOT auto-advance — it sits on the golf-course frame waiting for clicks.
+  It PRELOADS draw.swf + birds.swf at startup.
+- **ARCHITECTURE (multi-SWF / multi-`_level`):** `golf.swf` (main.html) = the atmospheric
+  INTRO (golf course at night, ticking `dates` counter, scattered-letter sentences, red
+  "Wake Up Donnie!" text, news popups). It loads **`draw.swf` into `_level2`** (button 0122
+  "go _level2") = the REAL Lifeline puzzle (FEAR↔LOVE blackboard). `draw.swf` frame labels:
+  `go`/`in`/`out`/`exercise1`/`fear`/`love`/`exercise2`… ; loads `love.swf`→holder1 +
+  `fear.swf`→holder2; question text from `texts.html` (`revealtext`); finishes
+  `getURL street.swf`→`_level4`. `birds.swf` = ambient sound (`_level3`), not a puzzle.
+  So the lev2g.jpg / video blackboard = **draw.swf**, NOT golf.swf.
+- **CALIBRATED in golf.swf (intro):** a solid red **square button** is the advance/news
+  control. Round 1 = **(347,364)** → opens `news/pop3.html` popup + advances to frame "part2".
+  Round 2 = **(457,316)** → scene becomes red **"Wake Up Donnie!"** text over figures on the
+  course. After that the simple red-square advance STOPS (no small red square appears) — the
+  next interaction is the gated lifeline X placement (likely the golf→draw "go _level2" hop).
+  Detector tip: red sentence text = HUGE clusters (250–340px); the advance square is ~4px —
+  filter `--maxpx 40`.
+- **EXIT overlay stayed hidden** the whole intro: `[data-url]` href=/news/pop4.html,
+  `hidden=true` (license.swf hadn't loaded — it loads deeper in, probably during draw.swf).
+- Video answer keys readable so far: **Exercise #2** ("Lisa Ling finds a wallet…") → X placed
+  at the **far-left / FEAR** end of the bar (frame `/tmp/ddL2/ex_30.png`).
+
+**✅ FULL CHAIN CALIBRATED to the post-exercise monologue (2026-06-01 PM, `src/probe-golf.js`
+CLICKS array, all canvas coords, headless on main.html). Validated end-to-end in one run:**
+1. golf.swf intro — click red square **(347,364)** [button 0091] → opens `news/pop3.html`
+   popup + advances to frame "part2".
+2. click red square **(457,316)** [button 0093] → frame "donnie" = red "Wake Up Donnie!" scene.
+3. click **(277,407)** [button 0122 "go _level2"] → loads **draw.swf** into `_level2` (triggers
+   love.swf/fear.swf/street.swf loads) → the **FEAR↔LOVE blackboard** instruction screen renders.
+4. click the **TV** at **(623,418)** [button 0084 `_root.gotoAndPlay("exercise1")`] → **Exercise #1**
+   ("Juanita … cheat on the math test").
+5. **Exercise #1 = FEAR** → click the **LEFT half of the bar at (260,323)** [button 0101 →
+   `_root.lifeline="fear"`] then **move the mouse off the bar (e.g. (700,120))** → `evaluate()`
+   on rollOut → correct → **Exercise #2** ("Ling Ling … keeps the wallet money").
+6. **Exercise #2 = FEAR** → click **(260,323)** + move away → correct → **Donnie's rebuttal
+   monologue** ("well, life isn't that simple … you can't just lump everything into these 2
+   categories … the whole spectrum of human emotion").
+- **MECHANIC (decoded from draw.swf buttons 0101/0102):** the bar is BINARY, not positional —
+  left half = button 0101 = FEAR, right half = button 0102 = LOVE. RollOver shows a "chalk" X
+  that drag-follows the mouse (Mouse.hide + StartDrag); PRESS sets `_root.lifeline="fear"/"love"`;
+  rollOut fires `lifeline_control.evaluate()` → `correct`/`wrong` frames (Frank "bunny" frames
+  exist for feedback). So ANY click on the correct half passes — exact x doesn't matter, just
+  the half. Both exercises = FEAR (owner-confirmed; video `/tmp/ddL2` ex_25=#1, ex_30=#2).
+
+**OWNER'S FLOW for the monologue → exit tail (2026-06-01, told live):**
+7. Donnie's monologue → **click the TV (623,418)** → "text filters in" → **click the TV again
+   (623,418)** → advances to the **"WAKE UP DONNIE" letter-windows** screen (a 4×3 grid of Win98
+   windows each holding a big red letter spelling W A K E / U P D O / N N I E).
+8. **Click the "E" of DONNIE** (the bottom-right window, canvas ≈ **(590,210)**) → "advances the scene".
+
+**⚠️ BLOCKER (headless probe, both E's tried): the E-click does NOT register.** The TV-twice
+advance works and reaches the WAKE UP DONNIE windows (validated, `output/golf/11-mono-tv2-*`).
+But clicking DONNIE's E (590,210) AND WAKE's E (590,65) left the windows up; they only cleared
+when a later click landed low at (623,418). Likely causes to debug next:
+  - **`_level` click-routing:** the WAKE UP DONNIE windows are probably golf.swf (`_level0`)
+    content showing BEHIND draw.swf (`_level2`); the on-top `_level2` may be intercepting the
+    canvas click before it reaches the letter window (same class of bug as the tangent gran-donnie
+    overlay). Try: detect which level owns the letter buttons; possibly the E is a golf.swf button
+    whose hit-area is reachable only once `_level2`/draw.swf clears, or needs the click routed past it.
+  - **Window-assembly timing:** some letter windows still showed TV-static (not fully formed) when
+    clicked — the E button may not be live until all windows finish assembling. Add a longer settle
+    / wait-until-stable before the E click.
+  - **Precise target:** the E may need a click on the red letter glyph (a small button) rather than
+    the window centre; re-read the exact E hit-rect from the grid capture.
+  Recommend a HEADED run for this last-mile (per this doc's standing recommendation) to watch the
+  E click land live.
+
+**THEN (after the E advances):** street.swf (`_level4`, preloaded) + the sleepgolfing payoff on the
+green → **`license.swf` loads → 5s later the `[data-url]` overlay reveals** (stayed `hidden=true`
+through every run so far). EXIT: 1st click on `[data-url]` overlay → `news/pop4.html` popup; **2nd
+click → `/sparkle/motion/index.html`** (next section). Then encode all of L2 into
+`steps/donnie.steps.json` (reuse `detectClick`/`type`/overlay-neutralize; the bar half-click is a
+plain canvas click + a follow-up move-off; the TV-twice + E-click are plain canvas clicks).
+
+The full working CLICKS chain (steps 1–6 + TV-twice) lives in `src/probe-golf.js`.
+
+**OPEN QUESTIONS for the owner before calibrating the X placements:**
+1. **The lifeline answer.** Is each X position gated to a *correct* spot (wrong = no advance),
+   or does any placement advance? The video shows specific positions — need to confirm those
+   are required vs. illustrative. (Open-question #2 from the top of this doc, now actionable.)
+2. **Exit:** confirm the intended path out of Level 2 is the `data-url` overlay → 2nd click →
+   `/sparkle/motion/index.html` (Sparkle Motion = the next/Level-3 area), not the in-SWF
+   `draw.swf`/`birds.swf` `_level2`/`_level3` branches.
+3. Headed vs. headless for the X-coordinate last mile (per the doc's standing recommendation).
+
 **Probe `src/probe-grid-book.js`** now drives the whole chain with flags:
 `--neutralize --br 346,378 --extra 1 --smurf --field 377,294 --letter --smurfwin X,Y
 --letterclicks N`. Writes `output/gridbook/{NN-*,obs-*,smurf-*,letter-*}.png`.

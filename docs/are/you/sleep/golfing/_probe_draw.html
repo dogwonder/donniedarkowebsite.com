@@ -9,11 +9,22 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-frank.png">
     <meta property="og:image" content="/images/og-image.jpg">
     
-    <style>body {
-    overflow-y: hidden;
+    <style>[data-url] {
+    position: absolute;
+    background-color: transparent;
+    z-index: 999;
+    width: 44px;
+    height: 44px;
+    right: 36%;
+    top: 12.95%;
 }
-.iframe-modal  {
-  max-width: 730px !important;
+p {
+    max-width: 60vw;
+    font-size: 0.8rem;
+}
+p > a {
+    text-decoration: underline;
+    color: white !important;
 }
 @font-face {
       font-family: "Pixelated MS Sans Serif";
@@ -48,53 +59,30 @@
     <script defer="" data-domain="donniedarkowebsite.com" src="https://plausible.io/js/script.js"></script>
 
   </head>
-  <body class="">
+  <body class="dark">
 
     <main>
       <div class="container full">
         
-
-<div class="flex items-center justify-center h-screen">
-  <p class="text-center close"><a href="javascript:void(0)" onclick="window.close()">close</a> the window to continue</p>
+<div class="flex items-start justify-end flex-col h-full">
+    <div id="swf" class="ruffle-container">
+        <a data-url="" hidden="" href="/news/pop4.html" target="_blank"></a>
+    </div>
 </div>
 
-<div x-data="{ open: true }" class="flex justify-center">
-
-  <!-- Modal -->
-  <div x-dialog="" x-model="open" style="display: none" class="fixed inset-0 overflow-y-auto z-10">
-      <!-- Overlay -->
-      <div x-dialog:overlay="" x-transition.opacity="" class="fixed inset-0 bg-black bg-opacity-50"></div>
-
-      <!-- Panel -->
-      <div class="relative min-h-screen flex items-center justify-center p-4">
-          <div x-dialog:panel="" x-transition="" class="iframe-modal window relative max-w-xl w-full bg-white shadow-lg overflow-y-auto">
-              <div class="title-bar">
-                <div class="title-bar-text">Middlesex Times Dispatch October 12, 1988 - JIM CUNNINGHAM FOUND DEAD</div>
-                <div class="title-bar-controls">
-                    <button aria-label="Close" @click="$dialog.close()"></button>
-                  </div>
-              </div>
-
-              <!-- Body -->
-              <div class="p-1">
-                <iframe src="/news/newspaper2.htm" width="100%" height="800px" frameborder="0" scrolling="yes"></iframe>
-              </div>
-
-          </div>
       </div>
-  </div>
+      
+      <div class="credit">
+    <p>
+        Credit: Co-Created by Richard Kelly and <a href="https://alexandrajugovic.com/donniedarko">Hi-ReS!</a> in 2001<br>
+        <a href="https://dogwonder.co.uk/2024/04/reviving-a-legend-rebuilding-the-donnie-darko-website">About this project</a>
+    </p>
+    <p class="visitors">005593</p>
 </div>
-
-
-      </div>
       
     </main>
     
     
-    
-    <script defer="" src="https://unpkg.com/@alpinejs/ui@3.13.1-beta.0/dist/cdn.min.js"></script>
-    <script defer="" src="https://unpkg.com/@alpinejs/focus@3.13.1/dist/cdn.min.js"></script>
-    <script defer="" src=" /scripts/alpine.js?v=1780319262307"></script>
     
 
     
@@ -122,6 +110,89 @@
     <script src="/scripts/min/app.min.js"></script>
 
     
+<script>
+    // Extend the existing configuration
+    Object.assign(window.RufflePlayer.config, {
+        fontSources: ["/fonts/courier.swf"],
+        defaultFonts: {
+            sans: ["Courier New"]
+        }
+    });
+
+    // console.table(window.RufflePlayer.config);
+
+    window.addEventListener("load", (event) => {
+
+        const ruffle = window.RufflePlayer.newest();
+        const player = ruffle.createPlayer();
+        const container = document.getElementById("swf");
+        container.appendChild(player);
+        
+        player.load({
+            url: "/are/you/sleep/golfing/draw.swf", 
+            parameters: "", 
+        }).then(() => {
+            console.info("Ruffle successfully loaded the file");
+        }).catch((e) => {
+            console.error(`Ruffle failed to load the file: ${e}`);
+        });
+
+        player.style.width = "800px"; 
+        player.style.height = "500px";
+
+        // player.addEventListener('loadedmetadata', () => {
+        //     const totalFrames = player.metadata.numFrames;
+        //     const uncompressedLength = player.metadata.uncompressedLength;
+        //     console.log(`Total frames: ${totalFrames}`);
+        //     console.log(`Uncompressed length: ${uncompressedLength}`);
+        // });
+        
+
+        let hasRun = false;
+
+        let observer = new PerformanceObserver((list) => {
+            if (hasRun) return; // Exit early if the condition has already been met
+
+            for (let entry of list.getEntries()) {
+
+                if (entry.name.includes('license.swf')) {
+                    hasRun = true; // Set the flag to true to prevent further checks
+
+                    fetch('/are/you/sleep/golfing/license.swf')
+                        .then(response => {
+                            if (response.ok) {
+                                console.log('License file is available');
+                                //Wait 5 seconds before revealing the link
+                                setTimeout(() => {
+                                    document.querySelector('[data-url]').removeAttribute('hidden');
+                                }, 5000);
+                            }
+                            // Handle successful response
+                        })
+                        .catch(error => {
+                            // Handle error
+                            console.log(error);
+                        });
+
+                    break; // Exit the loop early since the condition has been met
+                }
+            }
+        });
+
+        observer.observe({ entryTypes: ['resource'] });
+
+        let clickCount = 0;
+        document.querySelector('[data-url]').addEventListener('click', function() {
+            clickCount++;
+            if (clickCount > 1) {
+                event.preventDefault();
+                this.setAttribute('href', '/sparkle/motion/index.html');
+            }
+        });
+        
+
+    });
+    </script>
 
 
     <!--Bundle SVG-->
