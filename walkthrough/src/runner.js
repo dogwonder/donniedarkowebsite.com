@@ -93,6 +93,22 @@ export async function runPlaythrough({ config, stepsDoc, stepsPath, headed, outD
       const onNav = (f) => { if (f === page.mainFrame()) actionNavigated = true; };
       page.on("framenavigated", onNav);
 
+      // Some pages float transparent HTML overlays (z-index 999 `[data-popup]`
+      // spans) ON TOP of the Ruffle canvas — e.g. is_unstable.html's `gran-donnie`
+      // overlay covers the whole stage and EATS canvas clicks. A step sets
+      // `neutralizeOverlays: true` to make those spans click-through so pointer
+      // events reach the SWF. Idempotent; persists until the next page navigation.
+      if (step.neutralizeOverlays) {
+        await page.evaluate(() => {
+          if (document.getElementById("__wt_overlay_neutralize")) return;
+          const s = document.createElement("style");
+          s.id = "__wt_overlay_neutralize";
+          s.textContent = "[data-popup]{pointer-events:none!important}";
+          document.head.appendChild(s);
+        });
+        log(`   ⊘ neutralized HTML overlays ([data-popup]{pointer-events:none})`);
+      }
+
       // Action. In calibration we tolerate failures so one run reaches as far as
       // the currently-calibrated coordinates allow.
       let actionDesc;

@@ -100,6 +100,48 @@
       "action": { "type": "click", "x": 775, "y": 262, "hoverMs": 250 },
       "awaitNavMs": 6000,
       "wait": { "mode": "fixed", "fixedMs": 6000 },
-      "note": "CALIBRATED 2026-05-31. The Frank window sits lower-right (~x562-787); its CLOSE X is at canvas (775,262) — ~13px left of the right border, the rightmost of the _ □ X cluster. NB earlier clicks at x≈745-758 hit the minimize/maximize buttons (no-op) — the X is further right at ~775. Closing it fires _root.play() → frames 49-54 → GetUrl 'universe/is_unstable.html'. NAVIGATION BOUNDARY: this loads a fresh SWF (philosophy.swf); the runner waits for the new Ruffle + re-suppresses the hw-accel overlay automatically. Per owner: on is_unstable.html the next Win98 window relocates to the TOP-RIGHT at the same 800×500 canvas. Red transition animates → mode:fixed (6s)." }
+      "note": "CALIBRATED 2026-05-31. The Frank window sits lower-right (~x562-787); its CLOSE X is at canvas (775,262) — ~13px left of the right border, the rightmost of the _ □ X cluster. NB earlier clicks at x≈745-758 hit the minimize/maximize buttons (no-op) — the X is further right at ~775. Closing it fires _root.play() → frames 49-54 → GetUrl 'universe/is_unstable.html'. NAVIGATION BOUNDARY: this loads a fresh SWF (philosophy.swf); the runner waits for the new Ruffle + re-suppresses the hw-accel overlay automatically. Per owner: on is_unstable.html the next Win98 window relocates to the TOP-RIGHT at the same 800×500 canvas. Red transition animates → mode:fixed (6s)." },
+
+    { "id": "tu-window-1", "section": "Level 1 — Tangent Universe",
+      "caption": "The Tangent Universe loads (philosophy.swf): the figure hangs at the top of the frame over a red fracture, and a tiny red crosshair sits at the far-left edge of the stage. Click it — the first Win98 pop-up window slides into the lower-left.",
+      "action": { "type": "click", "x": 12, "y": 330, "hoverMs": 300, "delayBeforeMs": 9000 },
+      "wait": { "mode": "fixed", "fixedMs": 3500 },
+      "note": "CALIBRATED 2026-06-01 (probe-grid-book). philosophy.swf autoplays a ~5.5s intro on load, so delayBeforeMs 9000 lets the far-left red diamond crosshair appear. Hit-area is the tiny diamond at the very edge — (45,330) MISSES; (12,330) hits. This click → _root.gotoAndStop/play('pop1') which click-steps the windows (NOT auto-played): each subsequent click summons the NEXT window (dad → donnie → straight → gran-donnie, one sub-swf loads per click). Scan-lined windows animate → mode:fixed." },
+
+    { "id": "tu-window-2", "section": "Level 1 — Tangent Universe",
+      "caption": "Click the middle of the first window. A second Win98 window opens to the lower-right.",
+      "action": { "type": "click", "x": 125, "y": 360, "hoverMs": 300 },
+      "wait": { "mode": "fixed", "fixedMs": 4000 },
+      "note": "CALIBRATED 2026-06-01. Click the just-opened window's middle to advance to the next (loads donnie.swf). Windows rearrange leftward each step (owner: keep clicking each newest window's middle)." },
+
+    { "id": "tu-window-3", "section": "Level 1 — Tangent Universe",
+      "caption": "Click the middle of the second window. A third window opens.",
+      "action": { "type": "click", "x": 562, "y": 350, "hoverMs": 300 },
+      "wait": { "mode": "fixed", "fixedMs": 4000 },
+      "note": "CALIBRATED 2026-06-01. The right window's true middle is y≈350 (earlier y≈375-385 missed). Loads straight.swf." },
+
+    { "id": "tu-window-4", "section": "Level 1 — Tangent Universe",
+      "caption": "Click the middle of the third window. The windows resolve into a 2×2 grid of four, with the grandmother/Donnie figure (gran-donnie) filling in behind them.",
+      "action": { "type": "click", "x": 406, "y": 375, "hoverMs": 300 },
+      "wait": { "mode": "fixed", "fixedMs": 9000 },
+      "note": "CALIBRATED 2026-06-01. Loads gran-donnie.swf — which ALSO reveals the page's transparent `[data-popup=\"gran-donnie.swf\"]` HTML overlay (right:0, 60% width, z-index 999) that now covers the whole canvas. The grid keeps re-loading gran-donnie every frame (idle loop) until the hidden advance button is clicked next. Grid forms slowly → fixed 9000." },
+
+    { "id": "tu-open-book", "section": "Level 1 — Tangent Universe", "neutralizeOverlays": true,
+      "caption": "Click the bottom-right of the grid. The four windows take on “Microsoft Internet” title bars, then the scene dissolves and the Philosophy of Time Travel book builds itself from scattered words — finally a pop-up appears: the shadow of Frank asking “you found me… remember the word?”, with a password field.",
+      "action": { "type": "click", "x": 346, "y": 378, "hoverMs": 300 },
+      "wait": { "mode": "fixed", "fixedMs": 14000 },
+      "note": "CALIBRATED 2026-06-01. THE ADVANCE = hidden button id 0104 (`_root.gotoAndStop('words')`), placed on the main timeline (frame 108) only after the 4th window; its hit-rect is canvas x[258-435] y[290-467], centre (346,378). REQUIRES `neutralizeOverlays` — the gran-donnie span (above) sits at the SAME viewport region as the canvas (x512-1280) and eats the click otherwise. The book opens with a ~12s intro (words → book → Frank slides in) → fixed 14000 lands on Frank's window." },
+
+    { "id": "tu-smurf", "section": "Level 1 — Tangent Universe",
+      "caption": "Type the word from Frank — smurf — into the field. It commits live: the screen fills with four Win98 windows each showing a Smurf, and red chapter crosshairs scatter down the left edge.",
+      "action": { "type": "type", "text": "smurf", "locateField": true, "fieldYOffset": 186, "clearFirst": false, "charDelayMs": 150, "delayBeforeMs": 800 },
+      "wait": { "mode": "fixed", "fixedMs": 4000 },
+      "note": "CALIBRATED 2026-06-01. Field = EditText id 0165 (`pass`, password); a per-frame check `if (pass eq 'smurf') gotoAndPlay('smurf')` commits — NO Enter. `locateField` finds Frank's navy titlebar at runtime and types into its centre + ~186px (the window repositions between runs, so don't hard-code). Focus is automatic (clicking focuses <ruffle-player>); the ONLY trick is hitting the editable rect (centre, not the bottom edge). Smurf windows carry grey '@.' titlebars (NOT navy) so they don't confuse titlebar detection." },
+
+    { "id": "tu-breathe", "section": "Level 1 — Tangent Universe",
+      "caption": "Donnie’s letter to Roberta Sparrow lies underneath the Smurf grid — clicking a Smurf window flashes the grid hidden for under half a second, exposing the text. One word is red: “breathe” (“…I can breathe a sigh of relief…”). Click it to reveal the prize: “the word you just saw is your password to level 2.” Level 1 is complete; breathe is the Level 2 password.",
+      "action": { "type": "flashClick", "flash": { "x": 620, "y": 120 }, "target": { "x": 433, "y": 406 }, "gapMs": 120, "intervalMs": 110, "repeat": 8 },
+      "wait": { "mode": "fixed", "fixedMs": 4000 },
+      "note": "CALIBRATED 2026-06-01. The letter (red word `breathe` ≈ canvas (433,406)) sits UNDER the Smurf grid; clicking any Smurf window (button 0176) flashes the grid hidden <0.5s. Flash with the TOP-RIGHT window (620,120), NOT the bottom-left — breathe overlaps the bottom-left window, so flashing it would just re-hit it. Fixed burst of 8 taps @~0.11s (owner's tip) to beat the sub-second flash; breathe usually registers in 1-2 taps and the rest hit empty space harmlessly (verified: 6 extra taps cause no harm — flash(620,120) is empty once the grid clears and target(433,406) is over the book, not a button). NB do NOT gate on `until:navytitlebar` here — the Smurf grid windows ALSO carry navy 'Microsoft Internet' titlebars, so that stop condition false-fires. The advance is an INTERNAL SWF transition (URL unchanged) → no awaitNav. NEXT FRONTIER: the `level2.swf` HTML overlay (`<a href=\"/menu.html\">`, revealed ~12s after the book) is the Level 2 gateway; Level 2's own puzzles are not yet calibrated. Closing the Roberta window instead lets you browse the book chapters (Level 3 clue = `rose`)." }
   ]
 }

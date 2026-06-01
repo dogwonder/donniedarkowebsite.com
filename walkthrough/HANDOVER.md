@@ -23,8 +23,13 @@ A complete, working tool (`walkthrough/`) drives the Ruffle/Flash Donnie Darko
 playthrough with Playwright and generates a self-contained `output/walkthrough.html`
 (before/after canvas captures + popup-tab panels) plus a session video.
 
-**Validated end-to-end (15 steps, `steps/donnie.steps.json`) — full runner run
-2026-05-31 reaches the Tangent Universe:**
+**NOW REACHES THE END OF LEVEL 1 (22 steps, `steps/donnie.steps.json`).** As of
+2026-06-01 the runner drives the homepage all the way to the Tangent Universe's
+"password to level 2" window (= `breathe`, Level 1 complete). The 2026-05-31 milestone
+below (15 steps → Tangent Universe entry) is the earlier checkpoint; steps `tu-window-1`
+… `tu-breathe` continue from there — see "BLOCKER SOLVED" + "ENCODED IN THE RUNNER".
+
+**Earlier checkpoint (15 steps) — reaches the Tangent Universe:**
 1–7. **Intro** — bullseye montage → `.proceed.` → "otherwise proceed here" →
    ~30s auto-forward to the detention document → click → `Y` → `Y` → main menu.
 8. **Menu → Level 1** — hover+click the fixed red crosshair `(547,416)` → "THINGS
@@ -163,7 +168,124 @@ Detector (`detectRed` + `--observe`/`--chapters N`/`--band`) is BUILT & verified
 chapter screen just needs to be reached, then `--chapters --band <left region>`
 should hunt the dots. Frank/smurf + breathe are clear from the video above.
 
-**⚠️ CURRENT BLOCKER (2026-06-01): the grid-of-4 → open-book transition.**
+**✅ BLOCKER SOLVED (2026-06-01 PM): the grid-of-4 → open-book transition.**
+Two compounding causes, both now understood (probe: `src/probe-grid-book.js`):
+1. **The advance is a single hidden button, `id 0104`.** The windows scene (`pop1`)
+   does NOT auto-play — each click summons the NEXT window (dad → donnie → straight →
+   gran-donnie; one `.swf` loads per click). After the **4th** window (gran-donnie),
+   `philosophy.swf` places button `0104` on the main timeline (frame 108) and STOPS.
+   That button's only action (on release) is `_root.gotoAndStop("words")` → the book
+   sequence → `thebook.swf` loads → Frank's "remember the word?" prompt. Its hit-rect
+   (shape 0087, a 20×20 cover scaled 8.87× at translate 346.25,378.25) is canvas
+   **x[258–435], y[290–467] — center (346,378)**. Earlier `grid-BR` coords (236,358)
+   missed left of it; (320,370) was inside it but failed for cause #2 ↓.
+2. **The `gran-donnie` HTML overlay eats the click.** The canvas occupies viewport
+   x512–1280; `[data-popup="gran-donnie.swf"]` is `right:0; width:60%` = x512–1280 at
+   z-index 999 — it covers the canvas EXACTLY once gran-donnie loads (i.e. right when
+   button 0104 appears). A `page.mouse.click` at button 0104 lands on this transparent
+   span, never the SWF. FIX in the probe: inject `[data-popup]{pointer-events:none}`
+   (`--neutralize`) so canvas clicks pass through. While gran-donnie loops, it reloads
+   `gran-donnie.swf` every frame (~30/s) — that loop is just the idle windows scene
+   waiting for the advance; it stops the instant button 0104 fires.
+   ⚠️ **OPEN: does the REAL site (normal browser) have this same overlay-block bug?**
+   A human clicking button 0104 would also hit the z-999 transparent span. If so the
+   live site needs `[data-popup="gran-donnie.swf"]{pointer-events:none}` (or similar)
+   — confirm with the owner / test in a real browser.
+
+**Validated sequence (full runner-style, `src/probe-grid-book.js --neutralize --br 346,378 --extra 2`):**
+crosshair (12,330) → win1 (125,360) → win2 (562,350) → win3 (406,375) [gran-donnie +
+button 0104 appear] → **click button 0104 (346,378) with overlay neutralized** →
+`thebook.swf` loads → **Frank "you found me… remember the word?" + password field**
+(screenshot `output/gridbook/obs-06.png`). ~12s later the `level2.swf` overlay
+(`<a href="/menu.html">`) reveals = the Level 2 gateway. NEXT: type `smurf` in Frank's
+field → Donnie's letter → click red word `breathe` (= L2 password) → Level 2.
+
+**Owner's video confirms the post-windows flow** (`~/Desktop/CleanShot 2026-06-01 at
+11.22.00.mp4`, frames `/tmp/ddvid3`): windows → words fly in → Philosophy book builds →
+Frank "remember the word?" window → after `smurf`, the **chapters** are browsable as
+**red crosshair dots on the LEFT** of the canvas; click/hover a dot → its chapter NAME
+shows as a tooltip (e.g. "The Artifact And The Living") and that chapter's text renders
+on the book page (right). Chapter dots are at RANDOM positions (detect at runtime, per
+the top-of-file tip) — `probe-tangent-universe.js --chapters --band <left region>` is the
+tool. Chapter names/text match `THE-PHILOSOPHY-OF-TIME-TRAVEL.md`.
+
+**✅ SMURF SOLVED — typing `smurf` into Frank's field commits the password.**
+- The password field is **EditText id 0165** (`pass`, password); a per-frame check
+  `if (this.pass eq "smurf") _root.gotoAndPlay("smurf")` advances — NO Enter needed.
+- The book opens with a **~12s intro** (words → book → Frank slides in). Must WAIT for
+  Frank's window before typing (`--prewait 13000`), else keystrokes are lost.
+- Frank's window is **animated/repositioned**; this run titlebar was canvas x278–423,
+  y~108, and the EditText box center was **(377,294)** (NOT (350,305) — that hit the
+  field's bottom edge and missed). The window position can vary → **detect the navy
+  titlebar at runtime** and take field center ≈ (titlebar-mid-x, titlebar-y + ~186).
+- Focus was never the problem: after clicking the field `document.activeElement` is
+  already `RUFFLE-PLAYER`. The ONLY bug was the click landing off the EditText hit rect.
+- Proven: `node src/probe-grid-book.js --neutralize --br 346,378 --extra 1 --smurf
+  --field 377,294 --focusmode none` → the 4 Smurf windows + chapter dots appear
+  (`output/gridbook/obs-06.png`, matches owner's screenshot). press-per-char @150ms;
+  no Ctrl+A/Delete needed (fresh field).
+
+**Owner's videos confirm the FULL ending (clips `11.31.45`, `11.57.46` → /tmp/ddvid4,5):**
+smurf → **4 Smurf windows** (+ chapter crosshair dots, left) → **click a Smurf window
+several times → the grid clears to Donnie's LETTER** to Roberta Sparrow → the red word
+**`breathe`** in *"I can breathe a sigh of relief"* is clickable = the **Level 2
+password** → a Roberta window: *"the word you just saw is your password to level 2 …
+or go on to level 2 …"* → **"go on to level 2"** navigates out (Level 2 / `/menu.html`
+via the `level2.swf` overlay). Closing that window instead lets you browse the book
+chapters (Level 3 clue = `rose`).
+
+**✅ SMURFS → LETTER → BREATHE SOLVED — full tangent flow validated end-to-end.**
+The letter sits UNDERNEATH the Smurf grid. Clicking a Smurf window flashes the grid
+hidden for <0.5s, exposing Donnie's letter with the red word `breathe` (owner's tip).
+- Smurf windows RENDER at canvas x~400–640 (button 0176 placements are parent-relative
+  +~305): TL≈(415,120) TR≈(620,120) BL≈(415,385) BR≈(620,385).
+- `breathe` (red) is centered canvas **(433,406)** — but it OVERLAPS the bottom-left
+  Smurf window, so flash with a DIFFERENT window (top-right (620,120)) then click
+  breathe, else the breathe click re-hits the window you flashed.
+- Proven (works on try 1): flash-click (620,120) → wait ~120ms → click breathe
+  (433,406) → the **"the word you just saw is your password to level 2 … or go on to
+  level 2"** Roberta window appears (internal SWF transition — URL does NOT change, so
+  don't gate on navigation). Owner's robustness tip: use a QUICK click and repeat every
+  ~0.1s up to 10–20× to beat the <0.5s flash timing.
+- breathe = button id 0188 (`getURL ../../../further.html`)? No — it triggers the
+  internal "password to level 2" window; the actual Level-2 hop is the `level2.swf` HTML
+  overlay (`<a href="/menu.html">`), already revealed ~12s after thebook. (`further.html`
+  is the "read the book / close window" branch.)
+
+**FULL VALIDATED CHAIN** (`src/probe-grid-book.js`, single run):
+`--neutralize --br 346,378 --extra 1 --smurf --field 377,294 --focusmode none --letter
+--smurfwin 415,385 --clickbreathe --breathe 433,406 --flashwin 620,120 --breathedelay 120`
+crosshair(12,330) → win1(125,360) → win2(562,350) → win3(406,375) → button0104(346,378)
+[overlay neutralized] → book → wait → smurf@(377,294) → smurf grid → flash+breathe(433,406)
+→ "password to level 2" window → `level2.swf`→`/menu.html` = Level 2.
+
+**✅ ENCODED IN THE RUNNER (2026-06-01).** 7 steps `tu-window-1…4`, `tu-open-book`,
+`tu-smurf`, `tu-breathe` appended to `steps/donnie.steps.json`, validated twice via
+`node src/test-tu-actions.js` (drives the REAL `performAction` against is_unstable.html
+→ reaches the "password to level 2" window every run). New reusable capabilities added
+for the patterns this game keeps reaching for:
+- **`src/detect.js`** (NEW): `detectRed` (crosshairs / red words / chapter dots; `loose`
+  mode for dim red TEXT, `band` to exclude the persistent glow) and `detectTitlebars` /
+  `locateWindowField` (find a Win98 window by its navy titlebar → derive its field).
+- **`src/input.js`**: new actions `detectClick` (click a runtime-detected red feature),
+  `flashClick` (click-to-reveal-then-click-fast, owner's repeat-burst), and `type`
+  upgraded with `locateField` (POLLS up to 18s for the window titlebar, then types into
+  centre+`fieldYOffset`) + `clearFirst`/`charDelayMs`.
+- **`src/runner.js`**: `step.neutralizeOverlays` injects `[data-popup]{pointer-events:none}`.
+GOTCHAS baked into the step notes: the book intro time VARIES (smurf must poll for
+Frank, not wait a fixed time); the Smurf-grid windows ALSO have navy titlebars so the
+breathe step uses a fixed 8-tap burst, NOT `until:navytitlebar`.
+
+**NEXT FRONTIER: Level 2** — entered via the `level2.swf` overlay (`<a href="/menu.html">`,
+revealed ~12s after the book). Level 2's own puzzles (lifeline `aid/lev2g.jpg`, etc.) and
+Level 3 (`rose`, via the book chapters) are not yet calibrated. A full
+`node src/cli.js` run now drives homepage → … → the tangent "password to level 2" window.
+
+**Probe `src/probe-grid-book.js`** now drives the whole chain with flags:
+`--neutralize --br 346,378 --extra 1 --smurf --field 377,294 --letter --smurfwin X,Y
+--letterclicks N`. Writes `output/gridbook/{NN-*,obs-*,smurf-*,letter-*}.png`.
+
+**(historical) earlier blocker notes — the grid-of-4 → open-book transition:**
 In the videos, clicking the grid's bottom-right cell makes the book ("never just die"
 text → Foreword → chapters) animate in within ~4-8s. In the probe it does NOT — the
 screen stays on the 4 scan-lined windows + figure (persistent reds at (543,202) glow,

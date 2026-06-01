@@ -1,10 +1,26 @@
 // Execute a step's action against the canvas. All pointer coordinates are
 // canvas-local and converted to page coordinates via the mapper.
 //
-// Keyboard note: Ruffle routes key events to the focused player element. For
-// key/type actions you can supply focusX/focusY to click a text field first.
+// Beyond the primitive pointer/keyboard actions, this game keeps reaching for a few
+// COMPOUND mechanics, captured here as reusable action types so steps stay declarative:
+//   • detectClick — click a runtime-DETECTED red feature (menu crosshair, the
+//     "time travel?" question, a chapter dot, the red `breathe` word). Robust to the
+//     feature drifting / fading in; falls back to a fixed coord.
+//   • flashClick — click a "flash" point to briefly reveal something, then quickly
+//     click a target underneath. The Smurf grid hides for <0.5s on click, exposing
+//     Donnie's letter where the red `breathe` word lives; repeat fast to beat the
+//     timing (owner's tip: tap every ~0.1s up to ~15×). Optionally stops as soon as
+//     the result window (a navy Win98 titlebar) appears.
+//   • type — into a Ruffle EditText; can LOCATE the field from the window's navy
+//     titlebar at runtime (windows reposition between runs), so coords don't drift.
+//
+// Keyboard note: Ruffle routes key events to the focused player element. Clicking a
+// field focuses the <ruffle-player> host (activeElement === RUFFLE-PLAYER), after
+// which keystrokes reach the EditText — provided the click lands on its hit rect.
 
 import { makeCoordMapper, canvasLocator } from "./canvas.js";
+import { captureCanvas } from "./capture.js";
+import { detectRed, detectTitlebars, locateWindowField } from "./detect.js";
 
 /**
  * @param {import('playwright').Page} page
@@ -72,22 +88,112 @@ export async function performAction(page, canvas, ruffleCfg, action, log = () =>
     }
 
     case "type": {
+      // Optionally locate the field from the window's navy titlebar at runtime, so a
+      // repositioning pop-up doesn't break a hard-coded focus coord. POLL for it —
+      // the target window can take a variable few seconds to animate in (e.g. Frank's
+      // password window after the book's ~12-18s build), so a fixed wait is fragile.
+      if (action.locateField) {
+        const deadline = Date.now() + (action.waitForFieldMs ?? 18000);
+        let f = null;
+        do {
+          const frame = await captureCanvas(page, canvas, ruffleCfg);
+          f = locateWindowField(frame, ruffleCfg.canvasSize, {
+            yOffset: action.fieldYOffset ?? 186,
+            pick: action.fieldPick ?? 0,
+          });
+          if (!f && Date.now() < deadline) await page.waitForTimeout(500);
+        } while (!f && Date.now() < deadline);
+        if (f) { action = { ...action, focusX: f.x, focusY: f.y }; log(`type: located field via titlebar → (${f.x},${f.y})`); }
+        else if (typeof action.focusX !== "number") {
+          throw new Error(`type: no window titlebar found within ${action.waitForFieldMs ?? 18000}ms and no static focusX/focusY fallback`);
+        } else log(`type: no titlebar found; using static focus (${action.focusX},${action.focusY})`);
+      }
       await focusIfRequested(page, canvas, ruffleCfg, action, map);
-      // Clear any residual content first — a Flash EditText that auto-checks
-      // `pass eq "sparrow"` every frame fails if earlier keystrokes left text in
-      // the field. Then press each char individually with a Flash-friendly dwell;
-      // keyboard.type's fast batched input can drop keystrokes on a Ruffle
-      // EditText. (Proven sequence from probe-l1-xhair3, which commits reliably.)
-      await page.keyboard.press("Control+a");
-      await page.keyboard.press("Delete");
-      await page.waitForTimeout(120);
+      // A Flash EditText that auto-checks `pass eq "..."` every frame fails if earlier
+      // keystrokes left text behind, so clear first by default. Then press each char
+      // individually with a Flash-friendly dwell — keyboard.type's fast batched input
+      // can drop keystrokes on a Ruffle EditText. Per-frame-check fields commit on
+      // match (no Enter needed); set pressEnter for fields that require it.
+      if (action.clearFirst !== false) {
+        await page.keyboard.press("Control+a");
+        await page.keyboard.press("Delete");
+        await page.waitForTimeout(120);
+      }
       for (const ch of action.text) {
         await page.keyboard.press(ch);
-        await page.waitForTimeout(120);
+        await page.waitForTimeout(action.charDelayMs ?? 120);
       }
       if (action.pressEnter) await page.keyboard.press("Enter");
       log(`type: "${action.text}"${action.pressEnter ? " + Enter" : ""}`);
       return `type “${action.text}”${action.pressEnter ? " and press Enter" : ""}`;
+    }
+
+    case "detectClick": {
+      // Click a runtime-detected red feature. `detect` defaults to red; `band`
+      // restricts the search (canvas coords) so a persistent glow elsewhere doesn't
+      // win; `loose` catches dim red TEXT. Falls back to (x,y) if nothing detected.
+      const repeat = Math.max(1, action.repeat ?? 1);
+      const interval = action.repeatIntervalMs ?? 0;
+      const hoverMs = action.hoverMs ?? 250;
+      let desc = "(no red feature found)";
+      for (let r = 0; r < repeat; r++) {
+        const frame = await captureCanvas(page, canvas, ruffleCfg);
+        const reds = detectRed(frame, ruffleCfg.canvasSize, {
+          band: action.band ?? null,
+          loose: action.loose ?? false,
+          minPixels: action.minPixels ?? 4,
+        });
+        let target = reds[0]; // largest cluster
+        if (!target && (typeof action.x === "number")) target = { canvasX: action.x, canvasY: action.y };
+        if (target) {
+          const { x, y } = map(target.canvasX, target.canvasY);
+          if (hoverMs) { await page.mouse.move(x, y); await page.waitForTimeout(hoverMs); }
+          await page.mouse.click(x, y);
+          desc = `click detected red at (${target.canvasX}, ${target.canvasY})`;
+          log(`detectClick → canvas(${target.canvasX},${target.canvasY}) [${reds.length} cluster(s)]`);
+        } else {
+          log(`detectClick: nothing detected and no fallback coord`);
+        }
+        if (r < repeat - 1) await page.waitForTimeout(interval);
+      }
+      return desc;
+    }
+
+    case "flashClick": {
+      // Click `flash` to briefly hide an overlay, then click `target` underneath.
+      // Repeat fast to beat a sub-second reveal. Optionally stop early once a result
+      // window appears (`until: "navytitlebar"`), to avoid over-clicking past success.
+      const flash = action.flash;       // {x,y} — the thing you click to reveal
+      const repeat = Math.max(1, action.repeat ?? 12);
+      const gapMs = action.gapMs ?? 90;      // reveal → target-click delay
+      const intervalMs = action.intervalMs ?? 110; // between attempts (owner: ~0.1s)
+      let resolvedTarget = action.target ?? null;   // {x,y} or null → detect red
+      let did = 0, stopped = false;
+      for (let r = 0; r < repeat; r++) {
+        const fp = map(flash.x, flash.y);
+        await page.mouse.click(fp.x, fp.y);
+        await page.waitForTimeout(gapMs);
+        // Resolve the target: a fixed coord, or detect the red word during the flash.
+        let t = resolvedTarget;
+        if (!t) {
+          const frame = await captureCanvas(page, canvas, ruffleCfg);
+          const reds = detectRed(frame, ruffleCfg.canvasSize, { band: action.band ?? null, loose: action.loose ?? true });
+          if (reds[0]) t = { x: reds[0].canvasX, y: reds[0].canvasY };
+        }
+        if (t) {
+          const tp = map(t.x, t.y);
+          await page.mouse.click(tp.x, tp.y);
+          did++;
+        }
+        if (action.until === "navytitlebar") {
+          const frame = await captureCanvas(page, canvas, ruffleCfg);
+          if (detectTitlebars(frame, ruffleCfg.canvasSize).length > 0) { stopped = true; }
+        }
+        if (stopped) { log(`flashClick: result window detected after ${r + 1} attempt(s)`); break; }
+        if (r < repeat - 1) await page.waitForTimeout(intervalMs);
+      }
+      log(`flashClick: flash(${flash.x},${flash.y}) → target${resolvedTarget ? `(${resolvedTarget.x},${resolvedTarget.y})` : "(detected)"} ×${did}${stopped ? " (stopped early)" : ""}`);
+      return `reveal-and-click (${did} taps)`;
     }
 
     default:
@@ -98,19 +204,13 @@ export async function performAction(page, canvas, ruffleCfg, action, log = () =>
 async function focusIfRequested(page, canvas, ruffleCfg, action, map) {
   if (typeof action.focusX === "number" && typeof action.focusY === "number") {
     const { x, y } = map(action.focusX, action.focusY);
-    // Ruffle only delivers keystrokes when the player element holds DOM focus,
-    // so focus the canvas FIRST, then click the field so Flash sets EditText
-    // focus last (proven order from probe-l1-xhair3). Clicking before focusing
-    // can leave the canvas unfocused → typed text never reaches the field.
+    // Ruffle only delivers keystrokes when the player element holds DOM focus, so
+    // focus the player FIRST, then click the field so Flash sets EditText focus last.
+    // Clicking before focusing can leave the player unfocused → text never lands.
     try { await canvasLocator(page, ruffleCfg).focus({ timeout: 1000 }); } catch { /* best-effort */ }
     await page.mouse.click(x, y);
     await page.waitForTimeout(300);
   } else {
-    // Best-effort: focus the player element so key events reach Ruffle.
-    try {
-      await canvasLocator(page, ruffleCfg).focus({ timeout: 1000 });
-    } catch {
-      /* focus is best-effort; some Ruffle builds focus the inner canvas only */
-    }
+    try { await canvasLocator(page, ruffleCfg).focus({ timeout: 1000 }); } catch { /* best-effort */ }
   }
 }
