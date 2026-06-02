@@ -288,6 +288,92 @@ Level 3 (`rose`, via the book chapters) are not yet calibrated. A full
 Owner-provided briefing + video (`~/Desktop/CleanShot 2026-06-01 at 11.40.20.mp4`,
 87s, frames in `/tmp/ddL2`). NOT yet calibrated into steps — this is the recon map.
 
+### ★ FULL LEVEL 2 FLOW (the aid guide is ground truth — `src/aid/aid5-7.html`, steps 23-36)
+
+The owner pointed at `aid/`: the original walkthrough. Level 2 is FAR longer than the
+golf/lifeline intro — it runs all the way to the "burn it down" Sparkle Motion ending and
+back to the main menu. Per-screen reference stills are `docs/images/aid/lev2*.jpg` + `lburn*.jpg`.
+
+- **23** golf course — red square ("don't be a prisoner of fear") → Cunningham popup.  ✅ `l2-news`
+- **24** "wake up donnie!" square → stripes + 2 golfers; click the square then **the 2 golfers**.  ✅ `l2-wake`+`l2-go-level2`
+- **25** chalkboard — TV → exercise #1, #2 (correct mark required; both = FEAR).  ✅ `l2-tv-exercise1`/`ex1`/`ex2`
+- **26** teacher confrontation — click TV-Frank, ascii bunny, **click TV-Frank again**.  ✅ `l2-mono-tv1`/`tv2`
+- **27** Frank popups spell **WAKE UP DONNIE** — **click INSIDE one of the windows → screen forwards**.  ⚠️ NOT the overlay (see below) — TODO
+- **28** back to golf course, "do you think he was sleepgolfing?" — **click on donnie**.  ❌ TODO
+- **29** donnie waking up — **click the white arrow** → popup "who found the wallet?" = **`ling ling`** (auto-forwards even if skipped).  ❌ TODO
+- **30** sidewalk, "i've been waiting for you" — **click the o dot** → wallet popup → **click inside it**.  ❌ TODO
+- **31** red lines — **click the blinking red dot at the tip of the longest line** → Cunning Visions article.  ❌ TODO → "go to next section"
+- **32** **Sparkle Motion / "burn it down"** (`sparkle/motion/main.html`, `fire.swf`, `phase2_end.swf`) — click dot at top → donnie walking home; **RIGHT-CLICK → play/forward**.  ❌ TODO
+- **33** auto popup of Jim's license w/ rollovers of his address (**45a rose street**, middlesex va 23245 — note `rose` = the L3 password) — **click inside the window**.  ❌ TODO
+- **34** Sparkle Motion dancers / fire popups / "burn it down now you know where he lives" — **click inside popups**.  ❌ TODO
+- **35** popup of donnie at the fire — **click inside popup**.  ❌ TODO
+- **36** "burn it down donnie." → **auto-forwards back to the main menu** = Level 2 COMPLETE.  ❌ TODO
+
+⚠️ **`l2-exit` (the `[data-url]` overlay → `/sparkle/motion/`) is a SHORTCUT, not the faithful path.**
+It skips steps 28-31 (sleepgolfing payoff, the `ling ling` wallet, the sidewalk). The real
+step-27 advance is an IN-GAME **window click** ("click inside one of the windows"); the earlier
+"E-click does nothing" hunt was poking near this but used coords off the window buttons / partly
+under the 44×44 `[data-url]` overlay. CALIBRATION PLAN (owner-chosen 2026-06-02): headed probe,
+beat-by-beat, owner has a reference video for 28-36 (to be provided). When 28-36 are calibrated,
+REVISE `l2-exit` into the proper window-click forward + the 28-36 step chain ending at `/menu.html`.
+
+### ★★ ARCHITECTURE BREAKTHROUGH (2026-06-02 PM) — LEVEL 2 IS TWO TABS
+
+Owner-provided reference videos: `~/Desktop/CleanShot 2026-06-02 at 12.06.56.mp4` (V1, 34s,
+golf tail steps ~27-31; frames `/tmp/ddL2a4`) and `…12.07.45.mp4` (V2, 19s, sparkle/motion
+finale 32-36; frames `/tmp/ddL2b`). Owner steer: **"the new tab `sparkle/motion/main.html`
+gets closed by the runner."**
+
+- **Level 2 spans TWO browser tabs.** TAB 1 = `…/golfing/main.html` (golf.swf + draw.swf lifeline
+  + WAKE UP DONNIE + the red-lines scene, steps 23-31). The `[data-url]` exit overlay opens
+  **TAB 2 = `/sparkle/motion/main.html`** (the "burn it down" finale, steps 32-36 → back to
+  `/menu.html`). The runner/probe CLOSE popups by default (`drainPopups`) → they kill tab 2.
+  Two ways to handle in the runner: (a) a new `followPopup`/`keepPopup` step flag that switches the
+  active page to the popup, OR (b) **just `navigate` to `/sparkle/motion/main.html`** as its own
+  step — it's drivable standalone (below), and we already drive sections by navigation (cf `l2-enter`).
+  Option (b) is simpler and matches the existing pattern — RECOMMENDED.
+- **`sparkle/motion/main.html` is DRIVABLE STANDALONE.** It `<embed>`s `phase2_end.swf` (800×500,
+  autoplay) with NO `[data-url]`/`[data-popup]` overlay. Canvas sits **bottom-right** (`flex
+  items-end justify-end`) — the coord mapper uses getBoundingClientRect so it adapts; coords are
+  still canvas-local 0..800×0..500. Probe directly: `node src/calibrate.js --url
+  /sparkle/motion/main.html --grid 50 --wait 7000` (output/calibrate/sparkle_motion_*). Opening is
+  near-black at 7s (faint corner marks ~(215,250),(700,250)); it builds up like the other scenes.
+  Section assets: `phase2_end.swf` (main) + `fire.swf`.
+- **`phase2_end.swf` mechanic (aid 32-36):** click "dot at top" → donnie walking home → ~~RIGHT-CLICK
+  → play~~ → Jim's license popup (45a **rose** st — L3 password) click inside → Sparkle Motion dancers
+  + fire popups "burn it down" click inside → donnie-at-fire popup click inside → "burn it down donnie"
+  → auto-forward to `/menu.html`.
+- **✅ OPEN-Q3 RESOLVED (2026-06-02): "right-click → play" is just A LEFT-CLICK to START in the Ruffle
+  rebuild.** phase2_end.swf loads PAUSED (Ruffle gates autoplay on a user gesture); a plain left-click
+  on the canvas starts playback (verified `src/probe-sparkle.js --observe --clickstart 400,250`: red
+  beams bloom from the bottom-right within ~2s). Right-click surfaces NO Ruffle menu here (the SWF sets
+  `fscommand showmenu=false`), so the original Flash right-click→Play is N/A — the left-click gesture
+  replaces it. The movie then **plays ~12s (red "burn it down" beams build) and STOPS** on the
+  "donnie/red-beams" frame (date 10-21-1988; donnie bottom-right ~canvas (700,380)).
+- ✅ **RESOLVED (2026-06-02): the finale AUTOPLAYS in a HEADED browser — headless was the only blocker.**
+  After the start left-click, a headed run plays the WHOLE finale with NO further clicks: beams →
+  Jim's license popup (45a **rose** st = L3 pw) → BURN DOWN p1-p6 grid + Sparkle Motion dancers →
+  **auto-forward (getURL) to `/menu.html`** = end of Level 2. Verified: `probe-sparkle.js --observe
+  --clickstart 400,250 --headed` → reds bloom bottom-right, spread across the dancers ~t16s, `url→
+  /menu.html` ~t26s (owner confirmed "it appeared on its own"). ⚠️ HEADLESS Playwright-Ruffle STALLS
+  on the donnie/beams frame and never advances (every click/key tried, `--resumetest`) — so **the
+  walkthrough generation run MUST be headed** (`cli.js --headed`). So beats 33-36 need NO per-click
+  calibration; just start-click + wait for the nav. ✅ ENCODED as `l2-sparkle-enter` (navigate to
+  /sparkle/motion/main.html) + `l2-sparkle-burn` (left-click (400,250) start, `awaitNavMs:30000` →
+  /menu.html). Replaced the old `l2-exit` overlay-shortcut step.
+- **`src/probe-sparkle.js` (NEW):** standalone probe for the finale — `--observe [--clickstart x,y
+  --startbtn left|right]`, `--rightclick` (inspects Ruffle context menu — confirmed none), and a CLICKS
+  array. Writes output/sparkle/*.
+- **GOLF TAB tail (steps 28-31) — partly observed:** after WAKE UP DONNIE the windows are STATIC and
+  wait (tail-observe: unchanged for 18s). A window/forward click advances to the **red-lines scene**
+  (black + red diagonal lines + a white dot at the line-tip ~canvas **(475,85)** = aid step 31's
+  "blinking red dot at the tip of the longest line"). Whether steps 28-30 (sleepgolfing donnie-click,
+  white-arrow/`ling ling` wallet, sidewalk "i've been waiting for you") are REQUIRED clicks or
+  auto-pass in the rebuild is NOT yet pinned — V1 shows them as distinct screens. STILL TO CALIBRATE.
+- **Probe crashes on the exit popup** (`Target page… has been closed`) because `clickCanvas` runs after
+  the [data-url] click opens/navigates tab 2 and `drainPopups` tears it down — same harness bug as
+  before; not a game issue. Don't drive canvas clicks after the exit.
+
 **ENTRY FLOW (owner's notes, confirmed against the HTML):**
 1. `/menu.html` → the **Level 2** crosshair is now active (clouds.swf).
 2. A **Win98 modal** opens asking for a password → **`breathe`** (the L1 reward word).
@@ -386,31 +472,38 @@ CLICKS array, all canvas coords, headless on main.html). Validated end-to-end in
 7. Donnie's monologue → **click the TV (623,418)** → "text filters in" → **click the TV again
    (623,418)** → advances to the **"WAKE UP DONNIE" letter-windows** screen (a 4×3 grid of Win98
    windows each holding a big red letter spelling W A K E / U P D O / N N I E).
-8. **Click the "E" of DONNIE** (the bottom-right window, canvas ≈ **(590,210)**) → "advances the scene".
+8. **Click the "E" of DONNIE** (bottom-right of the grid) → "advances the scene" = the **exit**.
 
-**⚠️ BLOCKER (headless probe, both E's tried): the E-click does NOT register.** The TV-twice
-advance works and reaches the WAKE UP DONNIE windows (validated, `output/golf/11-mono-tv2-*`).
-But clicking DONNIE's E (590,210) AND WAKE's E (590,65) left the windows up; they only cleared
-when a later click landed low at (623,418). Likely causes to debug next:
-  - **`_level` click-routing:** the WAKE UP DONNIE windows are probably golf.swf (`_level0`)
-    content showing BEHIND draw.swf (`_level2`); the on-top `_level2` may be intercepting the
-    canvas click before it reaches the letter window (same class of bug as the tangent gran-donnie
-    overlay). Try: detect which level owns the letter buttons; possibly the E is a golf.swf button
-    whose hit-area is reachable only once `_level2`/draw.swf clears, or needs the click routed past it.
-  - **Window-assembly timing:** some letter windows still showed TV-static (not fully formed) when
-    clicked — the E button may not be live until all windows finish assembling. Add a longer settle
-    / wait-until-stable before the E click.
-  - **Precise target:** the E may need a click on the red letter glyph (a small button) rather than
-    the window centre; re-read the exact E hit-rect from the grid capture.
-  Recommend a HEADED run for this last-mile (per this doc's standing recommendation) to watch the
-  E click land live.
+**✅ "E-CLICK BLOCKER" RESOLVED — it was a PHANTOM (2026-06-02, headed run + owner confirm).**
+The earlier "E-click does not register" reading was a measurement error: the advance opens a
+**NEW TAB** (sparkle/motion), so the *canvas* stays on WAKE UP DONNIE and the before/after canvas
+screenshots looked identical — but it HAD proceeded. The WAKE UP DONNIE windows are just a
+**backdrop**; "clicking the E" actually clicks the timed **`[data-url]` HTML exit overlay** layered
+over the canvas right where DONNIE's E sits (`main.html` CSS: `right:36%; top:12.95%; 44×44; z-index:999`).
+Proven in the headed run: after `mono-tv2` the overlay went `hidden=false`, then the click at canvas
+**(640,220)** opened `sparkle/motion/main.html` in a new tab + rewrote the exit href to
+`/sparkle/motion/index.html` (run log `output/golf/` + task log). So there is NO `_level`
+click-routing bug and NO assembly-timing issue to solve.
 
-**THEN (after the E advances):** street.swf (`_level4`, preloaded) + the sleepgolfing payoff on the
-green → **`license.swf` loads → 5s later the `[data-url]` overlay reveals** (stayed `hidden=true`
-through every run so far). EXIT: 1st click on `[data-url]` overlay → `news/pop4.html` popup; **2nd
-click → `/sparkle/motion/index.html`** (next section). Then encode all of L2 into
-`steps/donnie.steps.json` (reuse `detectClick`/`type`/overlay-neutralize; the bar half-click is a
-plain canvas click + a follow-up move-off; the TV-twice + E-click are plain canvas clicks).
+**EXIT mechanic (verified against `main.html:151-191`):**
+- The overlay is `hidden` until **5 s after `license.swf` loads** (`PerformanceObserver` → `fetch` ok →
+  `setTimeout(…removeAttribute('hidden'), 5000)`). `license.swf` only loads during the **monologue TV
+  clicks** (`mono-tv1`), so the exit is unavailable until after `mono-tv2`. WAIT for `[data-url]`
+  `hidden=false` before clicking — don't click the E region early.
+- Click handler (`clickCount`): **1st** click opens `/news/pop4.html` (news popup, new tab); **2nd+**
+  click `preventDefault()`s and sets href to `/sparkle/motion/index.html` → next section. (In the run
+  the click landed as a 2nd-click → went straight to sparkle/motion.)
+- ⚠️ The probe CRASHED on the *next* click (exit 1, `Target page… has been closed`) only because the
+  popup/navigation tore down the context mid-`drainPopups` — a probe-harness bug, NOT a game blocker.
+  When encoding this step: treat the overlay click as the terminal L2 action (expect a new tab / nav),
+  and stop driving canvas clicks after it.
+
+**TO ENCODE L2 into `steps/donnie.steps.json`:** intro squares → `go-level2` (draw.swf) → TV →
+ex1 FEAR → ex2 FEAR → monologue → **TV ×2 (loads license.swf)** → **poll `[data-url]` until
+`hidden=false`, then DOM-click `[data-url]` (or canvas ≈(640,220)) → `/sparkle/motion/index.html`**.
+Reuse `detectClick`/`type`/overlay-neutralize; bar half-click = plain canvas click + move-off; the
+TV-twice are plain canvas clicks. Prefer a real **DOM click on `[data-url]`** over a canvas coord so
+it's robust to canvas geometry.
 
 The full working CLICKS chain (steps 1–6 + TV-twice) lives in `src/probe-golf.js`.
 
@@ -504,7 +597,9 @@ it for all menu-and-after calibration instead of the ~60s real intro.
 2. **Lifeline puzzle (Level 2).** Requires the *correct* marks (wrong ones don't
    advance) — read the answer positions from `aid/lev2g.jpg` + the playthrough
    video before calibrating.
-3. **Right-click "play"** is needed in Sparkle Motion (step ~32); confirm.
+3. ~~**Right-click "play"** is needed in Sparkle Motion (step ~32); confirm.~~ ✅ RESOLVED 2026-06-02:
+   it's just a LEFT-CLICK to start the paused phase2_end.swf (Ruffle autoplay gate; no context menu —
+   `showmenu=false`). See the LEVEL 2 "ARCHITECTURE BREAKTHROUGH" section.
 
 ---
 
