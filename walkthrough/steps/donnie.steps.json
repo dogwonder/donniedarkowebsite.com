@@ -223,6 +223,32 @@
       "action": { "type": "click", "x": 400, "y": 250, "hoverMs": 200 },
       "awaitNavMs": 30000,
       "wait": { "mode": "fixed", "fixedMs": 3000 },
-      "note": "CALIBRATED 2026-06-02 (HEADED — see ⚠). A single LEFT-CLICK starts the paused phase2_end.swf (the aid's 'right-click→play' is just 'start it'; right-click shows no menu — `fscommand showmenu=false`). It then AUTOPLAYS the entire finale with NO further clicks (~22s: beams → Jim's license popup [45a rose st = the Level 3 password] → BURN DOWN p1-p6 fire-popup grid + dancers → auto-forward via getURL to /menu.html). Verified end-to-end via `src/probe-sparkle.js --observe --clickstart 400,250 --headed`: reds bloom bottom-right, spread across the dancers at ~t16s, then url→/menu.html at ~t26s. ⚠️ HEADED ONLY — headless Playwright-Ruffle STALLS on the donnie/beams frame and never advances (tried every click/key, `--resumetest`). So the walkthrough generation run MUST be headed (`cli.js --headed`). `awaitNavMs:30000` lets the runner wait for the auto-forward to /menu.html = end of Level 2. (Golf-tab beats 28-31 — sleepgolfing/wallet `ling ling`/sidewalk/red-lines — are skipped by this exit; documented in HANDOVER as optional TODO.)" }
+      "note": "CALIBRATED 2026-06-02 (HEADED — see ⚠). A single LEFT-CLICK starts the paused phase2_end.swf (the aid's 'right-click→play' is just 'start it'; right-click shows no menu — `fscommand showmenu=false`). It then AUTOPLAYS the entire finale with NO further clicks (~22s: beams → Jim's license popup [45a rose st = the Level 3 password] → BURN DOWN p1-p6 fire-popup grid + dancers → auto-forward via getURL to /menu.html). Verified end-to-end via `src/probe-sparkle.js --observe --clickstart 400,250 --headed`: reds bloom bottom-right, spread across the dancers at ~t16s, then url→/menu.html at ~t26s. ⚠️ HEADED ONLY — headless Playwright-Ruffle STALLS on the donnie/beams frame and never advances (tried every click/key, `--resumetest`). So the walkthrough generation run MUST be headed (`cli.js --headed`). `awaitNavMs:30000` lets the runner wait for the auto-forward to /menu.html = end of Level 2. (Golf-tab beats 28-31 — sleepgolfing/wallet `ling ling`/sidewalk/red-lines — are skipped by this exit; documented in HANDOVER as optional TODO.)" },
+
+    { "id": "l3-enter", "section": "Level 3 — From the Sky (the ending)",
+      "navigate": "/from/the/sky/main.html",
+      "caption": "Back at the menu, the Level 3 crosshair asks for a password — “the name of the street he lives in… like the flower” = rose (Jim's address, 45a Rose Street). It opens the final section, “from the sky”: a police car and men in suits, a figure lifting a chandelier — “they made me do it” — over a fallen jet engine.",
+      "action": { "type": "none" },
+      "wait": { "mode": "fixed", "fixedMs": 5000 },
+      "note": "CALIBRATED 2026-06-02. Live entry: menu → Level 3 'o' crosshair → password popup = `rose` → red-cross gateway /from/the/sky/index.html (new tab) → /from/the/sky/main.html (new tab). We navigate directly (drivable standalone: `<embed>` trampolin.swf 185f@30fps 800×500, autoplay; canvas BOTTOM-LEFT via `flex items-end`; mapper adapts). trampolin.swf autoplays a ~1.5s intro then STOPS on the 'they made me do it' scene awaiting the first click." },
+
+    { "id": "l3-middlesex", "section": "Level 3 — From the Sky (the ending)",
+      "caption": "In the date/location block (center-right) click the location — “Middlesex, Virginia,” the town from Jim's address. A Win98 popup opens with an x-ray of the chandelier.",
+      "action": { "type": "click", "x": 615, "y": 285, "hoverMs": 300 },
+      "wait": { "mode": "fixed", "fixedMs": 5000 },
+      "note": "CALIBRATED 2026-06-02 (owner video g_080). Clicking the 'Middlesex, Virginia' line in the location block @ canvas (615,285) loads lamp.swf = the chandelier popup window (canvas ~x510-660, y130-205). Block reads: date 10-02-1990 / 2310 Powderham Drive / Sarasota Heights / Middlesex, Virginia." },
+
+    { "id": "l3-telephone", "section": "Level 3 — From the Sky (the ending)",
+      "caption": "Click the telephone icon in the center of the chandelier popup. A spoiler warning + the “MISSING PLANE LOSES ENGINE” article open in a new tab (it closes), then the FAA Office of Accident Investigation document unfurls and “launch the document” begins playing the transcript of an extraordinary phone call.",
+      "action": { "type": "click", "x": 610, "y": 180, "hoverMs": 500 },
+      "wait": { "mode": "fixed", "fixedMs": 16000 },
+      "note": "CALIBRATED 2026-06-02 (HEADED — see ⚠). The telephone icon = CENTER of the chandelier window @ canvas (610,180) → getURL news/pop6.html (the engine article, NEW TAB; runner captures + closes it). Then the FAA document + '>>> LAUNCH THE DOCUMENT' button appear on the canvas, and in HEADED mode the movie AUTO-PROCEEDS: launch-the-document loads phone.swf into _level1 and the transcript plays (FAA header → '[CALLER 1]: Hello?' …). ⚠️ HEADLESS Ruffle does NOT advance here (the FAA doc never appears) — like the L2 finale, HEADED-ONLY. NB (600,150) misses high onto the title bar. fixed 16000 captures the transcript starting; the long ending is the next step." },
+
+    { "id": "l3-ending", "section": "Level 3 — From the Sky (the ending)",
+      "captureBefore": false,
+      "caption": "The transcript reads out the impossible: an exact-replica jet engine — serial numbers and hand-painted spiral matching a 747 that landed safely in San Francisco on October 2, 1988 — before the line goes dead. The engine sinks into red spirals and the screen turns to its last words: “time is up, donnie.” THE END.",
+      "action": { "type": "none" },
+      "wait": { "mode": "fixed", "fixedMs": 145000 },
+      "note": "CALIBRATED 2026-06-02 (HEADED). After the transcript (phone.swf in _level1, ~2min; text from phone.html/transcript.html — the 'exact-replica engine fell from a plane that landed safely Oct 2 1988' paradox) the screen AUTO-CHANGES to 'time is up, donnie.' (engine + red spirals; owner video g_640 ~t160s) = the END of the whole game. No click needed (aid: 'after this the screen automatically changes'). fixed ~145000 lets the transcript play out to the ending — tune from the headed validation run. HEADED-only." }
   ]
 }

@@ -550,6 +550,59 @@ last-mile coordinates that need eyes-on.
 
 ---
 
+## LEVEL 3 — "from the sky" / the engine mystery (the game's ENDING) — IN PROGRESS 2026-06-02
+
+Owner-provided reference video: `~/Desktop/CleanShot 2026-06-02 at 16.53.08.mp4` (167s; 1fps
+frames `/tmp/ddL3`, 4fps `/tmp/ddL34`). Aid guide = `src/aid/aid8-9.html` (steps 37-43). Probe:
+`src/probe-sky.js` (observe/clickstart/rightclick/CLICKS), output `output/sky/`.
+
+**ENTRY:** menu → click the Level 3 "o" crosshair → password popup ("the name of the street he
+lives in… like the flower") = **`rose`** → red-cross gateway `/from/the/sky/index.html` (new tab,
+`<a href="main.html">`) → **`/from/the/sky/main.html`** (new tab). Two-tab pattern like L2 — drive
+the finale by navigating to main.html directly (drivable standalone).
+
+**`main.html` / `trampolin.swf`** (185f@30fps, 800×500, `<embed>` autoplay; canvas BOTTOM-LEFT via
+`flex items-end`; mapper adapts). Click-driven (many Stops): autoplays a ~1.5s intro then STOPS on
+the **"they made me do it"** scene (police car + men, a red figure holding a chandelier, the
+date/location block center-right). Loads `lamp.swf` (chandelier) + `phone.swf` (transcript, into
+`_level1`). getURL targets: `../../../news/pop6.html` (article) + `phone.swf`→`_level1`.
+
+**CALIBRATED (standalone, probe-sky.js):**
+- **`middlesex`** — click the **"Middlesex, Virginia" line** in the date/location block @ canvas
+  **(615,285)** → loads `lamp.swf` = the **chandelier popup** window (canvas ~x510-660, y130-205).
+  (Video g_080: cursor on Middlesex; block reads date 10-02-1990 / 2310 Powderham Drive / Sarasota
+  Heights / Middlesex, Virginia.)
+- **`phone`** — click the **telephone icon = CENTER of the chandelier popup** @ canvas **(610,180)**
+  → opens **`news/pop6.html`** ("MISSING PLANE LOSES ENGINE" article + a JS "WARNING!" spoiler
+  dialog), NEW TAB. (Owner: "click anywhere on the win98 window / the telephone in the center.")
+  ⚠️ The center is ~(610,180); (600,150) was too high — hit the title bar, no-op.
+
+**FLOW (owner-confirmed) + remaining gap:**
+1. middlesex (615,285) → chandelier popup.
+2. telephone center (610,180) → `pop6.html` article opens (new tab). **CLOSE pop6** (runner auto-drains).
+3. **"launch the document"** (owner-shown: the red `>>> LAUNCH THE DOCUMENT` text at the BOTTOM, to the
+   RIGHT of the FAA document block that appears on the canvas after the telephone click). In HEADED mode
+   the trampolin movie AUTO-PROCEEDS through this — the FAA doc + launch-document appear and `phone.swf`
+   loads into `_level1` (the transcript) without a separate click. `phone.html`/`transcript.html` hold the
+   FAA transcript text (flashvars for phone.swf) = the engine call ("exact-replica engine fell from a
+   plane that landed safely Oct 2 1988"; owner pasted full text — used for the l3-ending caption).
+4. transcript plays (phone.swf in `_level1`, ~2min) → auto-changes →
+5. **"time is up, donnie."** (engine + red spirals; video g_640 ~t160s) = THE END of the game.
+
+⚠️ **FLAKY in automation (2026-06-02):** the telephone click is double-action — it ALWAYS opens pop6,
+but only SOMETIMES advances trampolin to the FAA doc/transcript. One headed run (settle 12s) showed the
+FAA doc + "[CALLER 1]: Hello?"; another (settle 150s) loaded NO phone.swf and stayed on the chandelier
+popup the whole time. And HEADLESS never advances (like the L2 finale). So the post-telephone advance is
+HEADED + non-deterministic — needs hardening (maybe wait for pop6 to fully close, or a precise/second
+click, or detect the FAA doc and retry). Validate in the full headed runner, which may behave differently.
+
+✅ **ENCODED into `steps/donnie.steps.json` (2026-06-02):** 4 steps `l3-enter` (navigate
+/from/the/sky/main.html) → `l3-middlesex` (615,285) → `l3-telephone` (610,180) → `l3-ending` (none, long
+wait → "time is up"). 39 steps total. The l3-ending `fixedMs:145000` (transcript duration) is a guess —
+TUNE from a clean headed validation run, and HARDEN the flaky l3-telephone advance.
+
+---
+
 ## How to run / resume
 
 ```bash
