@@ -23,11 +23,23 @@ A complete, working tool (`walkthrough/`) drives the Ruffle/Flash Donnie Darko
 playthrough with Playwright and generates a self-contained `output/walkthrough.html`
 (before/after canvas captures + popup-tab panels) plus a session video.
 
-**NOW REACHES THE END OF LEVEL 1 (22 steps, `steps/donnie.steps.json`).** As of
-2026-06-01 the runner drives the homepage all the way to the Tangent Universe's
-"password to level 2" window (= `breathe`, Level 1 complete). The 2026-05-31 milestone
-below (15 steps → Tangent Universe entry) is the earlier checkpoint; steps `tu-window-1`
-… `tu-breathe` continue from there — see "BLOCKER SOLVED" + "ENCODED IN THE RUNNER".
+**▶ YOU ARE HERE (2026-06-02): ALL THREE LEVELS ENCODED — 39 steps in `steps/donnie.steps.json`.**
+Homepage → L1 (tangent → `breathe`) → L2 (sleep-golfing lifeline → Sparkle Motion "burn it down" →
+`/menu.html`) → L3 (from the sky → engine-mystery transcript → "time is up, donnie" = the END).
+L1 + L2 validated end-to-end; L3 entry/middlesex/telephone calibrated. Committed to `main`
+(branch `walkthrough-level-2`, commits `647cc0a9` L2 + `55e7d8d8` L3). See the **LEVEL 2** and
+**LEVEL 3** sections below for per-step detail.
+
+**NEXT SESSION — the one remaining task:** run the **full HEADED walkthrough** `node src/cli.js
+--headed` (MUST be headed — the L2 Sparkle finale and the L3 transcript both stall headless). Watch
+L3: (a) confirm `l3-telephone` reliably advances to the FAA doc/transcript — it's FLAKY in the probe
+(double-action: always opens pop6, only sometimes advances); if flaky in the runner too, harden it
+(wait for pop6 to fully close / detect the FAA doc + retry). (b) Tune `l3-ending`'s `fixedMs` (currently
+a 145s guess) to the real transcript→"time is up" duration. Then regenerate `output/walkthrough.html`.
+Optional polish: golf-tab beats 28-31 (sleepgolfing/`ling ling` wallet/sidewalk) skipped by the L2 exit.
+
+(History: the 2026-06-01 milestone was "end of Level 1, 22 steps → the tangent 'password to level 2'
+window"; steps `tu-window-1`…`tu-breathe` — see "BLOCKER SOLVED" + "ENCODED IN THE RUNNER".)
 
 **Earlier checkpoint (15 steps) — reaches the Tangent Universe:**
 1–7. **Intro** — bullseye montage → `.proceed.` → "otherwise proceed here" →
