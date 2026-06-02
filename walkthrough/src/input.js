@@ -196,6 +196,30 @@ export async function performAction(page, canvas, ruffleCfg, action, log = () =>
       return `reveal-and-click (${did} taps)`;
     }
 
+    case "domClick": {
+      // Click a real HTML element (CSS selector), NOT a canvas coord. Some sections
+      // gate progress on a transparent HTML <a> overlay floated over the Ruffle stage
+      // (z-index 999) — e.g. Level 2's `[data-url]` exit link, revealed a few seconds
+      // after license.swf loads. Clicking the DOM element is robust to canvas geometry
+      // and to the overlay sitting on top of the SWF. `waitVisibleMs` polls for the
+      // element to become visible first (it starts `hidden`); `repeat` re-clicks (the
+      // exit link rewrites its own href on the 2nd click).
+      const selector = action.selector;
+      if (!selector) throw new Error("domClick: action.selector is required");
+      if (action.waitVisibleMs) {
+        await page.waitForSelector(selector, { state: "visible", timeout: action.waitVisibleMs })
+          .catch(() => log(`domClick: ${selector} not visible within ${action.waitVisibleMs}ms — clicking anyway`));
+      }
+      const repeat = Math.max(1, action.repeat ?? 1);
+      const interval = action.repeatIntervalMs ?? 600;
+      for (let r = 0; r < repeat; r++) {
+        await page.click(selector, { timeout: action.timeoutMs ?? 5000, force: action.force ?? false });
+        if (r < repeat - 1) await page.waitForTimeout(interval);
+      }
+      log(`domClick ${selector}${repeat > 1 ? ` ×${repeat}` : ""}`);
+      return `click the “${selector}” element${repeat > 1 ? ` ×${repeat}` : ""}`;
+    }
+
     default:
       throw new Error(`Unknown action type: ${action.type}`);
   }

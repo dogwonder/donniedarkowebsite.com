@@ -71,11 +71,12 @@ const CLICKS = [
   { label: "ex2-fear-left", x: 260, y: 323, settle: 3500 }, // Exercise #2 answer = FEAR (left half)
   { label: "ex2-moveaway", x: 700, y: 120, settle: 5000 },  // evaluate → observe what follows exercise 2
   { label: "mono-tv1", x: 623, y: 418, settle: 6000 },   // monologue: click TV → text filters in
-  { label: "mono-tv2", x: 623, y: 418, settle: 7000 },   // click TV again → WAKE UP DONNIE letter-windows
-  { label: "click-E-donnie", x: 590, y: 210, settle: 7000 },// click the "E" of DONNIE (bottom-right window) → advances scene
-  { label: "post-E-wait", x: 700, y: 120, settle: 9000 },   // watch for street.swf / license.swf / [data-url] reveal
-  { label: "post-E-wait2", x: 700, y: 120, settle: 9000 },
-  { label: "post-E-tv", x: 623, y: 418, settle: 7000 },     // TV if it gates further
+  { label: "mono-tv2", x: 623, y: 418, settle: 8000 },   // click TV again → WAKE UP DONNIE letter-windows
+  // aid step 27: "click inside one of the windows → screen forwards". Test LEFT windows
+  // (clear of the [data-url] overlay at right ~x640). If one forwards, the tail-observe
+  // below shows step 28 (sleepgolfing "do you think he was sleepgolfing?" → click donnie).
+  { label: "win-U", x: 55, y: 125, settle: 5000 },   // 'U' window (row2 far-left)
+  { label: "win-W", x: 55, y: 60, settle: 5000 },    // 'W' window (row1 far-left)
 ];
 // ────────────────────────────────────────────────────────────────────────────────
 
@@ -222,6 +223,52 @@ for (const c of CLICKS) {
   W(`${pad(i)}-${c.label}-grid.png`, await captureCanvas(page, canvas, cfg.ruffle));
   await clearGrid(page);
   console.log(`   ↳ wrote ${pad(i)}-${c.label}-{clean,grid}.png  (url: ${page.url()})`);
+}
+
+// ─── TAIL OBSERVE: watch the scene evolve AFTER WAKE UP DONNIE (aid steps 28-31) ───
+// The WAKE UP DONNIE windows are transient — they dissolve into the sleepgolfing /
+// red-lines scene on their own. Capture gridded frames so the post-windows hotspots
+// (click donnie / white arrow / sidewalk o-dot / blinking red line-tip) can be read
+// against the owner's reference video. Default ON; the overlay EXIT is opt-in (--exit)
+// because it SHORTCUTS straight to sparkle/motion and skips steps 28-31.
+if (!has("--noTail")) {
+  const tn = parseInt(opt("--tailFrames", "10"), 10);
+  const ti = parseInt(opt("--tailInterval", "1500"), 10);
+  console.log(`\n▶ TAIL observe: ${tn} frames every ${ti}ms (post-WAKE-UP-DONNIE)`);
+  for (let f = 0; f < tn; f++) {
+    await suppressRuffleOverlays(page);
+    const shot = await captureCanvas(page, canvas, cfg.ruffle);
+    const reds = detectRed(shot, cfg.ruffle.canvasSize).filter((d) => d.pixels <= 40);
+    console.log(`  [tail t=${(f * ti / 1000).toFixed(1)}s] small-red: ` +
+      (reds.length ? reds.slice(0, 5).map((d) => `(${d.canvasX},${d.canvasY})·${d.pixels}`).join("  ") : "none"));
+    W(`tail-${pad(f)}-clean.png`, shot);
+    await drawGrid(page, canvas, cfg.ruffle, 50);
+    W(`tail-${pad(f)}-grid.png`, await captureCanvas(page, canvas, cfg.ruffle));
+    await clearGrid(page);
+    await reportDataUrl(`tail-t${f}`);
+    await drainPopups(`tail-${pad(f)}`);
+    await page.waitForTimeout(ti);
+  }
+  console.log(`   ↳ tail frames in output/golf/tail-*`);
+}
+
+// ─── EXIT (OPT-IN, --exit): the [data-url] HTML overlay shortcut to sparkle/motion ───
+// 1st click opens the pop4 news popup; clicking it is the SHORTCUT Level-2 exit
+// (a 2nd click rewrites href → /sparkle/motion/index.html). Skips aid steps 28-31.
+if (has("--exit")) {
+console.log(`\n▶ EXIT: waiting for [data-url] overlay to reveal…`);
+try {
+  await page.waitForSelector("[data-url]", { state: "visible", timeout: 12000 });
+  await reportDataUrl("exit-pre");
+  await page.click("[data-url]", { timeout: 5000 });
+  await page.waitForTimeout(1500);
+  await drainPopups("exit");
+  await reportDataUrl("exit-post");
+  W("99-exit-clean.png", await captureCanvas(page, canvas, cfg.ruffle));
+  console.log(`   ↳ exit overlay clicked → wrote 99-exit-clean.png`);
+} catch (e) {
+  console.log(`   ⚠ exit overlay: ${e.message}`);
+}
 }
 
 console.log(`\n✔ wrote screenshots to output/golf/`);
