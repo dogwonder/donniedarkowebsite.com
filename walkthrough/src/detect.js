@@ -28,7 +28,7 @@ import { decode } from "./diff.js";
  *   the `breathe` word, not just saturated crosshairs).
  */
 export function detectRed(pngBuf, canvasSize, opts = {}) {
-  const { band = null, minPixels = 4, loose = false } = opts;
+  const { band = null, minPixels = 4, maxPixels = Infinity, loose = false } = opts;
   const img = decode(pngBuf);
   const { width, height, data } = img;
   const sx = canvasSize.width / width, sy = canvasSize.height / height;
@@ -50,7 +50,7 @@ export function detectRed(pngBuf, canvasSize, opts = {}) {
     if (!c) { c = { sumX: 0, sumY: 0, n: 0, cx: x, cy: y }; clusters.push(c); }
     c.sumX += x; c.sumY += y; c.n++; c.cx = c.sumX / c.n; c.cy = c.sumY / c.n;
   }
-  return clusters.filter((c) => c.n >= minPixels)
+  return clusters.filter((c) => c.n >= minPixels && c.n <= maxPixels)
     .map((c) => ({ canvasX: Math.round(c.cx * sx), canvasY: Math.round(c.cy * sy), pixels: c.n }))
     .sort((a, b) => b.pixels - a.pixels);
 }

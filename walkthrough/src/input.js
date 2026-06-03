@@ -193,6 +193,7 @@ export async function performAction(page, canvas, ruffleCfg, action, log = () =>
           band: action.band ?? null,
           loose: action.loose ?? false,
           minPixels: action.minPixels ?? 4,
+          maxPixels: action.maxPixels ?? Infinity, // cap so a big persistent red graphic (zigzag/glow) doesn't outrank a small chapter dot
         });
         let target = reds[0]; // largest cluster
         if (!target && (typeof action.x === "number")) target = { canvasX: action.x, canvasY: action.y };

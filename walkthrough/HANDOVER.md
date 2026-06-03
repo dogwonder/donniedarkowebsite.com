@@ -51,8 +51,22 @@ ZERO popup warnings, all steps settled, and captures the true ending. `output/wa
 
 **OPTIONAL NEXT:** (a) Tune `l3-ending` `fixedMs` (currently a 145s CEILING; settle now exits early/safe,
 but measuring the true transcript→ending duration would trim the run). (b) golf-tab beats 28–31
-(sleepgolfing/`ling ling` wallet/sidewalk) are still skipped by the L2 sparkle navigate. (c) Commit:
-working tree has the fixes + the new 40-step `donnie.steps.json` (not yet committed).
+(sleepgolfing/`ling ling` wallet/sidewalk) are still skipped by the L2 sparkle navigate.
+(c) **Philosophy-of-Time-Travel CHAPTER CROSSHAIRS (PARKED 2026-06-03, owner: optional narrative).**
+The current tangent flow goes tu-smurf → tu-breathe and SKIPS the red chapter-dot crosshairs that reveal
+the book chapters. GROUNDWORK DONE this session (probe `src/test-chapters.js`): after tu-smurf the chapter
+dot is a SMALL red cluster (~3–5px, RANDOM position) on the LEFT, competing with a big persistent red
+zigzag (~60px, lower-left). Added **`maxPixels`** to `detectRed`/`detectClick` (`src/detect.js`,
+`src/input.js`) so `detectClick {band:{x0:0,x1:330,y0:0,y1:500}, minPixels:2, maxPixels:20}` reliably
+locks the small dot (e.g. (53,126)) and ignores the zigzag — VERIFIED clicking it (each click spawns the
+next dot). ⚠️ BUT while the 4 Smurf windows are up the chapter TEXT renders on the book page (RIGHT) which
+is HIDDEN behind them → no legible reveal. The legible state is POST-breathe: close the "password to level
+2" window → Smurf windows clear → book page visible → THEN the dots render chapters. To finish: calibrate
+the password-window close (detect its navy titlebar X), then `detectClick` 2–4 dots capturing each chapter
+(text legibility at canvas res is unverified; full book is transcribed in `THE-PHILOSOPHY-OF-TIME-TRAVEL.md`
+for captions). Insert as `tu-close-password` + `tu-chapter-N` BETWEEN tu-breathe and l2-enter.
+(d) Commit: 40-step flow + L3 fix committed on branch `walkthrough-full-game-fix` (`69687589`); the chapter
+groundwork (maxPixels + test-chapters + this note) is a follow-up.
 
 (History: 2026-06-02 = "all 3 levels encoded, 39 steps" but the full run had never completed — the
 tangent derail + L3 telephone + crash races blocked it. This session closed all of them.)
