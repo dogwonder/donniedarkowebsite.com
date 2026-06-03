@@ -1,14 +1,19 @@
 // HTML generator: turn a run manifest + captured screenshots into a single
 // self-contained walkthrough.html (images inlined as base64 data URIs).
 
-import { readFileSync, writeFileSync, existsSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync, statSync } from "node:fs";
 import { join } from "node:path";
 
 const esc = (s) =>
   String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
-function dataUri(file) {
-  if (!file || !existsSync(file)) return null;
+// `name` is the bare screenshot filename (may be null/empty for steps with
+// captureBefore:false). Guard against empty — join(dir, "") would resolve to the
+// directory itself, which exists but isn't a file (EISDIR on read).
+function dataUri(dir, name) {
+  if (!name) return null;
+  const file = join(dir, name);
+  if (!existsSync(file) || !statSync(file).isFile()) return null;
   return "data:image/png;base64," + readFileSync(file).toString("base64");
 }
 
@@ -25,9 +30,9 @@ export function generateHtml({ manifest, outDir, htmlName, title }) {
       lastSection = step.section;
     }
 
-    const before = dataUri(join(shotsDir, step.before ?? ""));
-    const after = dataUri(join(shotsDir, step.after ?? ""));
-    const popups = (step.popups ?? []).map((p) => ({ uri: dataUri(join(shotsDir, p.file)), url: p.url })).filter((p) => p.uri);
+    const before = dataUri(shotsDir, step.before);
+    const after = dataUri(shotsDir, step.after);
+    const popups = (step.popups ?? []).map((p) => ({ uri: dataUri(shotsDir, p.file), url: p.url })).filter((p) => p.uri);
     const flags = [];
     if (step.navigate) flags.push(`<span class="flag nav">↪ ${esc(step.navigate)}</span>`);
     if (step.wait && !step.wait.settled) flags.push(`<span class="flag warn">settle timed out</span>`);

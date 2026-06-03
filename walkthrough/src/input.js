@@ -48,18 +48,69 @@ export async function performAction(page, canvas, ruffleCfg, action, log = () =>
       // release fires. hoverMs moves the pointer onto the target and dwells there
       // so the button enters its "over" state before we click.
       const hoverMs = action.hoverMs ?? 0;
+      // stopOnNav: for fade-in hotspots that need several taps to register but then
+      // NAVIGATE (e.g. a Flash getURL chain). Once the URL changes, further taps would
+      // land on the NEXT page and blow it through — so halt the repeat the moment the
+      // first click takes effect. The clicks themselves may also race the navigation
+      // tearing down the context; swallow that and stop.
+      const startUrl = action.stopOnNav ? page.url() : null;
       for (let r = 0; r < repeat; r++) {
-        if (hoverMs) {
-          await page.mouse.move(x, y);
-          await page.waitForTimeout(hoverMs);
+        if (action.stopOnNav && r > 0 && page.url() !== startUrl) break;
+        try {
+          if (hoverMs) {
+            await page.mouse.move(x, y);
+            await page.waitForTimeout(hoverMs);
+          }
+          if (action.type === "doubleclick") await page.mouse.dblclick(x, y, opts);
+          else await page.mouse.click(x, y, opts);
+        } catch (err) {
+          if (action.stopOnNav && /closed|navigation|context was destroyed/i.test(err.message)) break;
+          throw err;
         }
-        if (action.type === "doubleclick") await page.mouse.dblclick(x, y, opts);
-        else await page.mouse.click(x, y, opts);
         if (r < repeat - 1) await page.waitForTimeout(interval);
       }
       log(`${action.type} ${button} @ canvas(${action.x},${action.y})${repeat > 1 ? ` ×${repeat}` : ""} → page(${Math.round(x)},${Math.round(y)})`);
       const verb = action.type === "doubleclick" ? "double-click" : "click";
       return `${button === "left" ? "" : button + "-"}${verb}${repeat > 1 ? ` ×${repeat}` : ""} at (${action.x}, ${action.y})`;
+    }
+
+    case "clickUntilNet": {
+      // Click a hotspot that fires an unreliable Flash getURL/loadMovie, RETRYING
+      // until the awaited resource actually loads (detected via a network request).
+      // The L3 telephone is the case this exists for: every click opens the pop6
+      // news tab, but the `getURL phone.swf → _level1` (the FAA transcript) only
+      // fires SOMETIMES — so we re-click until `phone.swf` is requested. Each click
+      // spawns a pop6 tab; we close stray tabs between attempts (the owner's "click
+      // again with pop6 closed"). The runner's own popup drain captures pop6 once.
+      const { x, y } = map(action.x, action.y);
+      const target = action.until;                 // substring matched against request URLs
+      const maxClicks = Math.max(1, action.maxClicks ?? 6);
+      const gapMs = action.gapMs ?? 4000;
+      const hoverMs = action.hoverMs ?? 0;
+      const ctx = page.context();
+      let hit = false;
+      const onReq = (req) => { if (target && req.url().includes(target)) hit = true; };
+      page.on("request", onReq);
+      let clicks = 0;
+      try {
+        for (let r = 0; r < maxClicks && !hit; r++) {
+          // Close stray popup tabs from the previous attempt (keep the main page).
+          for (const p of ctx.pages()) if (p !== page) { try { await p.close(); } catch { /* gone */ } }
+          if (hoverMs) { await page.mouse.move(x, y); await page.waitForTimeout(hoverMs); }
+          try { await page.mouse.click(x, y); } catch (e) { if (!/closed|navigation|destroyed/i.test(e.message)) throw e; }
+          clicks++;
+          try {
+            for (let w = 0; w < gapMs && !hit; w += 200) await page.waitForTimeout(200);
+          } catch (e) {
+            if (/closed|navigation|destroyed/i.test(e.message)) break; // page torn down between clicks
+            throw e;
+          }
+        }
+      } finally {
+        page.off("request", onReq);
+      }
+      log(`clickUntilNet @ canvas(${action.x},${action.y}) ×${clicks} → ${target} ${hit ? "loaded ✓" : "NOT loaded ✗ (gave up)"}`);
+      return `click (${action.x}, ${action.y}) until ${target} loads${hit ? "" : " (did not load)"}`;
     }
 
     case "move": {

@@ -23,20 +23,39 @@ A complete, working tool (`walkthrough/`) drives the Ruffle/Flash Donnie Darko
 playthrough with Playwright and generates a self-contained `output/walkthrough.html`
 (before/after canvas captures + popup-tab panels) plus a session video.
 
-**▶ YOU ARE HERE (2026-06-02): ALL THREE LEVELS ENCODED — 39 steps in `steps/donnie.steps.json`.**
-Homepage → L1 (tangent → `breathe`) → L2 (sleep-golfing lifeline → Sparkle Motion "burn it down" →
-`/menu.html`) → L3 (from the sky → engine-mystery transcript → "time is up, donnie" = the END).
-L1 + L2 validated end-to-end; L3 entry/middlesex/telephone calibrated. Committed to `main`
-(branch `walkthrough-level-2`, commits `647cc0a9` L2 + `55e7d8d8` L3). See the **LEVEL 2** and
-**LEVEL 3** sections below for per-step detail.
+**▶ YOU ARE HERE (2026-06-03): FULL GAME VALIDATED END-TO-END — 40 steps, clean run to "time is up,
+donnie."** A complete `node src/cli.js --headed` run drives all 40 steps with ZERO action failures,
+ZERO popup warnings, all steps settled, and captures the true ending. `output/walkthrough.html` (15MB,
+40 sections) + session video regenerated. THREE bugs fixed this session — see below.
 
-**NEXT SESSION — the one remaining task:** run the **full HEADED walkthrough** `node src/cli.js
---headed` (MUST be headed — the L2 Sparkle finale and the L3 transcript both stall headless). Watch
-L3: (a) confirm `l3-telephone` reliably advances to the FAA doc/transcript — it's FLAKY in the probe
-(double-action: always opens pop6, only sometimes advances); if flaky in the runner too, harden it
-(wait for pop6 to fully close / detect the FAA doc + retry). (b) Tune `l3-ending`'s `fixedMs` (currently
-a 145s guess) to the real transcript→"time is up" duration. Then regenerate `output/walkthrough.html`.
-Optional polish: golf-tab beats 28-31 (sleepgolfing/`ling ling` wallet/sidewalk) skipped by the L2 exit.
+**WHAT WAS BROKEN & FIXED (2026-06-03):**
+1. **Tangent derail (the "new tabs taking us back" bug).** `l1-timetravel` repeat-clicked 5× through
+   the getURL chain (book.swf → `/the/index.html` → meta-refresh → `/the/tangent/index.html` smurf.swf),
+   blowing the smurf page through to `is_unstable.html` where philosophy.swf auto-played past every
+   calibrated coord — bouncing the main tab to `/menu.html` and spawning runaway level-gateway tabs.
+   FIX: new `stopOnNav:true` click option (`src/input.js`) halts the repeat the instant the first click
+   navigates. Steps 13–22 now land correctly (smurf remember/one/word → Frank → philosophy windows →
+   smurf grid → breathe → "password to level 2").
+2. **L3 telephone never advanced (the real "last mile").** The OLD steps had the wrong telephone coord
+   AND were MISSING the launch-document step. Owner manual-demo recorder (`src/record-sky.js` →
+   `output/record-sky.log`) caught the truth: middlesex=`(665,295)`→lamp.swf, telephone=`(663,244)`→pop6,
+   and the ADVANCE is a SEPARATE ">>> LAUNCH THE DOCUMENT" click at the BOTTOM `(365,452)` → phone.swf
+   transcript. NEW step `l3-launch-document` + new `clickUntilNet` action (`src/input.js`) that re-clicks
+   until the awaited SWF loads over the network. ✅ Works HEADLESS too — the old "HEADED-only" belief was
+   a wrong-coordinate artifact, NOT a Ruffle stall.
+3. **Three crash sites on nav/close races** (`suppressRuffleOverlays`, the `awaitNavMs` wait loop, and
+   `settle` fixed-mode) all threw uncaught "Target page has been closed" exceptions — closing the browser
+   or an auto-forward killed the whole run. FIXED: each now swallows nav/close races; `settle` fixed-mode
+   polls in chunks and keeps the last good frame. Plus a generate.js EISDIR bug (empty `before` filename
+   for captureBefore:false steps resolved to the screenshots DIR) — fixed in `dataUri`.
+
+**OPTIONAL NEXT:** (a) Tune `l3-ending` `fixedMs` (currently a 145s CEILING; settle now exits early/safe,
+but measuring the true transcript→ending duration would trim the run). (b) golf-tab beats 28–31
+(sleepgolfing/`ling ling` wallet/sidewalk) are still skipped by the L2 sparkle navigate. (c) Commit:
+working tree has the fixes + the new 40-step `donnie.steps.json` (not yet committed).
+
+(History: 2026-06-02 = "all 3 levels encoded, 39 steps" but the full run had never completed — the
+tangent derail + L3 telephone + crash races blocked it. This session closed all of them.)
 
 (History: the 2026-06-01 milestone was "end of Level 1, 22 steps → the tangent 'password to level 2'
 window"; steps `tu-window-1`…`tu-breathe` — see "BLOCKER SOLVED" + "ENCODED IN THE RUNNER".)

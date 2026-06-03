@@ -23,9 +23,31 @@ export async function settle(page, canvas, ruffleCfg, cfg, log = () => {}) {
   }
 
   if (mode === "fixed") {
-    await page.waitForTimeout(cfg.fixedMs ?? 1000);
-    const frame = await captureCanvas(page, canvas, ruffleCfg, cfg.region);
-    return { settled: true, mode, waitedMs: nowFn() - start, samples: 1, finalDiff: null, frame };
+    // Poll in chunks instead of one long sleep, capturing a fresh frame each chunk
+    // and KEEPING the last good one. Some end-of-section scenes (e.g. the L3 "time
+    // is up, donnie" ending) auto-forward or close the tab partway through the wait
+    // — a single waitForTimeout(145000) then throws "Target page has been closed".
+    // Here we stop gracefully on teardown and return the final captured frame, so
+    // the ending is preserved rather than lost to a crash. fixedMs is thus a CEILING,
+    // not a fixed dwell: the natural page close/navigation ends the wait early.
+    const total = cfg.fixedMs ?? 1000;
+    const chunk = Math.min(2000, total);
+    let frame = await captureCanvas(page, canvas, ruffleCfg, cfg.region);
+    let samples = 1;
+    for (let waited = 0; waited < total; waited += chunk) {
+      try {
+        await page.waitForTimeout(Math.min(chunk, total - waited));
+        frame = await captureCanvas(page, canvas, ruffleCfg, cfg.region);
+        samples++;
+      } catch (err) {
+        if (/closed|navigation|context was destroyed/i.test(err.message)) {
+          log(`fixed-wait ended early after ${nowFn() - start}ms (page torn down — keeping last frame).`);
+          return { settled: true, mode, waitedMs: nowFn() - start, samples, finalDiff: null, frame };
+        }
+        throw err;
+      }
+    }
+    return { settled: true, mode, waitedMs: nowFn() - start, samples, finalDiff: null, frame };
   }
 
   const {

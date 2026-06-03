@@ -36,7 +36,8 @@ const CLICKS = [
   // aid 39: click the location "Middlesex, Virginia" line in the date/location block
   // (center-right, just below the date ~ canvas (620,205)). Video g_080: cursor on Middlesex.
   { label: "middlesex", x: 615, y: 285, hoverMs: 300, settle: 5000, delayBeforeMs: 2500 },  // → chandelier popup (lamp.swf) ✓
-  { label: "phone", x: 610, y: 180, hoverMs: 500, settle: 18000 },  // telephone = CENTER of chandelier window → pop6 (closed). HEADED: usually advances to FAA doc + transcript, but FLAKY (sometimes stays on chandelier popup — see HANDOVER). bump settle to watch the ending.
+  { label: "phone1", x: 610, y: 180, hoverMs: 500, settle: 4000 },   // 1st telephone click → pop6 news tab (closed by drain). Owner: first click = new tab.
+  { label: "phone2", x: 610, y: 180, hoverMs: 500, settle: 16000 },  // 2nd telephone click → FAA doc + transcript (owner: second click = FAA doc). Testing the two-click hypothesis.
 ];
 // ────────────────────────────────────────────────────────────────
 

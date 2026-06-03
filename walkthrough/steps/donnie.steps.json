@@ -84,10 +84,10 @@
 
     { "id": "l1-timetravel", "section": "Level 1 — The Guide",
       "caption": "Click the red “DO YOU BELIEVE IN TIME TRAVEL ?” question. The site navigates into the Tangent area: a dark room where the shadowy figure of Frank looms behind three Win98 pop-up windows spelling out a phrase — “remember”, “one”, “word”.",
-      "action": { "type": "click", "x": 646, "y": 311, "hoverMs": 250, "repeat": 5, "repeatIntervalMs": 2000 },
+      "action": { "type": "click", "x": 646, "y": 311, "hoverMs": 250, "repeat": 5, "repeatIntervalMs": 2000, "stopOnNav": true },
       "awaitNavMs": 8000,
       "wait": { "mode": "fixed", "fixedMs": 5000 },
-      "note": "CALIBRATED 2026-05-31. Red-detected question text at canvas (646,311). This click NAVIGATES to a NEW page/SWF (the tangent area; a fresh Ruffle instance loads) — it is NOT a same-page transition. The three boxes read 'remember / one / word' (matches aid l215.jpg / step 13). NAVIGATION BOUNDARY: the next steps run on the new page in the live flow; do NOT use a `navigate` reload here — the tangent SWF is inert when loaded standalone. The hardware-accel overlay re-appears after the nav and must be re-suppressed before the next click." },
+      "note": "CALIBRATED 2026-05-31; stopOnNav added 2026-06-03. Red-detected question text at canvas (646,311). This click NAVIGATES via a getURL chain: book.swf → /the/index.html → (meta-refresh) → /the/tangent/index.html (smurf.swf: the 'remember / one / word' windows). The question fades in, so we tap up to 5×, but `stopOnNav:true` HALTS the repeat the instant the first tap navigates — WITHOUT it the extra taps land on the smurf page and blow it through to universe/is_unstable.html, skipping steps 14–15. NAVIGATION BOUNDARY: next steps run on smurf.swf in the live flow; do NOT `navigate` (the SWF is inert standalone). Overlays are re-suppressed after the nav." },
 
     { "id": "tangent-remember-one-word", "section": "Level 1 — Tangent",
       "caption": "Three Win98 pop-up windows are open, spelling the phrase “remember / one / word”. Close the first window (“remember”) using the X in its title bar. All three windows close together and a new pop-up appears, lower-right: the shadowy figure of Frank with a single word — “smurf”. Remember it.",
@@ -234,21 +234,27 @@
 
     { "id": "l3-middlesex", "section": "Level 3 — From the Sky (the ending)",
       "caption": "In the date/location block (center-right) click the location — “Middlesex, Virginia,” the town from Jim's address. A Win98 popup opens with an x-ray of the chandelier.",
-      "action": { "type": "click", "x": 615, "y": 285, "hoverMs": 300 },
-      "wait": { "mode": "fixed", "fixedMs": 5000 },
-      "note": "CALIBRATED 2026-06-02 (owner video g_080). Clicking the 'Middlesex, Virginia' line in the location block @ canvas (615,285) loads lamp.swf = the chandelier popup window (canvas ~x510-660, y130-205). Block reads: date 10-02-1990 / 2310 Powderham Drive / Sarasota Heights / Middlesex, Virginia." },
+      "action": { "type": "clickUntilNet", "x": 665, "y": 295, "hoverMs": 350, "until": "lamp.swf", "maxClicks": 5, "gapMs": 3000 },
+      "wait": { "mode": "fixed", "fixedMs": 4000 },
+      "note": "RE-CALIBRATED 2026-06-03 (owner manual-demo recorder, src/record-sky.js → output/record-sky.log). Clicking the 'Middlesex, Virginia' line @ canvas (665,295) loads lamp.swf = the chandelier x-ray popup. The click is FLAKY (sometimes the location hotspot doesn't register), so `clickUntilNet` re-clicks until lamp.swf actually loads over the network (it loadMovie's into the main movie, so the request is visible on the page). Earlier coord (615,285) was slightly low/left. Block reads: date 10-02-1988 / 2310 Powderham Drive / Sarasota Heights / Middlesex, Virginia." },
 
     { "id": "l3-telephone", "section": "Level 3 — From the Sky (the ending)",
-      "caption": "Click the telephone icon in the center of the chandelier popup. A spoiler warning + the “MISSING PLANE LOSES ENGINE” article open in a new tab (it closes), then the FAA Office of Accident Investigation document unfurls and “launch the document” begins playing the transcript of an extraordinary phone call.",
-      "action": { "type": "click", "x": 610, "y": 180, "hoverMs": 500 },
-      "wait": { "mode": "fixed", "fixedMs": 16000 },
-      "note": "CALIBRATED 2026-06-02 (HEADED — see ⚠). The telephone icon = CENTER of the chandelier window @ canvas (610,180) → getURL news/pop6.html (the engine article, NEW TAB; runner captures + closes it). Then the FAA document + '>>> LAUNCH THE DOCUMENT' button appear on the canvas, and in HEADED mode the movie AUTO-PROCEEDS: launch-the-document loads phone.swf into _level1 and the transcript plays (FAA header → '[CALLER 1]: Hello?' …). ⚠️ HEADLESS Ruffle does NOT advance here (the FAA doc never appears) — like the L2 finale, HEADED-ONLY. NB (600,150) misses high onto the title bar. fixed 16000 captures the transcript starting; the long ending is the next step." },
+      "caption": "Click the telephone icon in the chandelier popup. The “MISSING PLANE LOSES ENGINE” article (with a spoiler warning) opens in a new tab — read it, then it closes. Back on the scene, the FAA Office of Accident Investigation document now unfurls with a red “>>> LAUNCH THE DOCUMENT” button.",
+      "action": { "type": "click", "x": 663, "y": 244, "hoverMs": 450, "repeat": 2, "repeatIntervalMs": 1500 },
+      "wait": { "mode": "fixed", "fixedMs": 5000 },
+      "note": "RE-CALIBRATED 2026-06-03 (owner manual-demo recorder). The telephone icon is @ canvas (663,244) (NOT the old (610,180), which was the popup interior — it opened pop6 by luck but is off the icon). Clicking it → getURL news/pop6.html (the engine article, NEW TAB; the runner captures + closes it). repeat:2 guards the flaky hotspot. This does NOT itself load the transcript — that's the SEPARATE launch-document click next. (pop6 opens on its own tab, so a network-gate on the main page can't see it; a plain repeat-click is the robust choice here.)" },
+
+    { "id": "l3-launch-document", "section": "Level 3 — From the Sky (the ending)",
+      "caption": "Click the red “>>> LAUNCH THE DOCUMENT” button at the bottom of the scene. The FAA document springs to life and the transcript of an extraordinary phone call begins to play.",
+      "action": { "type": "clickUntilNet", "x": 365, "y": 452, "hoverMs": 350, "until": "phone.swf", "maxClicks": 6, "gapMs": 4000 },
+      "wait": { "mode": "fixed", "fixedMs": 10000 },
+      "note": "NEW + CALIBRATED 2026-06-03 (owner manual-demo recorder → output/record-sky.log: click canvas(365,452) → phone.swf loads ~3s later). This is the REAL advance the old steps were missing entirely: the '>>> LAUNCH THE DOCUMENT' button at the BOTTOM of the canvas @ (365,452) loads phone.swf into _level1 = the FAA transcript. `clickUntilNet` re-clicks until phone.swf is requested on the page — robust to the button animating in late AND to the load being flaky. ✅ Works HEADLESS too (the old 'HEADED-only' belief was a wrong-coordinate artifact — the launch button, not the telephone, is the advance)." },
 
     { "id": "l3-ending", "section": "Level 3 — From the Sky (the ending)",
       "captureBefore": false,
       "caption": "The transcript reads out the impossible: an exact-replica jet engine — serial numbers and hand-painted spiral matching a 747 that landed safely in San Francisco on October 2, 1988 — before the line goes dead. The engine sinks into red spirals and the screen turns to its last words: “time is up, donnie.” THE END.",
       "action": { "type": "none" },
       "wait": { "mode": "fixed", "fixedMs": 145000 },
-      "note": "CALIBRATED 2026-06-02 (HEADED). After the transcript (phone.swf in _level1, ~2min; text from phone.html/transcript.html — the 'exact-replica engine fell from a plane that landed safely Oct 2 1988' paradox) the screen AUTO-CHANGES to 'time is up, donnie.' (engine + red spirals; owner video g_640 ~t160s) = the END of the whole game. No click needed (aid: 'after this the screen automatically changes'). fixed ~145000 lets the transcript play out to the ending — tune from the headed validation run. HEADED-only." }
+      "note": "CALIBRATED 2026-06-02; reached reliably after the launch-document fix 2026-06-03. After the transcript (phone.swf in _level1, ~2min; text from phone.html/transcript.html — the 'exact-replica engine fell from a plane that landed safely Oct 2 1988' paradox) the screen AUTO-CHANGES to 'time is up, donnie.' (engine + red spirals) = the END of the whole game. No click needed. fixedMs 145000 is a CEILING, not a dwell — settle.js now polls in chunks and returns the last good frame if the page is closed/auto-forwards early (so closing the browser no longer crashes the run). Tune down once the true transcript→ending duration is measured from a clean run." }
   ]
 }

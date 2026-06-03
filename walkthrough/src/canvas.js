@@ -15,20 +15,38 @@
  * modal — so we kill it. Idempotent; safe to call after every (re)load.
  */
 export async function suppressRuffleOverlays(page) {
-  await page.evaluate(() => {
-    const hosts = document.querySelectorAll("ruffle-object, ruffle-embed, ruffle-player");
-    for (const host of hosts) {
-      const sr = host.shadowRoot;
-      if (!sr || sr.getElementById("__wt_suppress")) continue;
-      const s = document.createElement("style");
-      s.id = "__wt_suppress";
-      s.textContent =
-        "#hardware-acceleration-modal,#save-manager,#volume-controls-modal," +
-        "#video-modal,#clipboard-modal,#context-menu-overlay{display:none!important}" +
-        "#unmute-overlay,.unmute-overlay{display:none!important}";
-      sr.appendChild(s);
+  // Best-effort, cosmetic CSS injection. A click that triggers a Flash
+  // loadMovie / getURL can momentarily destroy the page's execution context
+  // (a fresh Ruffle instance, or a navigation), so this evaluate() can race and
+  // throw "Execution context was destroyed". That must NOT abort the run — the
+  // overlays are re-suppressed on the next step anyway. Swallow nav-destroyed
+  // errors, with one short retry once the context has likely settled.
+  const inject = () =>
+    page.evaluate(() => {
+      const hosts = document.querySelectorAll("ruffle-object, ruffle-embed, ruffle-player");
+      for (const host of hosts) {
+        const sr = host.shadowRoot;
+        if (!sr || sr.getElementById("__wt_suppress")) continue;
+        const s = document.createElement("style");
+        s.id = "__wt_suppress";
+        s.textContent =
+          "#hardware-acceleration-modal,#save-manager,#volume-controls-modal," +
+          "#video-modal,#clipboard-modal,#context-menu-overlay{display:none!important}" +
+          "#unmute-overlay,.unmute-overlay{display:none!important}";
+        sr.appendChild(s);
+      }
+    });
+  try {
+    await inject();
+  } catch (err) {
+    if (!/execution context was destroyed|navigation|page.*closed/i.test(err.message)) throw err;
+    try {
+      await page.waitForTimeout(300);
+      await inject();
+    } catch {
+      /* still racing a (re)load — leave overlays; next step re-suppresses. */
     }
-  });
+  }
 }
 
 /**

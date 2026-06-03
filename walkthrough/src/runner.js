@@ -126,7 +126,16 @@ export async function runPlaythrough({ config, stepsDoc, stepsPath, headed, outD
       // Steps opt in with `awaitNavMs`; non-navigating steps skip this (no delay).
       const awaitNavMs = step.awaitNavMs ?? 0;
       for (let waited = 0; awaitNavMs > 0 && !actionNavigated && waited < awaitNavMs; waited += 150) {
-        await page.waitForTimeout(150);
+        // The action may navigate the same tab (or, on a getURL/_self to /menu.html,
+        // tear it down) DURING this grace window. page.waitForTimeout then throws
+        // "Target page … has been closed". That's an expected end-of-section race,
+        // not a runner bug — stop waiting and let the post-nav handling below run.
+        try {
+          await page.waitForTimeout(150);
+        } catch (err) {
+          if (/closed|navigation/i.test(err.message)) { actionNavigated = true; break; }
+          throw err;
+        }
       }
 
       // If the action navigated the tab to a new SWF, wait for the fresh Ruffle
