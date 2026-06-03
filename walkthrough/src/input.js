@@ -195,7 +195,15 @@ export async function performAction(page, canvas, ruffleCfg, action, log = () =>
           minPixels: action.minPixels ?? 4,
           maxPixels: action.maxPixels ?? Infinity, // cap so a big persistent red graphic (zigzag/glow) doesn't outrank a small chapter dot
         });
-        let target = reds[0]; // largest cluster
+        // `pick` chooses WHICH detected cluster: default largest (reds[0]); "smallest"
+        // (reds[last]) deliberately targets a DIFFERENT feature than a largest-pick step
+        // would — used so a second chapter-crosshair click lands on a fresh dot (a new
+        // page) instead of re-hitting the same dominant one. A number indexes directly.
+        let target = reds[0];
+        if (reds.length) {
+          if (action.pick === "smallest") target = reds[reds.length - 1];
+          else if (typeof action.pick === "number") target = reds[Math.min(action.pick, reds.length - 1)];
+        }
         if (!target && (typeof action.x === "number")) target = { canvasX: action.x, canvasY: action.y };
         if (target) {
           const { x, y } = map(target.canvasX, target.canvasY);

@@ -23,10 +23,11 @@ A complete, working tool (`walkthrough/`) drives the Ruffle/Flash Donnie Darko
 playthrough with Playwright and generates a self-contained `output/walkthrough.html`
 (before/after canvas captures + popup-tab panels) plus a session video.
 
-**▶ YOU ARE HERE (2026-06-03): FULL GAME VALIDATED END-TO-END — 40 steps, clean run to "time is up,
-donnie."** A complete `node src/cli.js --headed` run drives all 40 steps with ZERO action failures,
-ZERO popup warnings, all steps settled, and captures the true ending. `output/walkthrough.html` (15MB,
-40 sections) + session video regenerated. THREE bugs fixed this session — see below.
+**▶ YOU ARE HERE (2026-06-03): FULL GAME VALIDATED END-TO-END — 42 steps, clean run to "time is up,
+donnie."** A complete `node src/cli.js --headed` run drives all steps with ZERO action failures,
+ZERO popup warnings, all steps settled, and captures the true ending. `output/walkthrough.html` +
+session video regenerated. Now includes the OPTIONAL Philosophy-of-Time-Travel chapter crosshairs
+(tu-chapter-1/2). THREE core bugs fixed this session + the chapter feature — see below.
 
 **WHAT WAS BROKEN & FIXED (2026-06-03):**
 1. **Tangent derail (the "new tabs taking us back" bug).** `l1-timetravel` repeat-clicked 5× through
@@ -52,21 +53,36 @@ ZERO popup warnings, all steps settled, and captures the true ending. `output/wa
 **OPTIONAL NEXT:** (a) Tune `l3-ending` `fixedMs` (currently a 145s CEILING; settle now exits early/safe,
 but measuring the true transcript→ending duration would trim the run). (b) golf-tab beats 28–31
 (sleepgolfing/`ling ling` wallet/sidewalk) are still skipped by the L2 sparkle navigate.
-(c) **Philosophy-of-Time-Travel CHAPTER CROSSHAIRS (PARKED 2026-06-03, owner: optional narrative).**
-The current tangent flow goes tu-smurf → tu-breathe and SKIPS the red chapter-dot crosshairs that reveal
-the book chapters. GROUNDWORK DONE this session (probe `src/test-chapters.js`): after tu-smurf the chapter
-dot is a SMALL red cluster (~3–5px, RANDOM position) on the LEFT, competing with a big persistent red
-zigzag (~60px, lower-left). Added **`maxPixels`** to `detectRed`/`detectClick` (`src/detect.js`,
-`src/input.js`) so `detectClick {band:{x0:0,x1:330,y0:0,y1:500}, minPixels:2, maxPixels:20}` reliably
-locks the small dot (e.g. (53,126)) and ignores the zigzag — VERIFIED clicking it (each click spawns the
-next dot). ⚠️ BUT while the 4 Smurf windows are up the chapter TEXT renders on the book page (RIGHT) which
-is HIDDEN behind them → no legible reveal. The legible state is POST-breathe: close the "password to level
-2" window → Smurf windows clear → book page visible → THEN the dots render chapters. To finish: calibrate
-the password-window close (detect its navy titlebar X), then `detectClick` 2–4 dots capturing each chapter
-(text legibility at canvas res is unverified; full book is transcribed in `THE-PHILOSOPHY-OF-TIME-TRAVEL.md`
-for captions). Insert as `tu-close-password` + `tu-chapter-N` BETWEEN tu-breathe and l2-enter.
-(d) Commit: 40-step flow + L3 fix committed on branch `walkthrough-full-game-fix` (`69687589`); the chapter
-groundwork (maxPixels + test-chapters + this note) is a follow-up.
+(c′) **ALL CHAPTERS — ✅ DONE 2026-06-03 (owner-driven guided capture).** AUTO-capture of all 10 crosshairs
+is NOT feasible (probe `src/probe-allchapters.js`: dots are dim, random, and the SET CHANGES on every click;
+detection conflates them with the scattered word-text + red zigzag). SOLUTION: `src/record-chapters.js` —
+the OWNER drives is_unstable.html from the first click (NO auto-drive; early auto-drive versions kept dying
+to page-close races) while every canvas click saves a brightened (3×) capture. The owner clicked all the
+crosshairs (dragging Frank's password window aside by its title bar — the Win98 windows are DRAGGABLE) →
+30 captures, from which the COMPLETE 12-page book was curated into **`assets/chapters/`** (committed; titles
+in `index.json`): title page, Foreword, Ch 1/2/4/6/7/10/12, Appendix A, Appendix B, Notes (the names). NEW
+**gallery step support**: `step.gallery` (dir rel. to the steps file) → runner passes it straight to the
+manifest (no browser action); generator renders a captioned grid from index.json. Encoded as step 25
+`tu-chapters-gallery` (43 steps total). FULL RUN VALIDATED 2026-06-03: 43/43, zero failures, gallery + the
+"time is up, donnie" ending in `output/walkthrough.html` (19MB). To RE-capture pages: run the recorder, play
+to the crosshairs, click each; copy the settled frames into assets/chapters/.
+(c) **Philosophy-of-Time-Travel CHAPTER CROSSHAIRS (2-step taster) — ✅ DONE 2026-06-03 (owner-requested).** Two OPTIONAL
+narrative steps `tu-chapter-1`/`tu-chapter-2` now sit between tu-breathe and l2-enter (42 steps total). The
+chapter dots are SMALL red clusters (~2–6px, RANDOM position) on the LEFT, competing with a big persistent
+red zigzag (~60px, lower-left); `maxPixels:20` (new on `detectRed`/`detectClick`) keeps the detector on the
+dot. Owner confirmed the crosshairs stay visible with the "password to level 2" window open, so we do NOT
+close it (the book renders on the RIGHT; the window's lower-left). KEY GOTCHAS solved: (1) the book renders
+ALMOST BLACK → new **`brighten`** step option (`src/capture.js brightenPng` + runner) triples the after-frame
+RGB so the title page / Foreword text is legible (game render unchanged); (2) clicking the SAME dot just
+re-shows the same page — each click spawns a NEW dot which becomes the largest, so tu-chapter-2 uses DEFAULT
+(largest) pick to land on the fresh dot → a DIFFERENT page. Result: tu-chapter-1 = title page ("THE
+PHILOSOPHY OF TIME TRAVEL — Roberta Sparrow"), tu-chapter-2 = the Foreword ("I pray that this book is merely
+a work of fiction…"). Which page lands is somewhat run-random (dots are random); captions cover the book
+generally. New `detectClick` option `pick:"smallest"|<index>` also added. Validate fast with
+`src/test-chapters.js` (drives tu-* through breathe → runs the real tu-chapter-* step actions + brighten).
+Full book text: `THE-PHILOSOPHY-OF-TIME-TRAVEL.md`.
+(d) Commit: 40-step flow + L3 fix on `walkthrough-full-game-fix` (`69687589`); maxPixels groundwork
+(`07742301`); the chapter steps + brighten are a further commit on the same branch.
 
 (History: 2026-06-02 = "all 3 levels encoded, 39 steps" but the full run had never completed — the
 tangent derail + L3 telephone + crash races blocked it. This session closed all of them.)

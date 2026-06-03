@@ -4,10 +4,10 @@
 
 import { chromium } from "playwright";
 import { mkdirSync, writeFileSync, rmSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { join, resolve, dirname } from "node:path";
 
 import { waitForRuffleReady, suppressRuffleOverlays } from "./canvas.js";
-import { captureCanvas } from "./capture.js";
+import { captureCanvas, brightenPng } from "./capture.js";
 import { settle } from "./settle.js";
 import { performAction } from "./input.js";
 import { resolveWait, resolveUrl } from "./steps.js";
@@ -51,6 +51,17 @@ export async function runPlaythrough({ config, stepsDoc, stepsPath, headed, outD
       const n = String(i + 1).padStart(2, "0");
       log(`\n── Step ${n}/${stepsDoc.steps.length} [${step.id}] ${step.section ? "• " + step.section : ""}`);
       log(`   ${step.caption}`);
+
+      // Static GALLERY step: a curated set of pre-captured images (e.g. the complete
+      // Philosophy-of-Time-Travel book, owner-recorded) — no browser interaction.
+      // `step.gallery` is a dir (relative to the steps file) holding an index.json
+      // of { file, title } pages; the generator embeds them.
+      if (step.gallery) {
+        records.push({ index: i + 1, id: step.id, section: step.section ?? null, caption: step.caption, gallery: resolve(dirname(resolve(stepsPath)), step.gallery), actionDesc: "(curated gallery — no live action)", before: null, after: null, popups: [], wait: null });
+        log(`   🖼 gallery: ${step.gallery}`);
+        if (until && step.id === until) { log(`\n⏹  stopping after step ${step.id} (--until).`); break; }
+        continue;
+      }
 
       // Optional navigation at a page/SWF boundary.
       const navUrl = resolveUrl(config.baseUrl, step.navigate);
@@ -173,7 +184,7 @@ export async function runPlaythrough({ config, stepsDoc, stepsPath, headed, outD
       if (popups.length && !step.keepPopup) await page.waitForTimeout(1200); // let the game resume after close
 
       const afterFile = `${n}-${step.id}-after.png`;
-      writeFileSync(join(shotsDir, afterFile), result.frame);
+      writeFileSync(join(shotsDir, afterFile), step.brighten ? brightenPng(result.frame, step.brighten) : result.frame);
 
       records.push({
         index: i + 1,

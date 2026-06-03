@@ -1,0 +1,17 @@
+{
+  "$comment": "Curated captures of every page of Roberta Sparrow's 'The Philosophy of Time Travel' (philosophy.swf, is_unstable.html). Captured 2026-06-03 in an owner-driven recorder session (src/record-chapters.js): the owner clicked each of the chapter crosshairs while the recorder saved a brightened (3×) frame per click — the in-game pages render almost black. Chapter names match the hover tooltips and THE-PHILOSOPHY-OF-TIME-TRAVEL.md.",
+  "pages": [
+    { "file": "01-title-page.png", "title": "Title page — The Philosophy of Time Travel, by Roberta Sparrow" },
+    { "file": "02-foreword.png", "title": "Foreword — “I pray that this book is merely a work of fiction.”" },
+    { "file": "03-the-tangent-universe.png", "title": "Chapter One — The Tangent Universe" },
+    { "file": "04-water-and-metal.png", "title": "Chapter Two — Water and Metal" },
+    { "file": "05-the-artifact-and-the-living.png", "title": "Chapter Four — The Artifact and the Living" },
+    { "file": "06-the-living-receiver.png", "title": "Chapter Six — The Living Receiver" },
+    { "file": "07-the-manipulated-living.png", "title": "Chapter Seven — The Manipulated Living" },
+    { "file": "08-the-manipulated-dead.png", "title": "Chapter Ten — The Manipulated Dead" },
+    { "file": "09-dreams.png", "title": "Chapter Twelve — Dreams" },
+    { "file": "10-appendix-a.png", "title": "Appendix A — the Living Receiver (anatomy of the chosen)" },
+    { "file": "11-appendix-b.png", "title": "Appendix B" },
+    { "file": "12-notes.png", "title": "Notes — the names of the Manipulated" }
+  ]
+}

@@ -30,6 +30,31 @@ export function generateHtml({ manifest, outDir, htmlName, title }) {
       lastSection = step.section;
     }
 
+    // Curated GALLERY step (e.g. the complete Philosophy-of-Time-Travel book):
+    // `step.gallery` is a dir holding an index.json of { file, title } pages —
+    // render them as a captioned grid instead of before/after shots.
+    if (step.gallery) {
+      let pages = [];
+      try { pages = JSON.parse(readFileSync(join(step.gallery, "index.json"), "utf8")).pages ?? []; }
+      catch { /* missing index — render the caption alone */ }
+      const figs = pages
+        .map((p) => ({ uri: dataUri(step.gallery, p.file), title: p.title }))
+        .filter((p) => p.uri)
+        .map((p) => `<figure><img loading="lazy" src="${p.uri}" alt="${esc(p.title)}"><figcaption>${esc(p.title)}</figcaption></figure>`);
+      sections.push(`
+<section class="step">
+  <div class="step__head">
+    <span class="step__num">${String(step.index).padStart(2, "0")}</span>
+    <div class="step__meta">
+      <p class="step__caption">${esc(step.caption)}</p>
+      <p class="step__action">${esc(step.actionDesc)}</p>
+    </div>
+  </div>
+  <div class="gallery">${figs.join("")}</div>
+</section>`);
+      continue;
+    }
+
     const before = dataUri(shotsDir, step.before);
     const after = dataUri(shotsDir, step.after);
     const popups = (step.popups ?? []).map((p) => ({ uri: dataUri(shotsDir, p.file), url: p.url })).filter((p) => p.uri);
@@ -89,6 +114,8 @@ export function generateHtml({ manifest, outDir, htmlName, title }) {
   figure img { width: 100%; display: block; border: 1px solid #2a2a30; border-radius: 4px; background: #000; }
   figcaption { color: #777; font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; margin-top: .3rem; }
   .noimg { aspect-ratio: 8/5; display: grid; place-items: center; color: #555; border: 1px dashed #2a2a30; border-radius: 4px; }
+  .gallery { margin: .9rem 0 .3rem; display: grid; grid-template-columns: 1fr 1fr; gap: .9rem; }
+  .gallery figcaption { color: #c9a7e8; text-transform: none; letter-spacing: 0; font-size: .78rem; }
   .popups { margin: .6rem 0 .2rem; display: grid; gap: .6rem; }
   .popups figure img { width: 100%; display: block; border: 1px solid #3a2a16; border-radius: 4px; background: #fff; }
   .popups figcaption { color: #d8a24a; font-size: .72rem; margin-top: .3rem; }

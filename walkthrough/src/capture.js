@@ -2,6 +2,25 @@
 // canvas-local sub-region) so diffs ignore page chrome around the Flash stage.
 
 import { canvasBox } from "./canvas.js";
+import { PNG } from "pngjs";
+
+/**
+ * Brighten a PNG buffer by multiplying each RGB channel by `factor` (clamped to
+ * 255). Used for the intentionally very-dark atmospheric scenes (e.g. the
+ * Philosophy-of-Time-Travel book pages) so faint text is legible in the
+ * walkthrough without changing how the game itself renders. factor<=1 is a no-op.
+ */
+export function brightenPng(buf, factor = 1) {
+  if (!factor || factor <= 1) return buf;
+  const png = PNG.sync.read(buf);
+  const d = png.data;
+  for (let i = 0; i < d.length; i += 4) {
+    d[i] = Math.min(255, d[i] * factor);
+    d[i + 1] = Math.min(255, d[i + 1] * factor);
+    d[i + 2] = Math.min(255, d[i + 2] * factor);
+  }
+  return PNG.sync.write(png);
+}
 
 /**
  * Screenshot the canvas (or a canvas-local sub-region) and return a PNG Buffer.
