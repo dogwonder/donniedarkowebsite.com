@@ -28,14 +28,19 @@ import { decode } from "./diff.js";
  *   the `breathe` word, not just saturated crosshairs).
  */
 export function detectRed(pngBuf, canvasSize, opts = {}) {
-  const { band = null, minPixels = 4, maxPixels = Infinity, loose = false } = opts;
+  // `color:"white"` repurposes the same cluster machinery for BRIGHT features —
+  // e.g. the sleepgolfing WHITE ARROW that slides along the right edge (its y is
+  // animated, so it must be detected at runtime like the red chapter dots).
+  const { band = null, minPixels = 4, maxPixels = Infinity, loose = false, color = "red" } = opts;
   const img = decode(pngBuf);
   const { width, height, data } = img;
   const sx = canvasSize.width / width, sy = canvasSize.height / height;
   const inBand = (cx, cy) => !band || (cx >= band.x0 && cx <= band.x1 && cy >= band.y0 && cy <= band.y1);
-  const isRed = loose
-    ? (r, g, b) => r > 110 && g < 85 && b < 85 && r - g > 45 && r - b > 45
-    : (r, g, b) => r > 150 && g < 90 && b < 90 && r - g > 70 && r - b > 70;
+  const isRed = color === "white"
+    ? (r, g, b) => r > 185 && g > 185 && b > 185
+    : loose
+      ? (r, g, b) => r > 110 && g < 85 && b < 85 && r - g > 45 && r - b > 45
+      : (r, g, b) => r > 150 && g < 90 && b < 90 && r - g > 70 && r - b > 70;
   const pts = [];
   for (let y = 0; y < height; y += 2) for (let x = 0; x < width; x += 2) {
     const i = (y * width + x) * 4;
@@ -61,7 +66,11 @@ export function detectRed(pngBuf, canvasSize, opts = {}) {
  *   [{ canvasY, x0, x1, pixels }].
  */
 export function detectTitlebars(pngBuf, canvasSize, opts = {}) {
-  const { minRow = 15, rowBucket = 8 } = opts;
+  // minWidth: a REAL Win98 titlebar spans its window's full width (~140-200 canvas
+  // px in this game). Dark night scenes false-positive NARROW navy-ish runs (a
+  // blue-jeans figure ≈11px wide, the golf cart ≈91px) — the width floor rejects
+  // them while keeping every real window (narrowest observed: 144px).
+  const { minRow = 15, rowBucket = 8, minWidth = 110 } = opts;
   const img = decode(pngBuf);
   const { width, height, data } = img;
   const sx = canvasSize.width / width, sy = canvasSize.height / height;
@@ -83,6 +92,7 @@ export function detectTitlebars(pngBuf, canvasSize, opts = {}) {
       x1: Math.round(Math.max(...rec.xs) * sx),
       pixels: rec.n,
     }))
+    .filter((b) => b.x1 - b.x0 >= minWidth)
     .sort((a, b) => a.canvasY - b.canvasY);
 }
 

@@ -67,6 +67,18 @@ export async function performAction(page, canvas, ruffleCfg, action, log = () =>
           if (action.stopOnNav && /closed|navigation|context was destroyed/i.test(err.message)) break;
           throw err;
         }
+        // untilTitlebar: stop the repeat once a navy Win98 titlebar appears — for
+        // hotspots that only ARM after an animation freezes (e.g. the sleepgolfing
+        // white arrow): early taps are harmless no-ops, so keep tapping until the
+        // result window shows, then stop so extra taps can't overshoot it.
+        if (action.untilTitlebar) {
+          // titlebarMaxY: ignore "titlebars" below this canvas y — Donnie's blue
+          // shirt/jeans (bottom of the crawl scene) read as wide navy rows; the real
+          // windows in these beats all sit in the TOP half.
+          const frame = await captureCanvas(page, canvas, ruffleCfg);
+          const bars = detectTitlebars(frame, ruffleCfg.canvasSize).filter((b) => b.canvasY <= (action.titlebarMaxY ?? 500));
+          if (bars.length > 0) { log(`   navy titlebar appeared after tap ${r + 1} — stopping repeat.`); break; }
+        }
         if (r < repeat - 1) await page.waitForTimeout(interval);
       }
       log(`${action.type} ${button} @ canvas(${action.x},${action.y})${repeat > 1 ? ` ×${repeat}` : ""} → page(${Math.round(x)},${Math.round(y)})`);
@@ -188,12 +200,22 @@ export async function performAction(page, canvas, ruffleCfg, action, log = () =>
       const hoverMs = action.hoverMs ?? 250;
       let desc = "(no red feature found)";
       for (let r = 0; r < repeat; r++) {
+        // sweep: glide the cursor to a (cycling) spot before each detect poll. Some
+        // hotspots only RENDER on rollover (the sleepgolfing white arrow never shows
+        // for a parked cursor) — sweeping the band mimics a human mousing around.
+        if (action.sweep) {
+          const ys = action.sweep.y1 != null ? action.sweep.y0 + ((action.sweep.y1 - action.sweep.y0) * (r % 5)) / 4 : action.sweep.y0;
+          const sp = map(action.sweep.x, ys);
+          await page.mouse.move(sp.x, sp.y, { steps: 8 });
+          await page.waitForTimeout(action.sweepDwellMs ?? 300);
+        }
         const frame = await captureCanvas(page, canvas, ruffleCfg);
         const reds = detectRed(frame, ruffleCfg.canvasSize, {
           band: action.band ?? null,
           loose: action.loose ?? false,
           minPixels: action.minPixels ?? 4,
           maxPixels: action.maxPixels ?? Infinity, // cap so a big persistent red graphic (zigzag/glow) doesn't outrank a small chapter dot
+          color: action.color ?? "red",            // "white" → detect bright features (e.g. the sliding white arrow)
         });
         // `pick` chooses WHICH detected cluster: default largest (reds[0]); "smallest"
         // (reds[last]) deliberately targets a DIFFERENT feature than a largest-pick step
@@ -209,10 +231,16 @@ export async function performAction(page, canvas, ruffleCfg, action, log = () =>
           const { x, y } = map(target.canvasX, target.canvasY);
           if (hoverMs) { await page.mouse.move(x, y); await page.waitForTimeout(hoverMs); }
           await page.mouse.click(x, y);
-          desc = `click detected red at (${target.canvasX}, ${target.canvasY})`;
+          desc = `click detected ${action.color ?? "red"} at (${target.canvasX}, ${target.canvasY})`;
           log(`detectClick → canvas(${target.canvasX},${target.canvasY}) [${reds.length} cluster(s)]`);
         } else {
           log(`detectClick: nothing detected and no fallback coord`);
+        }
+        // Same gate as the click action: stop re-clicking once the result window shows.
+        if (action.untilTitlebar) {
+          const f2 = await captureCanvas(page, canvas, ruffleCfg);
+          const bars = detectTitlebars(f2, ruffleCfg.canvasSize).filter((b) => b.canvasY <= (action.titlebarMaxY ?? 500));
+          if (bars.length > 0) { log(`   navy titlebar appeared after attempt ${r + 1} — stopping.`); break; }
         }
         if (r < repeat - 1) await page.waitForTimeout(interval);
       }

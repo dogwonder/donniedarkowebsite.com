@@ -51,8 +51,24 @@ session video regenerated. Now includes the OPTIONAL Philosophy-of-Time-Travel c
    for captureBefore:false steps resolved to the screenshots DIR) — fixed in `dataUri`.
 
 **OPTIONAL NEXT:** (a) Tune `l3-ending` `fixedMs` (currently a 145s CEILING; settle now exits early/safe,
-but measuring the true transcript→ending duration would trim the run). (b) golf-tab beats 28–31
-(sleepgolfing/`ling ling` wallet/sidewalk) are still skipped by the L2 sparkle navigate.
+but measuring the true transcript→ending duration would trim the run).
+(b′) **GOLF-TAB BEATS 28–31 — ✅ ENCODED & VALIDATED 2026-06-03 (owner-recorded, then probe-calibrated).**
+Seven new steps between l2-mono-tv2 and l2-sparkle-enter (50 steps total): `l2-window-forward` (click
+inside a WAKE UP DONNIE window (426,406); wait = **diff-stable freeze-settle** minWait 12s — the
+sleepgolfing letters assemble then FREEZE; clicking during ASSEMBLY resets the whole sequence to
+10-02-1988) → **`l2-donnie`** (the aid's literal beat-28 'click on donnie' — the blue figure (417,403) at
+the frozen scene; THE missing trigger that made every earlier replay diverge) → `l2-sleepgolf-arrow`
+(detectClick **color:"white"** band x735-790 — the WHITE ARROW slides along the right edge during the
+crawl, y varies (seen y357/y185); poll up to 16× with a hover **sweep**, click only when detected, stop on
+the wallet-question titlebar) → `l2-wallet-question-forward` (596,308; answer = `ling ling`, skippable) →
+`l2-sidewalk-wallet` (597,396, titlebar-gated) → `l2-wallet-forward` (566,206 → the red-lines scene) →
+`l2-redlines-article` (domClick `[data-url]` → pop4 Cunning Visions article; the 'blinking dot at the
+line tip' is visually the SWF but the click target is the viewport-positioned exit overlay). GOTCHAS
+BANKED: detectTitlebars gained **minWidth=110** (night scenes false-positive narrow navy runs: jeans
+figure ≈11px, golf cart ≈91px) and the gates take **titlebarMaxY** (Donnie's blue shirt reads as wide
+navy rows at y≥400 — real windows here are top-half). Validated end-to-end headless via
+`src/test-golf-tail.js` (drives golfing/main.html standalone → pop4 opens ✓). Owner trail:
+`src/record-session.js` → output/record-golf.log.
 (c′) **ALL CHAPTERS — ✅ DONE 2026-06-03 (owner-driven guided capture).** AUTO-capture of all 10 crosshairs
 is NOT feasible (probe `src/probe-allchapters.js`: dots are dim, random, and the SET CHANGES on every click;
 detection conflates them with the scattered word-text + red zigzag). SOLUTION: `src/record-chapters.js` —
