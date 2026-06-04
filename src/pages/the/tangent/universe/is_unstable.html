@@ -17,6 +17,14 @@ body main .credit {
   background-color: transparent;
   opacity: 0.5;
   z-index: 999;
+  /* The spans (thebook, gran-donnie) are state markers, not click targets —
+     gran-donnie's 60%×100% block otherwise eats the hidden book-advance click
+     (button 0104) and deadlocks the game for visitors. */
+  pointer-events: none;
+}
+a[data-popup] {
+  /* The level2 link IS a click target (→ /menu.html). */
+  pointer-events: auto;
 }
 [data-popup]:focus {
   background-color: transparent;
