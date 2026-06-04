@@ -30,6 +30,11 @@ export async function runPlaythrough({ config, stepsDoc, stepsPath, headed, outD
     recordVideo: config.output.video ? { size: config.viewport, dir: videoDir } : undefined,
   });
   const page = await context.newPage();
+  // Video recording starts when the page is created — this wall-clock anchor
+  // converts later Date.now() readings into offsets on the video timeline
+  // (sub-second accuracy; good enough to time popup cutaways in make-video.js).
+  const videoStartMs = Date.now();
+  const vt = () => Date.now() - videoStartMs;
   page.on("console", (m) => {
     const t = m.text();
     if (t.includes(ruffleCfg.readyConsoleText) || /ruffle/i.test(t)) log(`  [page] ${t}`);
@@ -37,6 +42,7 @@ export async function runPlaythrough({ config, stepsDoc, stepsPath, headed, outD
 
   const records = [];
   let videoPath = null;
+  let videoEndMs = null;
 
   try {
     // Initial load.
@@ -49,6 +55,7 @@ export async function runPlaythrough({ config, stepsDoc, stepsPath, headed, outD
     for (let i = 0; i < stepsDoc.steps.length; i++) {
       const step = stepsDoc.steps[i];
       const n = String(i + 1).padStart(2, "0");
+      const tStartMs = vt();
       log(`\n── Step ${n}/${stepsDoc.steps.length} [${step.id}] ${step.section ? "• " + step.section : ""}`);
       log(`   ${step.caption}`);
 
@@ -57,7 +64,7 @@ export async function runPlaythrough({ config, stepsDoc, stepsPath, headed, outD
       // `step.gallery` is a dir (relative to the steps file) holding an index.json
       // of { file, title } pages; the generator embeds them.
       if (step.gallery) {
-        records.push({ index: i + 1, id: step.id, section: step.section ?? null, caption: step.caption, gallery: resolve(dirname(resolve(stepsPath)), step.gallery), actionDesc: "(curated gallery — no live action)", before: null, after: null, popups: [], wait: null });
+        records.push({ index: i + 1, id: step.id, section: step.section ?? null, caption: step.caption, gallery: resolve(dirname(resolve(stepsPath)), step.gallery), actionDesc: "(curated gallery — no live action)", before: null, after: null, popups: [], wait: null, tStartMs, tEndMs: vt() });
         log(`   🖼 gallery: ${step.gallery}`);
         if (until && step.id === until) { log(`\n⏹  stopping after step ${step.id} (--until).`); break; }
         continue;
@@ -91,7 +98,7 @@ export async function runPlaythrough({ config, stepsDoc, stepsPath, headed, outD
       // getURL calls that open a news article / info popup in a NEW TAB; reading
       // it then CLOSING it continues the game.
       const popups = [];
-      const onPopup = (p) => popups.push(p);
+      const onPopup = (p) => popups.push({ page: p, tOpenMs: vt() });
       context.on("page", onPopup);
 
       // Track in-page navigation triggered BY the action (e.g. a Flash getURL
@@ -168,15 +175,16 @@ export async function runPlaythrough({ config, stepsDoc, stepsPath, headed, outD
       context.off("page", onPopup);
       const popupFiles = [];
       for (let k = 0; k < popups.length; k++) {
-        const pop = popups[k];
+        const { page: pop, tOpenMs } = popups[k];
         try {
           await pop.waitForLoadState("domcontentloaded", { timeout: 5000 });
           await pop.waitForTimeout(800);
           const pf = `${n}-${step.id}-popup${popups.length > 1 ? "-" + (k + 1) : ""}.png`;
           writeFileSync(join(shotsDir, pf), await pop.screenshot());
-          popupFiles.push({ file: pf, url: pop.url() });
+          let tCloseMs = null;
+          if (!step.keepPopup) { await pop.close(); tCloseMs = vt(); }
+          popupFiles.push({ file: pf, url: pop.url(), tOpenMs, tCloseMs });
           log(`   ↗ popup tab: ${pop.url()}`);
-          if (!step.keepPopup) await pop.close();
         } catch (e) {
           log(`   ⚠️  popup handling failed: ${e.message}`);
         }
@@ -197,6 +205,8 @@ export async function runPlaythrough({ config, stepsDoc, stepsPath, headed, outD
         after: afterFile,
         popups: popupFiles,
         wait: { mode: result.mode, settled: result.settled, waitedMs: result.waitedMs, samples: result.samples, finalDiff: result.finalDiff },
+        tStartMs,
+        tEndMs: vt(),
       });
       if (popupFiles.length) log(`   captured ${popupFiles.length} popup tab(s)${step.keepPopup ? " (left open)" : " and closed"}.`);
 
@@ -211,6 +221,7 @@ export async function runPlaythrough({ config, stepsDoc, stepsPath, headed, outD
     // Close the page first so Playwright finalises the video file.
     try {
       const video = page.video();
+      videoEndMs = vt();
       await page.close();
       if (video) videoPath = await video.path();
     } catch { /* video disabled or already closed */ }
@@ -224,6 +235,7 @@ export async function runPlaythrough({ config, stepsDoc, stepsPath, headed, outD
     viewport: config.viewport,
     canvasSize: ruffleCfg.canvasSize,
     video: videoPath ? videoPath : null,
+    videoEndMs,
     screenshotsSubdir: config.output.screenshotsSubdir,
     steps: records,
   };

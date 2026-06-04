@@ -11,7 +11,8 @@
     "install:browser": "playwright install chromium",
     "run": "node src/cli.js",
     "run:headed": "node src/cli.js --headed",
-    "generate": "node src/cli.js --generate-only"
+    "generate": "node src/cli.js --generate-only",
+    "video": "node src/make-video.js"
   },
   "dependencies": {
     "pixelmatch": "^6.0.0",
