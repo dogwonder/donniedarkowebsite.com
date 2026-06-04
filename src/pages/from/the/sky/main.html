@@ -7,15 +7,36 @@ html body {
     background-color: #ddddcc;
     background: linear-gradient(to top, #ffffff 0%, #ffffff var(--gradient-height-min, 350px), #ddddcc var(--gradient-height-max, 500px), #ddddcc 100%) !important;
 }
+.bridge-wrap {
+    position: relative;
+    width: fit-content;
+    display: flex;
+    align-items: flex-end;
+}
+[data-url] {
+    position: absolute;
+    background-color: transparent;
+    z-index: 999;
+    width: 48px;
+    height: 48px;
+    left: 5%;
+    bottom: 12%;
+}
+[data-url]:hover {
+    cursor: pointer;
+}
 {% endcss %}
 
 {% extends "layouts/base.html" %}
 
 {% block content %}
 <div class="flex items-end h-full">
-    <object class="aspect-ratio" id="gradient">
-        <embed src="/from/the/sky/trampolin.swf" width="800" height="500">
-    </object>  
+    <div class="bridge-wrap">
+        <object class="aspect-ratio" id="gradient">
+            <embed src="/from/the/sky/trampolin.swf" width="800" height="500">
+        </object>
+        <!-- <a data-url hidden href="/cellar/door/index.html" aria-label="cellar door"></a> -->
+    </div>
 </div>
 {% endblock %}
 
@@ -23,6 +44,25 @@ html body {
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   ddScripts.setGradientHeight('gradient', '0.7');
+
+  // Level 4 bridge. The L3 ending ("time is up, donnie") lands ~105s after the
+  // FAA transcript (phone.swf) is requested — the same network-gated reveal the
+  // sleepgolfing page uses for its exit link. Once the ending has settled, a
+  // near-invisible cellar door appears in the lower-left of the frame.
+  let armed = false;
+  const observer = new PerformanceObserver((list) => {
+    if (armed) return;
+    for (const entry of list.getEntries()) {
+      if (entry.name.includes('phone.swf')) {
+        armed = true;
+        setTimeout(() => {
+          document.querySelector('[data-url]').removeAttribute('hidden');
+        }, 108000);
+        break;
+      }
+    }
+  });
+  observer.observe({ type: 'resource', buffered: true });
 });
 </script>
 {% endblock %}

@@ -1,0 +1,149 @@
+---
+permalink: /cellar/door/frank.html
+---
+
+{% set isDark = true %}
+{% set isRuffle = false %}
+{% set hasCredit = false %}
+
+{% css %}
+html body {
+    background-color: #000000 !important;
+}
+.aspect-ratio {
+    position: relative;
+    aspect-ratio: 800 / 500;
+    background-color: #000;
+}
+/* Scanlines (the site's .interlace effect, page-scoped so it can't fight the
+   stage geometry). pointer-events:none so the overlay never eats clicks. */
+.aspect-ratio::before {
+    content: "";
+    pointer-events: none;
+    z-index: 2;
+    position: absolute;
+    inset: 0;
+    display: block;
+    background: repeating-linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.2) 1px, transparent 2px, transparent 3px);
+}
+.aspect-ratio .window {
+    position: absolute;
+    width: 300px;
+    z-index: 10;
+    font-family: var(--mono-alt);
+}
+#l4-warn {
+    top: 22%;
+    left: 18%;
+}
+#l4-frank {
+    top: 30%;
+    left: 38%;
+    display: none;
+}
+.window .window-body {
+    font-size: 0.75rem;
+    padding: 1rem;
+    text-align: center;
+}
+#l4-frank .window-body p {
+    margin: 0 0 0.75rem;
+}
+.frank-voice {
+    color: var(--highlight);
+    font-weight: bold;
+    text-transform: lowercase;
+    animation: flicker 0.15s 8;
+}
+.countdown {
+    font-family: var(--mono);
+    font-size: 1.2rem;
+    font-weight: bold;
+    letter-spacing: 0.2em;
+}
+@keyframes flicker {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+a.launch {
+    position: absolute;
+    bottom: 12%;
+    right: 14%;
+    z-index: 5;
+    font-family: var(--mono);
+    font-size: clamp(0.75rem, 0.9vw, 0.85rem);
+    font-weight: bold;
+    color: var(--highlight) !important;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+}
+a.launch:hover {
+    animation: flicker 0.1s 5;
+}
+{% endcss %}
+
+{% extends "layouts/base.html" %}
+
+{% block content %}
+<div class="flex items-end h-full">
+    <div class="aspect-ratio">
+
+        <div class="window" id="l4-warn">
+            <div class="title-bar">
+                <div class="title-bar-text">WARNING!</div>
+                <div class="title-bar-controls">
+                    <button aria-label="Close"></button>
+                </div>
+            </div>
+            <div class="window-body">
+                you should not have this knowledge.
+            </div>
+        </div>
+
+        <div class="window" id="l4-frank">
+            <div class="title-bar">
+                <div class="title-bar-text">FRANK</div>
+                <div class="title-bar-controls">
+                    <button aria-label="Close"></button>
+                </div>
+            </div>
+            <div class="window-body">
+                <p class="frank-voice">i can see you, donnie.</p>
+                <p class="countdown">28:06:42:12</p>
+                <p class="frank-voice">wake up.</p>
+            </div>
+        </div>
+
+        <a class="launch" href="/cellar/door/whisper.html" hidden>&gt;&gt; say the words</a>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/scripts/level4.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+    level4Scripts.propagateSeed();
+
+    // Window chain: close WARNING → Frank flickers in; close FRANK → the way
+    // out appears. The original game's popups stacked on the stage like this
+    // (remember / one / word), so the chain stays inside the 800×500 frame.
+    document.querySelector('#l4-warn [aria-label="Close"]').addEventListener('click', function() {
+        document.getElementById('l4-warn').style.display = 'none';
+        var frank = document.getElementById('l4-frank');
+        frank.style.display = 'block';
+        frank.style.animation = 'flicker 0.12s 6';
+    });
+
+    document.querySelector('#l4-frank [aria-label="Close"]').addEventListener('click', function() {
+        document.getElementById('l4-frank').style.display = 'none';
+        document.querySelector('a.launch').removeAttribute('hidden');
+    });
+
+});
+</script>
+{% endblock %}

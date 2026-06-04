@@ -1,0 +1,102 @@
+---
+permalink: /cellar/door/end.html
+---
+
+{% set isDark = true %}
+{% set isRuffle = false %}
+{% set hasCredit = false %}
+
+{% css %}
+html body {
+    background-color: #000000 !important;
+}
+.aspect-ratio {
+    position: relative;
+    aspect-ratio: 800 / 500;
+    background-color: #000;
+}
+/* Scanlines (the site's .interlace effect, page-scoped so it can't fight the
+   stage geometry). pointer-events:none so the overlay never eats clicks. */
+.aspect-ratio::before {
+    content: "";
+    pointer-events: none;
+    z-index: 2;
+    position: absolute;
+    inset: 0;
+    display: block;
+    background: repeating-linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.2) 1px, transparent 2px, transparent 3px);
+}
+/* The cellar door, opening: a crack of white light that widens once and holds. */
+.door {
+    position: absolute;
+    top: 15%;
+    left: 37%;
+    width: 26%;
+    height: 70%;
+    background-color: #ffffff;
+    box-shadow: 0 0 60px 20px rgba(255, 255, 255, 0.25);
+    transform-origin: left;
+    animation: openDoor 4s ease-in-out forwards;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+@keyframes openDoor {
+    0% { transform: scaleX(0); }
+    60% { transform: scaleX(0.06); }
+    100% { transform: scaleX(1); }
+}
+#outro {
+    font-family: var(--mono);
+    font-size: clamp(0.7rem, 0.85vw, 0.8rem);
+    font-weight: bold;
+    color: #000;
+    text-align: center;
+    line-height: 2.4;
+    letter-spacing: 0.15em;
+    text-transform: lowercase;
+    padding: 0 1.5rem;
+}
+#outro .red {
+    color: var(--highlight);
+}
+{% endcss %}
+
+{% extends "layouts/base.html" %}
+
+{% block content %}
+<div class="flex items-end h-full">
+    <div class="aspect-ratio">
+        <div class="door">
+            <div id="outro" style="display: none;">
+                you said the words. <br><br>
+                the door is open. <br><br>
+                cellar door <br><br>
+                — the end —
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/scripts/level4.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+    // Let the door finish opening, then assemble the final words. Everything on
+    // this page animates exactly once — the end card must hold perfectly still
+    // so the walkthrough's match-reference settle can latch onto it.
+    setTimeout(function() {
+        level4Scripts.animateText('outro', 200);
+    }, 4500);
+
+    document.addEventListener('wordsFinished', function() {
+        // Ignite the words once assembled (spans can't survive the word-split).
+        var outro = document.getElementById('outro');
+        outro.innerHTML = outro.innerHTML.replace(/cellar door/g, '<span class="red">cellar door</span>');
+    });
+
+});
+</script>
+{% endblock %}

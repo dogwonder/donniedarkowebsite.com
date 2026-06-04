@@ -6,7 +6,7 @@ import { chromium } from "playwright";
 import { mkdirSync, writeFileSync, rmSync } from "node:fs";
 import { join, resolve, dirname } from "node:path";
 
-import { waitForRuffleReady, suppressRuffleOverlays } from "./canvas.js";
+import { waitForStageReady, suppressRuffleOverlays } from "./canvas.js";
 import { captureCanvas, brightenPng } from "./capture.js";
 import { settle } from "./settle.js";
 import { performAction } from "./input.js";
@@ -49,7 +49,10 @@ export async function runPlaythrough({ config, stepsDoc, stepsPath, headed, outD
     const startUrl = resolveUrl(config.baseUrl, config.startUrl) ?? config.baseUrl;
     log(`\n▶ loading ${startUrl}`);
     await page.goto(startUrl, { waitUntil: "load" });
-    let canvas = await waitForRuffleReady(page, ruffleCfg, log);
+    // "canvas" is the page's STAGE locator: the Ruffle canvas on Flash pages, or
+    // the 800×500 .aspect-ratio div on HTML-native pages (e.g. Level 4) — both
+    // share the authored geometry, so capture/coord-mapping/settle are identical.
+    let canvas = await waitForStageReady(page, ruffleCfg, log);
     await page.waitForTimeout(config.settle.initialSettleMs);
 
     for (let i = 0; i < stepsDoc.steps.length; i++) {
@@ -75,7 +78,7 @@ export async function runPlaythrough({ config, stepsDoc, stepsPath, headed, outD
       if (navUrl) {
         log(`   ↪ navigate ${navUrl}`);
         await page.goto(navUrl, { waitUntil: "load" });
-        canvas = await waitForRuffleReady(page, ruffleCfg, (m) => log("   " + m));
+        canvas = await waitForStageReady(page, ruffleCfg, (m) => log("   " + m));
         await page.waitForTimeout(config.settle.initialSettleMs);
       }
 
@@ -160,8 +163,8 @@ export async function runPlaythrough({ config, stepsDoc, stepsPath, headed, outD
       // instance and re-suppress overlays before settling/capturing.
       page.off("framenavigated", onNav);
       if (actionNavigated) {
-        log(`   ↪ action navigated to ${page.url()} — waiting for new Ruffle…`);
-        canvas = await waitForRuffleReady(page, ruffleCfg, (m) => log("   " + m));
+        log(`   ↪ action navigated to ${page.url()} — waiting for new stage…`);
+        canvas = await waitForStageReady(page, ruffleCfg, (m) => log("   " + m));
         await page.waitForTimeout(config.settle.initialSettleMs);
       }
       await suppressRuffleOverlays(page); // idempotent; also kills overlays after nav

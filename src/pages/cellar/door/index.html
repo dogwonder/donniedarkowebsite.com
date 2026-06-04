@@ -1,0 +1,107 @@
+---
+permalink: /cellar/door/index.html
+---
+
+{% set isDark = true %}
+{% set isRuffle = false %}
+{% set hasCredit = false %}
+
+{% css %}
+html body {
+    background-color: #000000 !important;
+}
+.aspect-ratio {
+    position: relative;
+    aspect-ratio: 800 / 500;
+    background-color: #000;
+}
+/* Scanlines (the site's .interlace effect, page-scoped so it can't fight the
+   stage geometry). pointer-events:none so the overlay never eats clicks. */
+.aspect-ratio::before {
+    content: "";
+    pointer-events: none;
+    z-index: 2;
+    position: absolute;
+    inset: 0;
+    display: block;
+    background: repeating-linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.2) 1px, transparent 2px, transparent 3px);
+}
+.date {
+    position: absolute;
+    top: 6%;
+    right: 5%;
+    font-family: var(--mono);
+    font-size: clamp(0.7rem, 0.9vw, 0.8rem);
+    color: #555;
+    letter-spacing: 0.4em;
+}
+#intro {
+    position: absolute;
+    top: 38%;
+    left: 14%;
+    max-width: 60%;
+    font-family: var(--mono);
+    font-size: clamp(0.8rem, 1vw, 0.95rem);
+    color: #999;
+    line-height: 2.2;
+    letter-spacing: 0.12em;
+    text-transform: lowercase;
+}
+a.continue {
+    position: absolute;
+    bottom: 14%;
+    right: 12%;
+    font-family: var(--mono);
+    font-size: clamp(0.75rem, 0.9vw, 0.85rem);
+    color: var(--highlight) !important;
+    text-decoration: none;
+    letter-spacing: 0.2em;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+}
+a.continue:hover {
+    animation: flicker 0.1s 5;
+}
+@keyframes flicker {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+{% endcss %}
+
+{% extends "layouts/base.html" %}
+
+{% block content %}
+<div class="flex items-end h-full">
+    <div class="aspect-ratio">
+        <p class="date">10 . 02 . 1988</p>
+        <p id="intro" style="display: none;">
+            the tangent universe collapsed. everything you did is undone. and yet — you remember.
+        </p>
+        <a class="continue" href="/cellar/door/letter.html" hidden>.continue.</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/scripts/level4.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+    level4Scripts.propagateSeed();
+
+    setTimeout(function() {
+        level4Scripts.animateText('intro', 240);
+    }, 1500);
+
+    document.addEventListener('wordsFinished', function() {
+        var link = document.querySelector('a.continue');
+        link.removeAttribute('hidden');
+        // Force a reflow so the opacity transition runs from the hidden state.
+        void link.offsetWidth;
+        link.style.opacity = 1;
+    });
+
+});
+</script>
+{% endblock %}

@@ -1,0 +1,102 @@
+{
+  "$schema": "../schema/steps.schema.json",
+  "meta": { "title": "Level 4 — Cellar Door (a non-canon epilogue)" },
+  "$comment": "STANDALONE walkthrough — Level 4 never existed in 2001 and is deliberately kept OUT of the canon donnie.steps.json run. This slice enters the level directly; on the live site it is reached from the L3 ending, where a near-invisible cellar door appears in the lower-left of the 'time is up, donnie' frame ~108s after the FAA transcript loads. All navigates carry ?seed=42 so the sparrow hotspot — and therefore the screenshots — are deterministic; without a seed the hunt is truly random.",
+  "steps": [
+    {
+      "id": "l4-enter",
+      "section": "Level 4 — Cellar Door",
+      "caption": "October 2, 1988 — the morning the engine should have fallen. Out of the dark, words assemble: “the tangent universe collapsed. everything you did is undone. and yet — you remember.” A dim red .continue. fades in.",
+      "navigate": "/cellar/door/index.html?seed=42",
+      "action": { "type": "none" },
+      "wait": { "mode": "diff-stable", "diffThreshold": 0.0008, "minWaitMs": 9000, "maxWaitMs": 20000 },
+      "note": "diffThreshold tightened: a single assembling word is ~0.1% of the stage — the 0.25% default would treat it as 'no change' and settle mid-assembly."
+    },
+    {
+      "id": "l4-continue",
+      "section": "Level 4 — Cellar Door",
+      "caption": "Click .continue. and the dark gives way to daylight — the Primary Universe, restored.",
+      "action": { "type": "domClick", "selector": "a.continue", "waitVisibleMs": 10000 },
+      "wait": { "mode": "fixed", "fixedMs": 3000 }
+    },
+    {
+      "id": "l4-letter",
+      "section": "Level 4 — Cellar Door",
+      "captureBefore": false,
+      "caption": "Roberta Sparrow’s letter assembles, word by word: “a boy came to my door in a dream… i remember a world that no longer happened… every living creature on earth dies alone. — r.s.” As the last word lands, two words ignite red — the way `breathe` once glowed in Donnie’s letter.",
+      "action": { "type": "none" },
+      "wait": { "mode": "fixed", "fixedMs": 15000 },
+      "note": "Fixed, not diff-stable: the letter's last tokens (alone. / — / r.s.) each change <0.1% of the stage, so pixel-diff latches just before the true end. The content is deterministic, so a ceiling is safe; the next step's waitVisibleMs still gates correctness on the seal actually appearing."
+    },
+    {
+      "id": "l4-seal",
+      "section": "Level 4 — Cellar Door",
+      "caption": "The space beneath the signature has become a door. Click it.",
+      "action": { "type": "domClick", "selector": "[data-url]", "waitVisibleMs": 8000 },
+      "wait": { "mode": "fixed", "fixedMs": 2500 }
+    },
+    {
+      "id": "l4-cellar-hunt",
+      "section": "Level 4 — Cellar Door",
+      "caption": "Grandma Death’s cellar, in the dark: “find the door. it is not where you left it.” The handle is a faint red mark whose position is RANDOM on every visit — the walkthrough pins it with a fixed seed, a human has to hunt. Find it and click.",
+      "navigate": "/cellar/door/sparrow.html?seed=42",
+      "action": { "type": "domClick", "selector": "[data-url]", "waitVisibleMs": 10000, "delayBeforeMs": 3000 },
+      "wait": { "mode": "fixed", "fixedMs": 2500 },
+      "note": "placeHotspot derives the position from ?seed=42 (mulberry32); without a seed it is Math.random per load. domClick targets the element by selector, so the click lands wherever the seed put it."
+    },
+    {
+      "id": "l4-frank-warn",
+      "section": "Level 4 — Cellar Door",
+      "caption": "A Win98 window blinks awake: WARNING! “you should not have this knowledge.” Close it.",
+      "action": { "type": "domClick", "selector": "#l4-warn [aria-label='Close']", "waitVisibleMs": 8000 },
+      "wait": { "mode": "fixed", "fixedMs": 1500 }
+    },
+    {
+      "id": "l4-frank-reveal",
+      "section": "Level 4 — Cellar Door",
+      "caption": "Frank flickers into the second window — “i can see you, donnie.” — above a countdown: 28:06:42:12. “wake up.” Close it to summon the way out.",
+      "action": { "type": "domClick", "selector": "#l4-frank [aria-label='Close']", "waitVisibleMs": 8000 },
+      "wait": { "mode": "fixed", "fixedMs": 1500 }
+    },
+    {
+      "id": "l4-say-words",
+      "section": "Level 4 — Cellar Door",
+      "caption": "“>> say the words” glows red in the corner of the frame. Click it.",
+      "action": { "type": "domClick", "selector": "a.launch", "waitVisibleMs": 8000 },
+      "wait": { "mode": "fixed", "fixedMs": 2500 }
+    },
+    {
+      "id": "l4-whisper",
+      "section": "Level 4 — Cellar Door",
+      "captureBefore": false,
+      "caption": "The screen narrows to a single window and a single question: “the two most beautiful words in the english language.” Karen Pomeroy was right.",
+      "action": { "type": "none" },
+      "wait": { "mode": "diff-stable", "diffThreshold": 0.0008, "minWaitMs": 2000, "maxWaitMs": 10000 }
+    },
+    {
+      "id": "l4-password",
+      "section": "Level 4 — Cellar Door",
+      "caption": "Type the words: cellar door.",
+      "action": { "type": "domType", "selector": "#password", "text": "cellar door", "charDelayMs": 90, "waitVisibleMs": 8000 },
+      "wait": { "mode": "fixed", "fixedMs": 1200 },
+      "note": "Deliberately does NOT press Enter — the typed words get their own frame; the next step submits."
+    },
+    {
+      "id": "l4-open",
+      "section": "Level 4 — Cellar Door",
+      "caption": "Press Enter. Say them out loud, if you like — the site can’t hear you, but the door can.",
+      "action": { "type": "key", "key": "Enter" },
+      "wait": { "mode": "fixed", "fixedMs": 2500 },
+      "note": "Focus is still in the #password input from the previous domType; Enter submits the form (wrong words alert instead of navigating)."
+    },
+    {
+      "id": "l4-ending",
+      "section": "Level 4 — Cellar Door",
+      "captureBefore": false,
+      "caption": "A crack of white light widens into an open door, and the final words assemble and hold: “you said the words. the door is open. cellar door.” — THE END.",
+      "action": { "type": "none" },
+      "wait": { "mode": "match-reference", "reference": "../assets/l4-ending-reference.png", "matchThreshold": 0.12, "diffThreshold": 0.0008, "minWaitMs": 8000, "maxWaitMs": 30000, "pollIntervalMs": 1000 },
+      "note": "Asserts the true end state against a reference still, like l3-ending. Reference captured from a verified seed=42 run."
+    }
+  ]
+}

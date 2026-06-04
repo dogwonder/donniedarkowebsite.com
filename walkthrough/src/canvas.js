@@ -50,6 +50,34 @@ export async function suppressRuffleOverlays(page) {
 }
 
 /**
+ * Does the current page run Ruffle at all? Pages built with `isRuffle = false`
+ * (the HTML-native Level 4 scenes) never load ruffle.js, so `window.RufflePlayer`
+ * is a deterministic signal — present before any async polyfill upgrade, absent
+ * on pure-HTML pages. The element check is a belt-and-braces fallback.
+ */
+export async function hasRuffle(page) {
+  return await page.evaluate(
+    () => !!(window.RufflePlayer || document.querySelector("ruffle-object, ruffle-embed, ruffle-player"))
+  );
+}
+
+/**
+ * Resolve the page's "stage" — the thing we screenshot, diff, and map coords
+ * against. On Ruffle pages that's the Flash canvas (waitForRuffleReady). On
+ * HTML-native game pages (no Ruffle) it's the 800×500 `.aspect-ratio` stage div
+ * (config.ruffle.htmlStageSelector), which shares the authored geometry — so
+ * captureCanvas / makeCoordMapper / settle all work on it unchanged.
+ */
+export async function waitForStageReady(page, ruffleCfg, log = () => {}) {
+  if (await hasRuffle(page)) return waitForRuffleReady(page, ruffleCfg, log);
+  const sel = ruffleCfg.htmlStageSelector ?? ".aspect-ratio";
+  const stage = page.locator(sel).first();
+  log(`no Ruffle on this page — using HTML stage “${sel}”.`);
+  await stage.waitFor({ state: "visible", timeout: ruffleCfg.readyTimeoutMs });
+  return stage;
+}
+
+/**
  * Resolve the Playwright Locator for the Ruffle canvas.
  * @param {import('playwright').Page} page
  * @param {object} ruffleCfg  config.ruffle

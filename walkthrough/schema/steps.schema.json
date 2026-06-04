@@ -68,8 +68,20 @@
       "additionalProperties": false,
       "properties": {
         "type": {
-          "enum": ["click", "doubleclick", "key", "type", "drag", "move", "none"],
-          "description": "click/doubleclick/move/drag use canvas-local x,y. key presses a single key. type sends a string (into a focused Flash text field). none = navigate/observe only."
+          "enum": ["click", "doubleclick", "key", "type", "drag", "move", "none", "detectClick", "flashClick", "clickUntilNet", "domClick", "domType"],
+          "description": "click/doubleclick/move/drag use canvas-local x,y. key presses a single key. type sends a string (into a focused Flash text field). none = navigate/observe only. detectClick clicks a runtime-detected red/white feature. flashClick reveals-then-clicks under a sub-second overlay. clickUntilNet re-clicks until a named resource loads. domClick/domType address real HTML elements by CSS selector (HTML-native pages, hidden overlay links, DOM password inputs)."
+        },
+        "selector": {
+          "type": "string",
+          "description": "For domClick/domType: CSS selector of the target HTML element."
+        },
+        "waitVisibleMs": {
+          "type": "integer",
+          "description": "For domClick/domType: poll up to this long for the selector to become visible before acting (hidden-overlay reveals)."
+        },
+        "submitSelector": {
+          "type": "string",
+          "description": "For domType: CSS selector of a submit element to click after typing (alternative to pressEnter)."
         },
         "x": { "type": "number", "description": "Canvas-local X for click/move/drag-start." },
         "y": { "type": "number", "description": "Canvas-local Y for click/move/drag-start." },

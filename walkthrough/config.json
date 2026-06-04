@@ -11,6 +11,7 @@
     "$comment": "How to find Ruffle's canvas. Playwright CSS pierces open shadow roots, so a bare `canvas` selector reaches inside whichever Ruffle wrapper holds it (<ruffle-player> from createPlayer(), or <ruffle-object>/<ruffle-embed> from the <object>/<embed> polyfill — the homepage uses the latter). Leave playerSelector empty to match either. canvasSize is the authored Flash stage size used to sanity-check readiness.",
     "playerSelector": "",
     "canvasSelector": "canvas",
+    "htmlStageSelector": ".aspect-ratio",
     "canvasSize": { "width": 800, "height": 500 },
     "readyTimeoutMs": 30000,
     "readyConsoleText": "Ruffle successfully loaded the file"

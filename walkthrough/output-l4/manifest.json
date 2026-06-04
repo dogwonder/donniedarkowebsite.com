@@ -1,0 +1,257 @@
+{
+  "generatedFrom": "/Users/richholman/Localhost/static/HiRes/donniedarkowebsite.com/walkthrough/steps/l4.steps.json",
+  "title": "Level 4 — Cellar Door (a non-canon epilogue)",
+  "viewport": {
+    "width": 1280,
+    "height": 800
+  },
+  "canvasSize": {
+    "width": 800,
+    "height": 500
+  },
+  "video": "/Users/richholman/Localhost/static/HiRes/donniedarkowebsite.com/walkthrough/output-l4/video/page@d47983ba367ae7d711aa11d7eb1ec8e2.webm",
+  "videoEndMs": 71876,
+  "screenshotsSubdir": "screenshots",
+  "steps": [
+    {
+      "index": 1,
+      "id": "l4-enter",
+      "section": "Level 4 — Cellar Door",
+      "caption": "October 2, 1988 — the morning the engine should have fallen. Out of the dark, words assemble: “the tangent universe collapsed. everything you did is undone. and yet — you remember.” A dim red .continue. fades in.",
+      "navigate": "http://localhost:8090/cellar/door/index.html?seed=42",
+      "actionDesc": "(no input — navigate/observe only)",
+      "before": "01-l4-enter-before.png",
+      "after": "01-l4-enter-after.png",
+      "popups": [],
+      "wait": {
+        "mode": "diff-stable",
+        "settled": true,
+        "waitedMs": 9040,
+        "samples": 47,
+        "finalDiff": 0
+      },
+      "tStartMs": 3723,
+      "tEndMs": 14415
+    },
+    {
+      "index": 2,
+      "id": "l4-continue",
+      "section": "Level 4 — Cellar Door",
+      "caption": "Click .continue. and the dark gives way to daylight — the Primary Universe, restored.",
+      "navigate": null,
+      "actionDesc": "click the “a.continue” element",
+      "before": "02-l4-continue-before.png",
+      "after": "02-l4-continue-after.png",
+      "popups": [],
+      "wait": {
+        "mode": "fixed",
+        "settled": true,
+        "waitedMs": 3086,
+        "samples": 3,
+        "finalDiff": null
+      },
+      "tStartMs": 14415,
+      "tEndMs": 19137
+    },
+    {
+      "index": 3,
+      "id": "l4-letter",
+      "section": "Level 4 — Cellar Door",
+      "caption": "Roberta Sparrow’s letter assembles, word by word: “a boy came to my door in a dream… i remember a world that no longer happened… every living creature on earth dies alone. — r.s.” As the last word lands, two words ignite red — the way `breathe` once glowed in Donnie’s letter.",
+      "navigate": null,
+      "actionDesc": "(no input — navigate/observe only)",
+      "before": null,
+      "after": "03-l4-letter-after.png",
+      "popups": [],
+      "wait": {
+        "mode": "fixed",
+        "settled": true,
+        "waitedMs": 15256,
+        "samples": 9,
+        "finalDiff": null
+      },
+      "tStartMs": 19137,
+      "tEndMs": 34396
+    },
+    {
+      "index": 4,
+      "id": "l4-seal",
+      "section": "Level 4 — Cellar Door",
+      "caption": "The space beneath the signature has become a door. Click it.",
+      "navigate": null,
+      "actionDesc": "click the “[data-url]” element",
+      "before": "04-l4-seal-before.png",
+      "after": "04-l4-seal-after.png",
+      "popups": [],
+      "wait": {
+        "mode": "fixed",
+        "settled": true,
+        "waitedMs": 2677,
+        "samples": 3,
+        "finalDiff": null
+      },
+      "tStartMs": 34396,
+      "tEndMs": 38651
+    },
+    {
+      "index": 5,
+      "id": "l4-cellar-hunt",
+      "section": "Level 4 — Cellar Door",
+      "caption": "Grandma Death’s cellar, in the dark: “find the door. it is not where you left it.” The handle is a faint red mark whose position is RANDOM on every visit — the walkthrough pins it with a fixed seed, a human has to hunt. Find it and click.",
+      "navigate": "http://localhost:8090/cellar/door/sparrow.html?seed=42",
+      "actionDesc": "click the “[data-url]” element",
+      "before": "05-l4-cellar-hunt-before.png",
+      "after": "05-l4-cellar-hunt-after.png",
+      "popups": [],
+      "wait": {
+        "mode": "fixed",
+        "settled": true,
+        "waitedMs": 2593,
+        "samples": 3,
+        "finalDiff": null
+      },
+      "tStartMs": 38651,
+      "tEndMs": 47397
+    },
+    {
+      "index": 6,
+      "id": "l4-frank-warn",
+      "section": "Level 4 — Cellar Door",
+      "caption": "A Win98 window blinks awake: WARNING! “you should not have this knowledge.” Close it.",
+      "navigate": null,
+      "actionDesc": "click the “#l4-warn [aria-label='Close']” element",
+      "before": "06-l4-frank-warn-before.png",
+      "after": "06-l4-frank-warn-after.png",
+      "popups": [],
+      "wait": {
+        "mode": "fixed",
+        "settled": true,
+        "waitedMs": 1554,
+        "samples": 2,
+        "finalDiff": null
+      },
+      "tStartMs": 47397,
+      "tEndMs": 49022
+    },
+    {
+      "index": 7,
+      "id": "l4-frank-reveal",
+      "section": "Level 4 — Cellar Door",
+      "caption": "Frank flickers into the second window — “i can see you, donnie.” — above a countdown: 28:06:42:12. “wake up.” Close it to summon the way out.",
+      "navigate": null,
+      "actionDesc": "click the “#l4-frank [aria-label='Close']” element",
+      "before": "07-l4-frank-reveal-before.png",
+      "after": "07-l4-frank-reveal-after.png",
+      "popups": [],
+      "wait": {
+        "mode": "fixed",
+        "settled": true,
+        "waitedMs": 1561,
+        "samples": 2,
+        "finalDiff": null
+      },
+      "tStartMs": 49022,
+      "tEndMs": 50632
+    },
+    {
+      "index": 8,
+      "id": "l4-say-words",
+      "section": "Level 4 — Cellar Door",
+      "caption": "“>> say the words” glows red in the corner of the frame. Click it.",
+      "navigate": null,
+      "actionDesc": "click the “a.launch” element",
+      "before": "08-l4-say-words-before.png",
+      "after": "08-l4-say-words-after.png",
+      "popups": [],
+      "wait": {
+        "mode": "fixed",
+        "settled": true,
+        "waitedMs": 2592,
+        "samples": 3,
+        "finalDiff": null
+      },
+      "tStartMs": 50632,
+      "tEndMs": 54797
+    },
+    {
+      "index": 9,
+      "id": "l4-whisper",
+      "section": "Level 4 — Cellar Door",
+      "caption": "The screen narrows to a single window and a single question: “the two most beautiful words in the english language.” Karen Pomeroy was right.",
+      "navigate": null,
+      "actionDesc": "(no input — navigate/observe only)",
+      "before": null,
+      "after": "09-l4-whisper-after.png",
+      "popups": [],
+      "wait": {
+        "mode": "diff-stable",
+        "settled": true,
+        "waitedMs": 2119,
+        "samples": 12,
+        "finalDiff": 0
+      },
+      "tStartMs": 54797,
+      "tEndMs": 56919
+    },
+    {
+      "index": 10,
+      "id": "l4-password",
+      "section": "Level 4 — Cellar Door",
+      "caption": "Type the words: cellar door.",
+      "navigate": null,
+      "actionDesc": "type “cellar door” into the #password field",
+      "before": "10-l4-password-before.png",
+      "after": "10-l4-password-after.png",
+      "popups": [],
+      "wait": {
+        "mode": "fixed",
+        "settled": true,
+        "waitedMs": 1263,
+        "samples": 2,
+        "finalDiff": null
+      },
+      "tStartMs": 56919,
+      "tEndMs": 59265
+    },
+    {
+      "index": 11,
+      "id": "l4-open",
+      "section": "Level 4 — Cellar Door",
+      "caption": "Press Enter. Say them out loud, if you like — the site can’t hear you, but the door can.",
+      "navigate": null,
+      "actionDesc": "press “Enter”",
+      "before": "11-l4-open-before.png",
+      "after": "11-l4-open-after.png",
+      "popups": [],
+      "wait": {
+        "mode": "fixed",
+        "settled": true,
+        "waitedMs": 2604,
+        "samples": 3,
+        "finalDiff": null
+      },
+      "tStartMs": 59265,
+      "tEndMs": 63214
+    },
+    {
+      "index": 12,
+      "id": "l4-ending",
+      "section": "Level 4 — Cellar Door",
+      "caption": "A crack of white light widens into an open door, and the final words assemble and hold: “you said the words. the door is open. cellar door.” — THE END.",
+      "navigate": null,
+      "actionDesc": "(no input — navigate/observe only)",
+      "before": null,
+      "after": "12-l4-ending-after.png",
+      "popups": [],
+      "wait": {
+        "mode": "match-reference",
+        "settled": true,
+        "waitedMs": 8662,
+        "samples": 9,
+        "finalDiff": 0
+      },
+      "tStartMs": 63214,
+      "tEndMs": 71876
+    }
+  ]
+}

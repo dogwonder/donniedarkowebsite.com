@@ -1,0 +1,21 @@
+{
+  "$schema": "../schema/steps.schema.json",
+  "meta": { "title": "Smoke test — HTML-native stage (no Ruffle)" },
+  "steps": [
+    {
+      "id": "smoke-html-stage",
+      "section": "Harness smoke test",
+      "caption": "Navigate to a pure-HTML page (isRuffle=false) and settle on its .aspect-ratio stage — proves waitForStageReady routes to the HTML path and capture/diff work without a Ruffle canvas.",
+      "navigate": "/missing/from/the/sky/document.html",
+      "action": { "type": "none" },
+      "wait": { "mode": "diff-stable", "maxWaitMs": 20000 }
+    },
+    {
+      "id": "smoke-dom-click",
+      "section": "Harness smoke test",
+      "caption": "domClick on a real DOM element of the HTML page (the phone icon), proving DOM actions skip the coord mapper and work on HTML stages.",
+      "action": { "type": "domClick", "selector": "#phone", "waitVisibleMs": 8000, "force": true },
+      "wait": { "mode": "diff-stable", "maxWaitMs": 15000 }
+    }
+  ]
+}

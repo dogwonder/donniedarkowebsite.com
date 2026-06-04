@@ -34,7 +34,12 @@ export async function performAction(page, canvas, ruffleCfg, action, log = () =>
 
   if (action.delayBeforeMs) await page.waitForTimeout(action.delayBeforeMs);
 
-  const map = await makeCoordMapper(canvas, ruffleCfg);
+  // DOM-native actions (domClick/domType) address elements by CSS selector and
+  // never touch stage coordinates — skip the mapper so they also work while the
+  // stage is mid-transition (e.g. a hidden overlay about to navigate the page).
+  const map = ["domClick", "domType"].includes(action.type)
+    ? null
+    : await makeCoordMapper(canvas, ruffleCfg);
 
   switch (action.type) {
     case "click":
@@ -306,6 +311,25 @@ export async function performAction(page, canvas, ruffleCfg, action, log = () =>
       }
       log(`domClick ${selector}${repeat > 1 ? ` ×${repeat}` : ""}`);
       return `click the “${selector}” element${repeat > 1 ? ` ×${repeat}` : ""}`;
+    }
+
+    case "domType": {
+      // Type into a real HTML <input> (CSS selector), NOT a Ruffle EditText — the
+      // HTML-native password gates (Level 4's "cellar door" whisper) are plain DOM
+      // forms. Clears first, types char-by-char with a human-ish dwell (so any
+      // per-keystroke JS sees each character), then submits via Enter or a click.
+      const selector = action.selector;
+      if (!selector) throw new Error("domType: action.selector is required");
+      if (action.waitVisibleMs) {
+        await page.waitForSelector(selector, { state: "visible", timeout: action.waitVisibleMs })
+          .catch(() => log(`domType: ${selector} not visible within ${action.waitVisibleMs}ms — typing anyway`));
+      }
+      await page.fill(selector, "");
+      await page.type(selector, action.text, { delay: action.charDelayMs ?? 90 });
+      if (action.submitSelector) await page.click(action.submitSelector);
+      else if (action.pressEnter) await page.press(selector, "Enter");
+      log(`domType "${action.text}" into ${selector}${action.pressEnter ? " + Enter" : ""}`);
+      return `type “${action.text}” into the ${selector} field${action.pressEnter ? " and press Enter" : ""}`;
     }
 
     default:
