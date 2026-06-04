@@ -1,7 +1,7 @@
 {
   "$comment": "Global runner config. Per-step overrides live in the steps file. The base URL is prepended to any relative `navigate` path in a step.",
 
-  "baseUrl": "http://localhost:8080",
+  "baseUrl": "http://localhost:8090",
   "startUrl": "/",
 
   "viewport": { "width": 1280, "height": 800 },

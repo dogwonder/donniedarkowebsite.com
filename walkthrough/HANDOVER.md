@@ -50,8 +50,20 @@ session video regenerated. Now includes the OPTIONAL Philosophy-of-Time-Travel c
    polls in chunks and keeps the last good frame. Plus a generate.js EISDIR bug (empty `before` filename
    for captureBefore:false steps resolved to the screenshots DIR) — fixed in `dataUri`.
 
-**OPTIONAL NEXT:** (a) Tune `l3-ending` `fixedMs` (currently a 145s CEILING; settle now exits early/safe,
-but measuring the true transcript→ending duration would trim the run).
+**OPTIONAL NEXT:** (a) ~~Tune `l3-ending` `fixedMs`~~ ✅ DONE 2026-06-04: converted the guessed
+fixedMs:145000 to **match-reference** (reference=`assets/l3-ending-reference.png`, matchThreshold 0.15,
+diffThreshold 0.01, pollIntervalMs 2000, minWait 60s, maxWait 145s fallback). Ground truth via swfdump:
+phone.swf = 2739 frames @ 25fps = 109.5s; its last frame fires `_level0.gotoAndPlay('out')` → trampolin
+frame 164 Stops instantly — so the ending lands ~105-110s after phone.swf is requested (measured 105.4s
+and 109.7s across probe runs; `src/probe-l3-timing.js`). Threshold data: transcript-vs-reference 20-21%,
+ending-vs-reference 8-10% (the red-circle cluster varies ACROSS runs but is 0.0% stable WITHIN a run;
+even the 'time is up, donnie.' flicker doesn't register at pixelmatch 0.12) — 0.15 cleanly separates.
+Validated end-to-end by `src/test-l3-ending.js` (drives the L3 tail standalone, then runs the REAL
+resolveWait+settle with the real step config): ✅ PASS, matched at 99.7s of settle (diff 8.2%), saving
+~40s/run vs the old ceiling. On a slow run (heavy capture load CAN stretch Ruffle playback well past
+nominal — observed in probe run 1) it polls to the 145s fallback instead of clipping the finale.
+GOTCHA for future match-reference steps here: the ending is mostly WHITE (luma ~190) — darkness/diff-
+spike heuristics do NOT work; and dense polling itself slows playback (keep pollIntervalMs ≥2000).
 (b′) **GOLF-TAB BEATS 28–31 — ✅ ENCODED & VALIDATED 2026-06-03 (owner-recorded, then probe-calibrated).**
 Seven new steps between l2-mono-tv2 and l2-sparkle-enter (50 steps total): `l2-window-forward` (click
 inside a WAKE UP DONNIE window (426,406); wait = **diff-stable freeze-settle** minWait 12s — the
