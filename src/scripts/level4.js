@@ -29,12 +29,24 @@ var level4Scripts = {
     // Position an absolutely-positioned hotspot at a random point within a band of
     // the 800×500 stage (canvas-local coords), as percentages so it scales with
     // the responsive .aspect-ratio box. Returns the chosen stage coords.
-    placeHotspot: function(selector, band) {
+    //
+    // opts.rnd   — a shared PRNG (from random()) so several hotspots on one page
+    //              draw from ONE seeded stream instead of all landing on the same
+    //              first draw. Without it each call seeds its own stream (back-compat).
+    // opts.avoid — { x, y, r }: redraw (up to 20×) until at least r stage-px clear
+    //              of that point, so two marks never sit on top of each other.
+    placeHotspot: function(selector, band, opts) {
         var el = document.querySelector(selector);
         if (!el) return null;
-        var rnd = this.random();
-        var x = band.x0 + rnd() * (band.x1 - band.x0);
-        var y = band.y0 + rnd() * (band.y1 - band.y0);
+        opts = opts || {};
+        var rnd = opts.rnd || this.random();
+        var x, y, tries = 0;
+        do {
+            x = band.x0 + rnd() * (band.x1 - band.x0);
+            y = band.y0 + rnd() * (band.y1 - band.y0);
+            tries++;
+        } while (opts.avoid && tries < 20 &&
+                 Math.hypot(x - opts.avoid.x, y - opts.avoid.y) < (opts.avoid.r || 120));
         el.style.left = (x / 800) * 100 + '%';
         el.style.top = (y / 500) * 100 + '%';
         return { x: Math.round(x), y: Math.round(y) };

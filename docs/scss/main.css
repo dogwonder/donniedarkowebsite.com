@@ -92,6 +92,21 @@ select {
   --hover: hsl(var(--color-primary),calc(var(--l) - 10%));
   --visited: hsl(var(--color-primary),var(--l));
   --focus: #ffdd00;
+  --grey-900: #111;
+  --grey-700: #333;
+  --grey-500: #555;
+  --grey-400: #777;
+  --grey-300: #999;
+  --paper-top: #ddddcc;
+  --paper-bottom: #ffffff;
+  --paper: linear-gradient(180deg, var(--paper-top) 0%, var(--paper-bottom) 100%);
+  --win-silver: #c0c0c0;
+  --win-face: silver;
+  --win-navy-from: #000080;
+  --win-navy-to: #1084d0;
+  --win-titlebar: linear-gradient(90deg, var(--win-navy-from), var(--win-navy-to));
+  --win-shadow-out: inset -1px -1px #0a0a0a, inset 1px 1px #dfdfdf, inset -2px -2px grey, inset 2px 2px #fff;
+  --win-shadow-inset: inset -1px -1px #fff, inset 1px 1px grey, inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a;
   --space-xs: clamp(0.75rem, 0.69rem + 0.29vw, 0.9375rem);
   --space-s: clamp(1rem, 0.92rem + 0.39vw, 1.25rem);
   --space-m: clamp(1.5rem, 1.38rem + 0.58vw, 1.875rem);
@@ -114,6 +129,8 @@ select {
   --word-spacing-base: 1rem * 0.04;
   --border-radius: 0.5rem;
   --containerWidth: 70rem;
+  --stage-w: 800;
+  --stage-h: 500;
 }
 
 h1,

@@ -1,5 +1,6 @@
 ---
 permalink: /cellar/door/frank.html
+title: cellar door
 ---
 
 {% set isDark = true %}
@@ -7,143 +8,211 @@ permalink: /cellar/door/frank.html
 {% set hasCredit = false %}
 
 {% css %}
-html body {
-    background-color: #000000 !important;
+/* full-bleed background — one image, the mask */
+.scene-bg {
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:150%; height:150%; object-fit:cover; object-position:center 36%;
+    image-rendering:pixelated; image-rendering:crisp-edges;
+    filter:grayscale(1) contrast(1.15) brightness(0.5); user-select:none; -webkit-user-drag:none;
 }
-.aspect-ratio {
-    position: relative;
-    aspect-ratio: 800 / 500;
-    background-color: #000;
+.vignette {
+    position:absolute; inset:0; pointer-events:none;
+    background: radial-gradient(120% 100% at 50% 42%, transparent 34%, rgba(0,0,0,0.55) 78%, #000 100%);
 }
-/* Scanlines (the site's .interlace effect, page-scoped so it can't fight the
-   stage geometry). pointer-events:none so the overlay never eats clicks. */
-.aspect-ratio::before {
-    content: "";
-    pointer-events: none;
-    z-index: 2;
-    position: absolute;
-    inset: 0;
-    display: block;
-    background: repeating-linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.2) 1px, transparent 2px, transparent 3px);
+/* desktop furniture — one lone icon */
+.desk-icon { position:absolute; left:3%; top:5%; width:64px; text-align:center; cursor:default; }
+.desk-icon img { width:30px; height:30px; image-rendering:pixelated; display:block; margin:0 auto 5px; }
+.desk-icon span { font-family:var(--mono); -webkit-font-smoothing:none; font-size:11px; color:#cfcfcf; letter-spacing:0.04em; text-shadow:1px 1px 0 #000; }
+
+.frank {
+    left:50%; top:50%; transform:translate(-50%,-50%); width:452px;
+    font-family:var(--mono); -webkit-font-smoothing:none;
 }
-.aspect-ratio .window {
-    position: absolute;
-    width: 300px;
-    z-index: 10;
-    font-family: var(--mono-alt);
+.frank .title-bar-text { color:#fff; letter-spacing:0.14em; }
+.frank .window-body { margin:3px; }
+/* black interior — the legacy browser-window mood */
+.screen {
+    background:#000; box-shadow: var(--win-shadow-inset);
+    padding:26px 22px 24px; min-height:188px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px;
 }
-#l4-warn {
-    top: 22%;
-    left: 18%;
+.voice { text-align:center; transition: opacity 0.9s ease; }
+.voice .fl {
+    font-family:var(--mono); -webkit-font-smoothing:none; text-transform:uppercase;
+    color:var(--highlight); font-size:13px; letter-spacing:0.22em; line-height:2.1;
 }
-#l4-frank {
-    top: 30%;
-    left: 38%;
-    display: none;
+.count {
+    font-family:var(--mono-alt), monospace; color:var(--highlight);
+    font-size:26px; letter-spacing:0.12em; line-height:1; opacity:0; white-space:nowrap;
 }
-.window .window-body {
-    font-size: 0.75rem;
-    padding: 1rem;
-    text-align: center;
+.count.in { opacity:1; }
+.final { text-align:center; }
+.final .fl {
+    font-family:var(--mono); -webkit-font-smoothing:none; text-transform:uppercase;
+    color:var(--highlight); font-size:13px; letter-spacing:0.22em; line-height:2.1;
 }
-#l4-frank .window-body p {
-    margin: 0 0 0.75rem;
+a.door-link {
+    display:inline-block; font-family:var(--mono); -webkit-font-smoothing:none;
+    color:var(--highlight) !important; font-size:13px; letter-spacing:0.34em; text-decoration:none; cursor:pointer;
 }
-.frank-voice {
-    color: var(--highlight);
-    font-weight: bold;
-    text-transform: lowercase;
-    animation: flicker 0.15s 8;
-}
-.countdown {
-    font-family: var(--mono);
-    font-size: 1.2rem;
-    font-weight: bold;
-    letter-spacing: 0.2em;
-}
-@keyframes flicker {
-    0% { opacity: 1; }
-    50% { opacity: 0; }
-    100% { opacity: 1; }
-}
-a.launch {
-    position: absolute;
-    bottom: 12%;
-    right: 14%;
-    z-index: 5;
-    font-family: var(--mono);
-    font-size: clamp(0.75rem, 0.9vw, 0.85rem);
-    font-weight: bold;
-    color: var(--highlight) !important;
-    text-decoration: none;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-}
-a.launch:hover {
-    animation: flicker 0.1s 5;
-}
+a.door-link:hover { animation: flicker 0.1s steps(1) 5; }
 {% endcss %}
 
 {% extends "layouts/base.html" %}
 
+{% block styles %}
+<link rel="stylesheet" href="{{ "/" | url }}scss/level4.css" />
+{% endblock %}
+
 {% block content %}
-<div class="flex items-end h-full">
-    <div class="aspect-ratio">
+<div class="stage-viewport">
+    <div class="stage is-dark" data-screen-label="05 — frank">
 
-        <div class="window" id="l4-warn">
-            <div class="title-bar">
-                <div class="title-bar-text">WARNING!</div>
-                <div class="title-bar-controls">
-                    <button aria-label="Close"></button>
-                </div>
-            </div>
-            <div class="window-body">
-                you should not have this knowledge.
-            </div>
-        </div>
+        <canvas class="scene-bg" id="bgpx" aria-hidden="true"></canvas>
+        <div class="vignette"></div>
 
-        <div class="window" id="l4-frank">
-            <div class="title-bar">
+        <svg class="vectors" id="vectors" viewBox="0 0 800 500" preserveAspectRatio="none" aria-hidden="true"></svg>
+
+        <div class="desk-icon"><img src="/images/favicon-frank.png" alt=""><span>frank</span></div>
+
+        <div class="window frank">
+            <div class="title-bar is-warn">
                 <div class="title-bar-text">FRANK</div>
-                <div class="title-bar-controls">
-                    <button aria-label="Close"></button>
-                </div>
+                <div class="title-bar-controls"><button id="close" aria-label="Close"></button></div>
             </div>
             <div class="window-body">
-                <p class="frank-voice">i can see you, donnie.</p>
-                <p class="countdown">28:06:42:12</p>
-                <p class="frank-voice">wake up.</p>
+                <div class="screen">
+                    <div class="voice" id="voice">
+                        <div class="fl"><span class="w">wake</span> <span class="w">up,</span> <span class="w">donnie.</span></div>
+                        <div class="fl"><span class="w">i</span> <span class="w">have</span> <span class="w">been</span> <span class="w">watching.</span></div>
+                    </div>
+                    <div class="count" id="count">28 : 06 : 42 : 12</div>
+                    <div class="final" id="final" hidden>
+                        <div class="fl">that is when the world ends.</div>
+                        <div class="fl">you are out of time.</div>
+                    </div>
+                    <a class="door-link" id="door" href="/cellar/door/end.html" hidden>.open the door.</a>
+                </div>
             </div>
         </div>
-
-        <a class="launch" href="/cellar/door/whisper.html" hidden>&gt;&gt; say the words</a>
 
     </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
+<script src="/scripts/stage.js"></script>
+<script src="/scripts/vectors.js"></script>
 <script src="/scripts/level4.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+/* pixelate the background: cover-fit into a small canvas, CSS upscales it
+   nearest-neighbour. PX_BLOCK is the knob — larger = more pixelated. */
+(function () {
+    var PX_BLOCK = 7;                 /* on-screen px per block (stage coords) */
+    var cv = document.getElementById('bgpx');
+    var img = new Image();
+    img.onload = function () {
+        var box = 800 * 1.5, boxH = 500 * 1.5;          /* the 150% display box */
+        var PW = Math.max(2, Math.round(box / PX_BLOCK));
+        var PH = Math.max(2, Math.round(PW * (boxH / box)));
+        cv.width = PW; cv.height = PH;
+        var ctx = cv.getContext('2d');
+        var ir = img.width / img.height, tr = PW / PH, sw, sh, sx, sy;
+        if (ir > tr) { sh = img.height; sw = sh * tr; sx = (img.width - sw) / 2; sy = 0; }
+        else { sw = img.width; sh = sw / tr; sx = 0; sy = (img.height - sh) * 0.36; }
+        ctx.imageSmoothingEnabled = true;
+        ctx.drawImage(img, sx, sy, sw, sh, 0, 0, PW, PH);
+    };
+    img.src = '/images/level4/still-frank-mask.jpeg';
+})();
+</script>
+<script>
+Vectors.build(document.getElementById('vectors'), [
+    { t:'bundle', x:10,  y:498, n:12, len:560, spread:52, ang:-42, color:'#fc0d1b', op:0.5,  sw:1.6 },
+    { t:'band',   points:'690,70 726,70 726,106 690,106', color:'#f2f2f2', op:0.9 },
+    { t:'bundle', x:300, y:498, n:6,  len:576, spread:22, ang:-45, color:'#fc0d1b', op:0.6,  sw:1.2 },
+    { t:'needle', x:830, y:54,  len:520, ang:170, w:3,   color:'#9a9a9a', op:0.42 },
+    { t:'needle', x:-20, y:420, len:300, ang:-18, w:1.5, color:'#7a7a7a', op:0.5 },
+    { t:'band',   points:'700,40 758,40 690,200 662,182', color:'#c20a14', op:0.55 },
+    { t:'cross',  x:150, y:60,  r:6, color:'#666', op:0.7, ring:true },
+    { t:'cross',  x:660, y:430, r:7, color:'#666', op:0.6 },
+    { t:'dot',    x:120, y:300, r:2.5 },
+    { t:'dot',    x:705, y:300, r:2 }
+]);
+</script>
+<script>
+level4Scripts.propagateSeed();
 
-    level4Scripts.propagateSeed();
+var voice = document.getElementById('voice');
+var count = document.getElementById('count');
+var finalEl = document.getElementById('final');
+var door = document.getElementById('door');
+var TOTAL = 28*86400 + 6*3600 + 42*60 + 12;
 
-    // Window chain: close WARNING → Frank flickers in; close FRANK → the way
-    // out appears. The original game's popups stacked on the stage like this
-    // (remember / one / word), so the chain stays inside the 800×500 frame.
-    document.querySelector('#l4-warn [aria-label="Close"]').addEventListener('click', function() {
-        document.getElementById('l4-warn').style.display = 'none';
-        var frank = document.getElementById('l4-frank');
-        frank.style.display = 'block';
-        frank.style.animation = 'flicker 0.12s 6';
-    });
+function fmt(s) {
+    s = Math.max(0, Math.floor(s));
+    var d = Math.floor(s/86400); s -= d*86400;
+    var h = Math.floor(s/3600);  s -= h*3600;
+    var m = Math.floor(s/60);    s -= m*60;
+    var p = function(n){ return (n<10?'0':'')+n; };
+    return p(d)+' : '+p(h)+' : '+p(m)+' : '+p(s);
+}
 
-    document.querySelector('#l4-frank [aria-label="Close"]').addEventListener('click', function() {
-        document.getElementById('l4-frank').style.display = 'none';
-        document.querySelector('a.launch').removeAttribute('hidden');
-    });
+var words = Array.prototype.slice.call(voice.querySelectorAll('.w'));
+var V0 = 650, VPER = 130;                  /* voice assemble timing */
+var DS = V0 + words.length * VPER + 500;   /* drain start */
+var DUR = 5200;                            /* drain duration */
+var DOOR_AT = DS + DUR + 1400;             /* door reveal */
+var ended = false;
 
-});
+function showEnd() {
+    if (ended) return;
+    ended = true;
+    count.textContent = '00 : 00 : 00 : 00';
+    count.classList.add('turbulence-soft');
+    voice.style.opacity = '0';             /* the intro gives way to the verdict */
+    finalEl.hidden = false; finalEl.classList.add('fade');
+}
+function showDoor() {
+    count.classList.remove('turbulence-soft');
+    if (door.hidden) { door.hidden = false; door.classList.add('fade'); }
+}
+
+var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var STILL = /[?&]still\b/.test(location.search);   /* design-spread thumbnail only */
+
+if (STILL) {
+    document.body.classList.add('still');
+    words.forEach(function (w) { w.classList.add('in'); });
+    count.classList.add('in');               /* hold the count at the brink */
+} else if (reduce) {
+    words.forEach(function (w) { w.classList.add('in'); });
+    count.classList.add('in'); showEnd(); showDoor();
+} else {
+    /* one wall-clock loop. setInterval keeps firing even when backgrounded,
+       and state is derived from elapsed time — so the door is ALWAYS reached
+       and the flow can never dead-end at Frank. */
+    var T0 = Date.now(), iv = 0;
+    function tick() {
+        var e = Date.now() - T0;
+        words.forEach(function (w, i) { if (e > V0 + i * VPER) w.classList.add('in'); });
+        if (e >= DS) {
+            count.classList.add('in');
+            if (e < DS + DUR) {
+                var p = (e - DS) / DUR;
+                count.textContent = fmt(TOTAL * (1 - p * p));   /* accelerate — time collapsing */
+            } else {
+                showEnd();
+                if (e >= DOOR_AT) { showDoor(); if (iv) { clearInterval(iv); iv = 0; } }
+            }
+        }
+    }
+    iv = setInterval(tick, 80);
+    /* if the page was backgrounded (timers paused), advance the moment it's seen */
+    document.addEventListener('visibilitychange', function () { if (!document.hidden) tick(); });
+    window.__frankTick = tick;
+}
+
+document.getElementById('close').addEventListener('click', function () { window.alert('YOU MADE ME DO IT.'); });
 </script>
 {% endblock %}

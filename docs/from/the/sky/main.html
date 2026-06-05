@@ -133,7 +133,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (entry.name.includes('phone.swf')) {
         armed = true;
         setTimeout(() => {
-          document.querySelector('[data-url]').removeAttribute('hidden');
+          // Optional-chained: the bridge anchor may be commented out (Level 4 disabled).
+          document.querySelector('[data-url]')?.removeAttribute('hidden');
         }, 108000);
         break;
       }

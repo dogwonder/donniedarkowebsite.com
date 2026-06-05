@@ -28,6 +28,27 @@ $xxl: px-to-em(1920px);
 
     --focus: #ffdd00;
 
+    //Atmospheric greys — the darker, the more dread (design-system tokens)
+    --grey-900: #111;
+    --grey-700: #333;
+    --grey-500: #555;
+    --grey-400: #777;
+    --grey-300: #999;
+
+    //"Daylight" paper — the only gradient allowed besides Win98 title bars
+    --paper-top: #ddddcc;
+    --paper-bottom: #ffffff;
+    --paper: linear-gradient(180deg, var(--paper-top) 0%, var(--paper-bottom) 100%);
+
+    //Win98 desktop vernacular (matches 98.css)
+    --win-silver: #c0c0c0;
+    --win-face: silver;
+    --win-navy-from: #000080;
+    --win-navy-to: #1084d0;
+    --win-titlebar: linear-gradient(90deg, var(--win-navy-from), var(--win-navy-to));
+    --win-shadow-out: inset -1px -1px #0a0a0a, inset 1px 1px #dfdfdf, inset -2px -2px grey, inset 2px 2px #fff;
+    --win-shadow-inset: inset -1px -1px #fff, inset 1px 1px grey, inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a;
+
     //Spacing
     --space-xs: clamp(0.75rem, 0.69rem + 0.29vw, 0.9375rem);
     --space-s: clamp(1rem, 0.92rem + 0.39vw, 1.25rem);
@@ -59,4 +80,8 @@ $xxl: px-to-em(1920px);
     //Other
     --border-radius: 0.5rem;
     --containerWidth: 70rem; //1120px
+
+    //The original Flash stage. Every game scene is this frame.
+    --stage-w: 800;
+    --stage-h: 500;
 }

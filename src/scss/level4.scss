@@ -1,0 +1,193 @@
+/* ============================================================================
+   level 4 — cellar door.  shared stage scaffolding (from design-system/Level 4).
+   Linked ONLY by the /cellar/door/ pages, after main.css + 98.css.
+   Tokens come from partials/_vars.scss (compiled into main.css).
+   Every scene is an 800x500 frame, letterbox-scaled to the viewport.
+   ========================================================================== */
+
+html, body { height: 100%; margin: 0; }
+body {
+  background: var(--dark);
+  font-family: var(--mono), monospace;
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  overflow: hidden;
+  cursor: default;
+}
+
+/* ---------- the stage: letterboxed 800x500 frame -------------------------- */
+.stage-viewport {
+  position: fixed; inset: 0; background: var(--dark);
+  display: flex; align-items: flex-start; justify-content: flex-start; overflow: hidden;
+}
+.stage {
+  position: relative; width: 800px; height: 500px; overflow: hidden;
+  flex: none; transform-origin: center center;
+}
+.stage.is-light { background: var(--light); }
+.stage.is-dark  { background: var(--dark); }
+.stage.is-paper { background: var(--paper); }
+
+/* the hidden attribute must always win — game elements set display:block
+   (e.g. .mark), which would otherwise override the UA's [hidden] rule and
+   leak unrevealed hotspots onto the stage. */
+.stage [hidden] { display: none !important; }
+.stage img.bg {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: center; user-select: none; -webkit-user-drag: none;
+}
+
+/* scanline overlay — the site's .interlace effect (see design-system/_effects).
+   never on terminal states. */
+.scanlines::after {
+  content: ""; position: absolute; inset: 0; z-index: 40; pointer-events: none;
+  background: repeating-linear-gradient(to bottom,
+    rgba(0,0,0,0.22), rgba(0,0,0,0.22) 1px, transparent 2px, transparent 3px);
+}
+
+/* ---------- game type ------------------------------------------------------ */
+.g {
+  font-family: var(--mono), monospace; -webkit-font-smoothing: none;
+  text-transform: lowercase; letter-spacing: 0.14em; color: #fff;
+  font-size: 13px; line-height: 1.9;
+}
+.stage.is-light .g, .stage.is-paper .g { color: #000; }
+.g--key { color: var(--highlight); }
+.embo  { text-shadow:-1px 0 #000,0 1px #000,1px 0 #000,0 -1px #000; }
+.embo-l { text-shadow:-1px 0 #fff,0 1px #fff,1px 0 #fff,0 -1px #fff; }
+
+/* ---------- red crosshair / mark ------------------------------------------ */
+.crosshair {
+  position: absolute; width: 32px; height: 32px; cursor: pointer; z-index: 30;
+  background: none; border: none; padding: 0;
+}
+.crosshair::before { content:""; position:absolute; inset:0; border:2px solid var(--highlight); border-radius:50%; }
+.crosshair::after  { content:""; position:absolute; left:50%; top:50%; width:9px; height:9px; background:var(--highlight); border-radius:50%; transform:translate(-50%,-50%); }
+.crosshair:hover   { animation: flicker 0.1s steps(1) 5; }
+@keyframes flicker { 50% { opacity: 0; } }
+
+.mark {
+  position:absolute; width:16px; height:16px; cursor:pointer; z-index:30; background:none; border:none; padding:0; display:block;
+}
+.mark::before,.mark::after { content:""; position:absolute; background:var(--highlight); }
+.mark::before { left:50%; top:0; width:1px; height:100%; transform:translateX(-50%); }
+.mark::after  { top:50%; left:0; height:1px; width:100%; transform:translateY(-50%); }
+.mark:hover { animation: flicker 0.1s steps(1) 5; }
+
+/* the lore ring — L1's obituary grammar: a circle opens lore (a popup tab),
+   a cross opens the way. NB not named .ring — that collides with the Tailwind
+   ring utility (tailwind scans the built docs html and would restyle it). */
+.lore-ring {
+  position:absolute; width:14px; height:14px; cursor:pointer; z-index:30; display:block;
+  border:1px solid var(--highlight); border-radius:50%; background:none; padding:0; box-shadow:none;
+}
+.lore-ring:hover { animation: flicker 0.1s steps(1) 5; }
+
+.hotspot { position:absolute; background:transparent; border:none; padding:0; cursor:pointer; z-index:30; }
+
+/* ---------- win98 windows (placement only; 98.css does the chrome) -------- */
+.stage .window { position: absolute; z-index: 35; }
+.title-bar.is-warn { background: linear-gradient(90deg, #7a0000, var(--highlight)); }
+.win-browser .title-bar {
+  background: var(--win-silver); box-shadow: var(--win-shadow-inset);
+  justify-content: center; gap: 14px; color: #000;
+}
+.win-browser .title-bar-text { color: #000; margin: 0; }
+.stage .window input[type=text] { color: #000; }
+
+/* reset 98.css's global button rule for game elements
+   (.lore-ring stays out — the reset's border:none would erase its circle) */
+.crosshair, .mark, .hotspot, .restart, .bare {
+  min-width: 0; min-height: 0; color: inherit; text-shadow: none;
+  box-shadow: none; background: none; border: none; padding: 0;
+  -webkit-appearance: none; appearance: none;
+}
+
+/* ---------- chrome: credit + timestamp ------------------------------------ */
+.stage .credit {
+  position:absolute; top:0; right:0; z-index:38; margin: 12px 14px; text-align:right;
+  font-family: var(--mono), monospace; -webkit-font-smoothing:none;
+  font-size: 11px; font-weight:700; letter-spacing:0.06em; line-height:1.7; color:#fff;
+}
+.stage.is-light .credit, .stage.is-paper .credit { color:#000; }
+.stage .credit a { color: inherit; text-decoration: underline; }
+.stage .credit a:hover { text-decoration-color: var(--highlight); }
+.visitors {
+  font-family: monospace; background:#000; color:var(--green); padding:2px 5px; margin-top:8px; display:inline-block;
+  box-shadow: inset 0.2em 0.2em 0.2em 0 rgba(255,255,255,0.7), inset -0.2em -0.2em 0.2em 0 rgba(0,0,0,0.7);
+}
+.timestamp {
+  position:absolute; left:0; bottom:0; z-index:38; margin: 10px 12px;
+  font-family: var(--mono), monospace; -webkit-font-smoothing:none; font-size:11px; letter-spacing:0.12em;
+  color:#fff; background:#000; padding: 2px 6px;
+}
+.stage.is-light .timestamp, .stage.is-paper .timestamp { color:#fff; }
+
+/* ---------- stage chrome: registration crop-brackets + edge ticks ---------- */
+.chrome { position:absolute; inset:0; z-index:42; pointer-events:none; color:#6a6a6a; }
+.stage.is-paper .chrome, .stage.is-light .chrome { color:#8a8579; }
+.chrome .reg { position:absolute; width:11px; height:11px; border:0 solid currentColor; opacity:0.7; }
+.chrome .reg.tl { left:13px; top:13px; border-top-width:1px; border-left-width:1px; }
+.chrome .reg.tr { right:13px; top:13px; border-top-width:1px; border-right-width:1px; }
+.chrome .reg.bl { left:13px; bottom:13px; border-bottom-width:1px; border-left-width:1px; }
+.chrome .reg.br { right:13px; bottom:13px; border-bottom-width:1px; border-right-width:1px; }
+.chrome .tick { position:absolute; background:currentColor; opacity:0.5; }
+.chrome .tick.h { height:1px; }
+.chrome .tick.v { width:1px; }
+
+/* ---------- scene fade ----------------------------------------------------- */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.fade { animation: fadeIn 0.6s ease both; }
+
+/* assembling-text word: hidden until built */
+.w { opacity: 0; }
+.w.in { opacity: 1; transition: opacity 0.18s ease; }
+
+/* still mode: when a scene is embedded (the design spread), show rest-state
+   with no transitions so thumbnails paint correctly in a backgrounded iframe. */
+.still .w, .still .ln, .still .count { opacity: 1 !important; transition: none !important; }
+
+/* ---------- turbulence (active beats only; never terminal states) ---------
+   filters #noise1–3 are provided globally by partials/svg.html */
+@keyframes noise {
+  0% { filter: url(#noise1); } 33% { filter: url(#noise2); }
+  66% { filter: url(#noise3); } 100% { filter: url(#noise1); }
+}
+@keyframes noise-soft { 0%{filter:url(#noise1)} 50%{filter:url(#noise2)} 100%{filter:url(#noise1)} }
+.turbulence      { animation: noise 0.5s steps(1) infinite; }
+.turbulence-soft { animation: noise-soft 0.9s steps(1) infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .turbulence, .turbulence-soft { animation: none; filter: none; }
+  .w { opacity: 1; }
+}
+
+/* ============================================================================
+   shards — film-still fragments scattered across the void, "like the game".
+   stills are sliced, cropped and scattered; monochrome so the scene's single
+   red stays reserved for the clickable mark. dark scenes: screen-blend (stills
+   bleed in/out of black). paper scenes: add .on-paper for multiply.
+   ========================================================================== */
+.fragments { position:absolute; inset:0; z-index:1; pointer-events:none; overflow:hidden; }
+
+/* abstract angular shards (see vectors.js) — sits over the photo fragments */
+.vectors { position:absolute; inset:0; width:100%; height:100%; z-index:1; pointer-events:none; overflow:visible; }
+
+.frag {
+  position:absolute; background-repeat:no-repeat; background-size:cover;
+  filter:grayscale(1) contrast(1.25) brightness(0.85);
+  mix-blend-mode:screen; opacity:0.5;
+}
+.fragments.on-paper .frag { mix-blend-mode:multiply; filter:grayscale(1) contrast(1.1) brightness(1.05); }
+
+/* sliced into thin horizontal lines — the signature glitch shatter */
+.frag.sliced {
+  -webkit-mask-image: repeating-linear-gradient(to bottom, #000 0 1px, transparent 1px 3px);
+          mask-image: repeating-linear-gradient(to bottom, #000 0 1px, transparent 1px 3px);
+}
+/* a clean rectangular sliver that bleeds in solid */
+.frag.solid { opacity:0.62; }
+
+/* thin vector shards — hard monochrome slashes (red is spent on the mark) */
+.shard { position:absolute; height:1px; background:#bcbcbc; transform-origin:left center; opacity:0.5; }
+.shard.dim { background:#3a3a3a; opacity:0.8; }
+.fragments.on-paper .shard { background:#1d1a16; opacity:0.35; }

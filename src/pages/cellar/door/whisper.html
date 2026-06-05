@@ -1,5 +1,6 @@
 ---
 permalink: /cellar/door/whisper.html
+title: cellar door
 ---
 
 {% set isDark = true %}
@@ -7,78 +8,46 @@ permalink: /cellar/door/whisper.html
 {% set hasCredit = false %}
 
 {% css %}
-html body {
-    background-color: #000000 !important;
+.gate {
+    left:50%; top:50%; transform:translate(-50%,-50%);
+    width:300px; font-family:var(--mono); -webkit-font-smoothing:none;
 }
-.aspect-ratio {
-    position: relative;
-    aspect-ratio: 800 / 500;
-    background-color: #000;
+.gate .title-bar-text { letter-spacing:0.04em; }
+.gate .window-body { margin:10px 10px 12px; }
+.prompt { margin:2px 0 12px; font-size:13px; color:#000; text-transform:lowercase; letter-spacing:0.08em; }
+.gate input[type=text] {
+    width:100%; box-sizing:border-box; font-family:var(--mono); -webkit-font-smoothing:none;
+    font-size:13px; letter-spacing:0.18em; padding:4px 5px;
+    color:#000; /* body.dark would otherwise render the words white-on-white */
 }
-/* Scanlines (the site's .interlace effect, page-scoped so it can't fight the
-   stage geometry). pointer-events:none so the overlay never eats clicks. */
-.aspect-ratio::before {
-    content: "";
-    pointer-events: none;
-    z-index: 2;
-    position: absolute;
-    inset: 0;
-    display: block;
-    background: repeating-linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.2) 1px, transparent 2px, transparent 3px);
-}
-.prompt {
-    position: absolute;
-    top: 22%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    text-align: center;
-    font-family: var(--mono);
-    font-size: clamp(0.75rem, 0.9vw, 0.85rem);
-    color: #777;
-    letter-spacing: 0.2em;
-    text-transform: lowercase;
-}
-.aspect-ratio .window {
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 280px;
-    z-index: 10;
-    font-family: var(--mono-alt);
-}
-.window .window-body {
-    padding: 1rem;
-}
-form input {
-    width: 100%;
-    height: 24px;
-    font-family: var(--mono);
-    letter-spacing: 0.1em;
-    color: #000; /* body.dark would otherwise render the words white-on-white */
-}
+.gate .field-row { margin-top:10px; justify-content:flex-end; }
+.gate button.ok { font-family:var(--mono); -webkit-font-smoothing:none; font-size:12px; padding:3px 16px; color:#000; text-transform:lowercase; }
 {% endcss %}
 
 {% extends "layouts/base.html" %}
 
+{% block styles %}
+<link rel="stylesheet" href="{{ "/" | url }}scss/level4.css" />
+{% endblock %}
+
 {% block content %}
-<div class="flex items-end h-full">
-    <div class="aspect-ratio">
+<div class="stage-viewport">
+    <div class="stage is-dark" data-screen-label="04 — the whisper">
 
-        <p class="prompt" id="prompt" style="display: none;">
-            the two most beautiful words in the english language.
-        </p>
-
-        <div class="window">
+        <div class="window gate">
             <div class="title-bar">
-                <div class="title-bar-text">…?</div>
+                <div class="title-bar-text">whisper</div>
+                <div class="title-bar-controls">
+                    <button id="close" aria-label="Close"></button>
+                </div>
             </div>
             <div class="window-body">
-                <form id="whisper-form" novalidate>
-                    <label for="password" class="visually-hidden">Say the words:</label>
-                    <input type="text" id="password" name="password" autocomplete="off">
-                </form>
+                <p class="prompt">say the words.</p>
+                <label for="pw" class="visually-hidden">the words</label>
+                <input type="text" id="pw" autocomplete="off" spellcheck="false" autofocus>
+                <div class="field-row">
+                    <button class="ok" id="ok">ok</button>
+                </div>
             </div>
         </div>
 
@@ -87,25 +56,31 @@ form input {
 {% endblock %}
 
 {% block scripts %}
+<script src="/scripts/stage.js"></script>
 <script src="/scripts/level4.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-
-    setTimeout(function() {
-        level4Scripts.animateText('prompt', 180);
-    }, 1200);
-
-    document.getElementById('whisper-form').addEventListener('submit', function(event) {
-        event.preventDefault();
-        var words = document.getElementById('password').value.trim().toLowerCase().replace(/\s+/g, ' ');
-        if (words === 'cellar door') {
-            // Carry the seed through to the end card.
-            window.location.href = '/cellar/door/end.html' + window.location.search;
-        } else {
-            alert('those are not the words.');
-        }
-    });
-
+var pw = document.getElementById('pw');
+var ok = document.getElementById('ok');
+var wrongLines = ['THOSE ARE NOT THE WORDS.', 'TRY TO REMEMBER.', 'SHE TOLD YOU ONCE.'];
+var n = 0;
+function norm(s) { return s.toLowerCase().replace(/\s+/g, ' ').trim(); }
+function submit() {
+    if (norm(pw.value) === 'cellar door') {
+        /* carry the seed through to frank */
+        window.location.href = '/cellar/door/frank.html' + window.location.search;
+    } else {
+        window.alert(wrongLines[Math.min(n, wrongLines.length - 1)]);
+        n++;
+        pw.value = '';
+        pw.focus();
+    }
+}
+ok.addEventListener('click', submit);
+pw.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); submit(); } });
+document.getElementById('close').addEventListener('click', function () {
+    window.alert('YOU CANNOT CLOSE THIS.');
+    pw.focus();
 });
+setTimeout(function () { pw.focus(); }, 100);
 </script>
 {% endblock %}

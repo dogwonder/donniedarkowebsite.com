@@ -1,5 +1,6 @@
 ---
 permalink: /cellar/door/sparrow.html
+title: cellar door
 ---
 
 {% set isDark = true %}
@@ -7,100 +8,100 @@ permalink: /cellar/door/sparrow.html
 {% set hasCredit = false %}
 
 {% css %}
-html body {
-    background-color: #000000 !important;
+/* near-total darkness. one faint mark, somewhere. */
+.whisper-line {
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    font-family:var(--mono); -webkit-font-smoothing:none; text-transform:lowercase;
+    font-size:12px; letter-spacing:0.34em; color:#262626; white-space:nowrap;
 }
-.aspect-ratio {
-    position: relative;
-    aspect-ratio: 800 / 500;
-    background-color: #050505;
-    background-image: radial-gradient(ellipse at 50% 65%, #131110 0%, #050505 70%, #000 100%);
-}
-/* Scanlines (the site's .interlace effect, page-scoped so it can't fight the
-   stage geometry). pointer-events:none so the overlay never eats clicks. */
-.aspect-ratio::before {
-    content: "";
-    pointer-events: none;
-    z-index: 2;
-    position: absolute;
-    inset: 0;
-    display: block;
-    background: repeating-linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.2) 1px, transparent 2px, transparent 3px);
-}
-.hint {
-    position: absolute;
-    top: 8%;
-    left: 12%;
-    font-family: var(--mono);
-    font-size: clamp(0.7rem, 0.85vw, 0.8rem);
-    color: #3a3a3a;
-    letter-spacing: 0.25em;
-    text-transform: lowercase;
-}
-/* The cellar-door handle: a 44×44 hotspot whose position is randomised per
-   visit (seeded for the walkthrough). The faint red mark sits at its centre. */
-[data-url] {
-    position: absolute;
-    z-index: 999;
-    width: 44px;
-    height: 44px;
-    margin: -22px 0 0 -22px; /* centre the hit area on the chosen point */
-    background-color: transparent;
-}
-[data-url] .mark {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 7px;
-    height: 7px;
-    margin: -3.5px 0 0 -3.5px;
-    border-radius: 50%;
-    background-color: rgba(252, 13, 27, 0.28);
-    box-shadow: 0 0 6px 2px rgba(252, 13, 27, 0.12);
-}
-[data-url]:hover {
-    cursor: pointer;
-}
-[data-url]:hover .mark {
-    background-color: var(--highlight);
-    box-shadow: 0 0 8px 3px rgba(252, 13, 27, 0.45);
-    animation: flicker 0.1s 5;
-}
-@keyframes flicker {
-    0% { opacity: 1; }
-    50% { opacity: 0; }
-    100% { opacity: 1; }
-}
+.mark.faint { opacity:0.52; transition: opacity 0.25s ease; }
+.mark.faint:hover { opacity:1; }
+/* the first find is a ring, not a cross — the shape the obituaries wore.
+   the door does not exist until the paper has been read and put down. */
+.lore-ring.fainter { opacity:0.42; transition: opacity 0.25s ease; }
+.lore-ring.fainter:hover { opacity:0.85; }
 {% endcss %}
 
 {% extends "layouts/base.html" %}
 
+{% block styles %}
+<link rel="stylesheet" href="{{ "/" | url }}scss/level4.css" />
+{% endblock %}
+
 {% block content %}
-<div class="flex items-end h-full">
-    <div class="aspect-ratio">
-        <p class="hint" id="hint" style="display: none;">
-            find the door. it is not where you left it.
-        </p>
-        <a data-url href="/cellar/door/frank.html" aria-label="the cellar door"><span class="mark"></span></a>
+<div class="stage-viewport">
+    <div class="stage is-dark" data-screen-label="03 — the hunt">
+
+        <div class="fragments" aria-hidden="true">
+            <i class="frag sliced" style="left:6%;top:10%;width:240px;height:150px;background-image:url('/images/level4/still-frank-mask.jpeg');background-position:50% 24%;transform:rotate(-2deg);opacity:0.2;"></i>
+            <i class="frag sliced" style="left:68%;top:58%;width:250px;height:150px;background-image:url('/images/level4/still-theater.jpeg');background-position:62% 46%;transform:rotate(1.5deg);opacity:0.18;"></i>
+            <span class="shard dim" style="left:10%;top:40%;width:260px;transform:rotate(-2deg);opacity:0.5;"></span>
+        </div>
+
+        <svg class="vectors" id="vectors" viewBox="0 0 800 500" preserveAspectRatio="none" aria-hidden="true"></svg>
+
+        <div class="whisper-line">her name was that of a bird.</div>
+
+        <a class="mark faint" id="mark" href="/cellar/door/whisper.html" aria-label="find the door" hidden></a>
+
+        <a class="lore-ring fainter" id="obit" href="/news/pop7.html" target="_blank" aria-label="what the paper said"></a>
+
+        <div class="timestamp">10 . 02 . 1988</div>
+
     </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
+<script src="/scripts/stage.js"></script>
+<script src="/scripts/vectors.js"></script>
 <script src="/scripts/level4.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+Vectors.build(document.getElementById('vectors'), [
+    { t:'needle', x:-20, y:80,  len:300, ang:36,  w:2,   color:'#3a3a3a', op:0.7 },
+    { t:'needle', x:820, y:120, len:300, ang:160, w:1.5, color:'#333',    op:0.7 },
+    { t:'cross',  x:160, y:120, r:6, color:'#2e2e2e', op:0.85 },
+    { t:'cross',  x:640, y:400, r:7, color:'#2e2e2e', op:0.7 }
+]);
+</script>
+<script>
+level4Scripts.propagateSeed();
 
-    level4Scripts.propagateSeed();
+/* two marks move every visit, well inside the stage (12%–82% x, 16%–78% y in
+   stage coords). random per visit, deterministic when ?seed= is present (the
+   headless walkthrough passes seed=42). they share ONE PRNG stream — the door
+   mark draws first (so its seed-42 position predates the ring), and the ring
+   redraws until it sits clear of the door.
 
-    // The handle moved when the timeline did: random per visit, deterministic
-    // when ?seed= is present (the headless walkthrough passes seed=42).
-    level4Scripts.placeHotspot('[data-url]', { x0: 180, x1: 620, y0: 140, y1: 360 });
+   the hunt is two-phase (L1's grammar: the obituaries first, then the way on):
+   only the ring exists at first. it opens the morning paper in a new tab;
+   when that tab is CLOSED, the door mark fades in elsewhere in the dark. */
+var rnd = level4Scripts.random();
+var band = { x0: 96, x1: 656, y0: 80, y1: 390 };
+var mark = document.getElementById('mark');
+var obit = document.getElementById('obit');
+var doorAt = level4Scripts.placeHotspot('#mark', band, { rnd: rnd });
+level4Scripts.placeHotspot('#obit', band, { rnd: rnd, avoid: { x: doorAt.x, y: doorAt.y, r: 140 } });
 
-    setTimeout(function() {
-        level4Scripts.animateText('hint', 200);
-    }, 1500);
+function revealDoor() {
+    if (!mark.hidden) return;
+    mark.hidden = false;
+    mark.classList.add('fade');
+}
 
+obit.addEventListener('click', function (e) {
+    e.preventDefault();
+    var w = window.open(obit.href, '_blank');
+    if (!w) { revealDoor(); return; }            /* popup blocked — don't brick the level */
+    var poll = setInterval(function () {
+        if (w.closed) { clearInterval(poll); revealDoor(); }
+    }, 400);
 });
+
+if (/[?&]still\b/.test(location.search)) {
+    mark.hidden = false;
+    mark.style.opacity = '0.7';   /* legible in the design spread */
+    obit.style.opacity = '0.55';
+}
 </script>
 {% endblock %}

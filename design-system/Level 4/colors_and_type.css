@@ -1,0 +1,204 @@
+/* ============================================================================
+   donniedarkowebsite.com — colors_and_type.css
+   The single source of truth for color + type tokens.
+   A faithful recreation of the 2001 Hi-ReS! Flash site, rebuilt in HTML/CSS.
+   Import this first; everything else assumes these custom properties exist.
+   ========================================================================== */
+
+/* ---------- Fonts ---------------------------------------------------------- */
+/* Primary game type. Bitmap-crisp, period-perfect. */
+@font-face {
+  font-family: "Pixelated MS Sans Serif";
+  font-style: normal;
+  font-weight: 400;
+  src: url("fonts/ms_sans_serif.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Pixelated MS Sans Serif";
+  font-style: normal;
+  font-weight: 700;
+  src: url("fonts/ms_sans_serif_bold.woff2") format("woff2");
+}
+/* Secondary mono — window body copy. */
+@font-face {
+  font-family: "DepartureMono";
+  font-style: normal;
+  font-weight: 400;
+  src: url("fonts/DepartureMono-Regular.woff2") format("woff2");
+}
+
+:root {
+  /* ---------- Font families ----------------------------------------------- */
+  --body:     "Arial", Helvetica, sans-serif;                 /* plain HTML pages */
+  --times:    "Times New Roman", "Times", serif;              /* newspaper popups */
+  --mono:     "Pixelated MS Sans Serif", monospace;           /* THE game type */
+  --mono-alt: "DepartureMono", "Pixelated MS Sans Serif", monospace; /* window body */
+
+  /* ---------- Core color ----------------------------------------------------
+     Two voids and one red. That is the entire palette.
+     --------------------------------------------------------------------- */
+  --dark:  hsl(98, 0%, 0%);   /* #000000 — stage / void background (body.dark) */
+  --light: #ffffff;           /* white-void stages, letter paper                */
+
+  /* THE red. Means clickable / significant. One per screen, maximum. */
+  --color-primary: 356, 98%;                       /* hue + sat, split for reuse  */
+  --l: 52%;                                         /* lightness                   */
+  --highlight: hsl(var(--color-primary), var(--l));            /* #fc0d1b         */
+  --hover:     hsl(var(--color-primary), calc(var(--l) - 10%));/* link hover      */
+  --visited:   hsl(var(--color-primary), var(--l));
+  --red:       #ea3323;       /* secondary / legacy art red                       */
+
+  --green: #00ff00;           /* terminal green — system documents                */
+  --focus: #ffdd00;           /* accessibility focus outline (yellow)             */
+
+  /* Atmospheric greys — the darker, the more dread. */
+  --grey-900: #111;
+  --grey-700: #333;
+  --grey-500: #555;
+  --grey-400: #777;
+  --grey-300: #999;
+
+  /* "Daylight" paper — the only gradient allowed besides Win98 title bars. */
+  --paper-top:    #ddddcc;
+  --paper-bottom: #ffffff;
+  --paper: linear-gradient(180deg, var(--paper-top) 0%, var(--paper-bottom) 100%);
+
+  /* Win98 desktop vernacular (from 98.css). */
+  --win-silver:      #c0c0c0;
+  --win-face:        silver;
+  --win-navy-from:   #000080;
+  --win-navy-to:     #1084d0;
+  --win-titlebar:    linear-gradient(90deg, var(--win-navy-from), var(--win-navy-to));
+  --win-titlebar-inactive: linear-gradient(90deg, grey, #b5b5b5);
+  --win-shadow-out:  inset -1px -1px #0a0a0a, inset 1px 1px #dfdfdf,
+                     inset -2px -2px grey,    inset 2px 2px #fff;
+  --win-shadow-btn:  inset -1px -1px #0a0a0a, inset 1px 1px #fff,
+                     inset -2px -2px grey,    inset 2px 2px #dfdfdf;
+  --win-shadow-btn-active: inset -1px -1px #fff, inset 1px 1px #0a0a0a,
+                           inset -2px -2px #dfdfdf, inset 2px 2px grey;
+  --win-shadow-inset: inset -1px -1px #fff, inset 1px 1px grey,
+                      inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a;
+
+  /* ---------- Spacing scale (fluid; for non-game / chrome pages) ---------- */
+  --space-xs: clamp(0.75rem, 0.69rem + 0.29vw, 0.9375rem);
+  --space-s:  clamp(1rem,   0.92rem + 0.39vw, 1.25rem);
+  --space-m:  clamp(1.5rem, 1.38rem + 0.58vw, 1.875rem);
+  --space-l:  clamp(2rem,   1.84rem + 0.78vw, 2.5rem);
+  --space-xl: clamp(3rem,   2.77rem + 1.17vw, 3.75rem);
+
+  /* ---------- Type scale ----------------------------------------------------
+     Note: game copy lives SMALL — text should feel found, not presented.
+     --------------------------------------------------------------------- */
+  --font-size-sm:   clamp(0.8rem,  0.16vw + 0.76rem, 0.89rem);
+  --font-size-base: clamp(1rem,    0.34vw + 0.92rem, 1.19rem);
+  --font-size-md:   clamp(1.25rem, 0.6vw  + 1.1rem,  1.58rem);
+  --font-size-lg:   clamp(1.56rem, 0.99vw + 1.31rem, 2.11rem);
+  --font-size-xl:   clamp(1.95rem, 1.56vw + 1.56rem, 2.81rem);
+
+  /* The signature game sizes — sparse, intimate. */
+  --font-size-game:    clamp(0.7rem, 0.5vw + 0.55rem, 0.95rem);
+  --font-size-caption: 0.75rem;
+
+  /* Letter-spacing — generous on sparse type. */
+  --letter-spacing-base:  0.05em;
+  --letter-spacing-small: 0.0125em;
+  --letter-spacing-big:   0.075em;   /* sparse game type runs 0.12–0.5em inline */
+
+  --line-height-small: 1.2;
+  --line-height-base:  1.5;
+  --word-spacing-base: 0.04em;
+
+  /* ---------- Other ---------------------------------------------------------
+     The stage uses NO radii. --border-radius exists only for chrome pages.
+     --------------------------------------------------------------------- */
+  --border-radius: 0.5rem;
+  --containerWidth: 70rem;
+
+  /* The original Flash stage. Every game scene is this frame. */
+  --stage-w: 800;
+  --stage-h: 500;
+}
+
+/* ============================================================================
+   SEMANTIC ELEMENT STYLES
+   Apply .dd-scope to any container to opt into the system's base type.
+   ========================================================================== */
+
+.dd-scope {
+  font-family: var(--body);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  letter-spacing: var(--letter-spacing-base);
+  color: var(--dark);
+  background: var(--light);
+}
+.dd-scope.dark,
+.dd-scope .dark {
+  color: var(--light);
+  background: var(--dark);
+}
+
+/* Game copy: lowercase, mono, spaced, small. The default voice of the site. */
+.dd-game {
+  font-family: var(--mono);
+  font-size: var(--font-size-game);
+  letter-spacing: var(--letter-spacing-big);
+  line-height: var(--line-height-base);
+  text-transform: lowercase;
+  -webkit-font-smoothing: none;   /* keep the bitmap crisp */
+  font-smooth: never;
+}
+
+/* System voice: UPPERCASE, bureaucratic. Documents, warnings. */
+.dd-system {
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-big);
+}
+
+/* Terminal document text — green on black/paper. */
+.dd-terminal {
+  font-family: var(--mono-alt);
+  color: var(--green);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  line-height: 1.6;
+}
+
+/* THE red word inside body text — the hint IS the secret. */
+.dd-key { color: var(--highlight); }
+
+/* Headings (chrome pages only). */
+.dd-scope h1, .dd-scope h2, .dd-scope h3,
+.dd-scope h4, .dd-scope h5, .dd-scope h6 {
+  line-height: 1;
+  margin-block: 1em 1rem;
+  font-weight: 700;
+}
+
+/* Links — underlined, red on hover, never blue. */
+.dd-scope a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: max(0.0875em, 0.0625rem);
+  text-underline-offset: 0.1em;
+}
+.dd-scope a:hover { text-decoration-color: var(--highlight); }
+.dd-scope a:focus {
+  color: var(--light);
+  background-color: var(--highlight);
+  outline: 3px solid transparent;
+  text-decoration: none;
+}
+
+/* Outlined "embossed" text — the white-on-dark caption treatment. */
+.dd-text {
+  font-weight: 700;
+  letter-spacing: var(--letter-spacing-big);
+  text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
+}
+.dd-text-dark {
+  font-weight: 700;
+  letter-spacing: var(--letter-spacing-big);
+  text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;
+}

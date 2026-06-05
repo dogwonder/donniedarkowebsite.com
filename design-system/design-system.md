@@ -8,6 +8,10 @@ scenes, popups) in HTML/CSS/JS so additions are **indistinguishable from the 200
 > for Claude (Design) or any agent building new scenes. The screenshots are real rendered
 > frames from the site, not mockups — treat them as ground truth for feel.
 
+> This document is the *look*; [`game-mechanics.md`](game-mechanics.md) is the *play* —
+> the full catalog of puzzle/interaction mechanics, the knowledge economy, pacing
+> grammar, and the new-level checklist. Read both before building a scene.
+
 ---
 
 ## 1. Brand essence

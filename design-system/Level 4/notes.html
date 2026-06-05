@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>level 4 — design notes</title>
+<link rel="icon" type="image/png" href="assets/favicon-frank.png">
+<link rel="stylesheet" href="colors_and_type.css">
+<style>
+  html, body { margin:0; background:#fff; }
+  body { font-family:var(--body); color:#1a1a1a; line-height:1.6; font-size:15px; }
+  .wrap { max-width:780px; margin:0 auto; padding:60px 28px 90px; }
+  a { color:#1a1a1a; }
+  a:hover { text-decoration-color:var(--highlight); }
+
+  .top { display:flex; justify-content:space-between; align-items:baseline; border-bottom:2px solid #1a1a1a; padding-bottom:14px; margin-bottom:8px; }
+  .top h1 { font-size:19px; font-weight:700; margin:0; letter-spacing:0.01em; }
+  .top .back { font-size:13px; color:#666; text-decoration:none; }
+  .lede { color:#555; font-size:14px; margin:18px 0 6px; }
+  .legend { font-size:12.5px; color:#666; margin:0 0 38px; }
+  .legend b { color:#1a1a1a; }
+
+  .scene { border-top:1px solid #e4e4e4; padding-top:26px; margin-top:34px; }
+  .scene:first-of-type { border-top:0; }
+  .sh { display:flex; align-items:baseline; gap:12px; margin-bottom:4px; }
+  .sh .num { font-family:monospace; font-size:13px; color:#fff; background:#1a1a1a; padding:2px 7px; }
+  .sh h2 { font-size:17px; margin:0; font-weight:700; }
+  .sh .mood { margin-left:auto; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:#8a8a8a; }
+  .url { font-family:monospace; font-size:12px; color:#888; margin:2px 0 16px; }
+
+  .row { display:grid; grid-template-columns:108px 1fr; gap:4px 18px; margin:0 0 13px; }
+  .row dt { font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#9a0a12; font-weight:700; padding-top:2px; }
+  .row dd { margin:0; font-size:14px; color:#2a2a2a; }
+  .copy { font-family:"Pixelated MS Sans Serif", monospace; -webkit-font-smoothing:none; font-size:12.5px; background:#f4f4f0; border-left:3px solid var(--highlight); padding:11px 14px; color:#222; white-space:pre-wrap; line-height:1.9; }
+  .copy .sys { text-transform:uppercase; color:#111; }
+  .key { color:var(--highlight); }
+  .tok { font-family:monospace; font-size:12.5px; background:#f1f1ec; padding:0 4px; }
+
+  .close { border-top:2px solid #1a1a1a; margin-top:46px; padding-top:20px; }
+  .close h3 { font-size:14px; margin:0 0 10px; letter-spacing:0.04em; }
+  .close ul { margin:0; padding-left:20px; font-size:13.5px; color:#444; }
+  .close li { margin-bottom:5px; }
+  .arc { font-family:monospace; font-size:13px; color:#333; margin:14px 0 0; }
+  .arc .a { color:var(--highlight); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <h1>level 4 — “cellar door” · design notes</h1>
+    <a class="back" href="index.html">← the spread</a>
+  </div>
+  <p class="lede">An epilogue level. Six fixed scenes on the 800×500 stage, played in order. The player is Donnie in the restored timeline — everything undone, but he remembers. Grief disguised as a puzzle.</p>
+  <p class="legend">Three moods carry the level: <b>the void</b> (flat black), <b>the document</b> (paper gradient), <b>the desktop</b> (Win98 windows on black). One red — <span class="tok">--highlight #fc0d1b</span> — per screen, maximum. Red means clickable. It is the only signpost the level offers.</p>
+
+  <!-- 01 -->
+  <div class="scene">
+    <div class="sh"><span class="num">01</span><h2>the collapse</h2><span class="mood">the void</span></div>
+    <div class="url">/cellar/door/</div>
+    <dl class="row">
+      <dt>compose</dt><dd>Flat black <span class="tok">--dark</span>. A single text block at left 12% / top 33%, width 54%. Ceremonial date in grey <span class="tok">#565656</span> (12px, tracking 0.42em); three lines of assembling type in dread-grey <span class="tok">#7c7c7c</span> (14px), the last clause lifted to <span class="tok">#cccccc</span>. Credit pinned top-right; 1px scanlines over all.</dd>
+      <dt>copy</dt><dd><div class="copy">10 . 02 . 1988
+
+the tangent universe collapsed.
+everything you did is undone.
+and yet — you remember.
+
+<span class="key">.continue.</span></div></dd>
+      <dt>reveal</dt><dd>0.7s hold on black, then words assemble one at a time at a 150ms cadence. On the final word, <span class="tok">.continue.</span> fades in over 0.6s.</dd>
+      <dt>the red</dt><dd><b>.continue.</b> — the only way out of the void, and the only red on screen.</dd>
+    </dl>
+  </div>
+
+  <!-- 02 -->
+  <div class="scene">
+    <div class="sh"><span class="num">02</span><h2>the letter</h2><span class="mood">the document · paper</span></div>
+    <div class="url">/cellar/door/letter.html</div>
+    <dl class="row">
+      <dt>compose</dt><dd>Paper gradient <span class="tok">--paper</span> (#ddddcc→#fff). A typewritten letter in <span class="tok">--mono-alt</span> (DepartureMono), ink <span class="tok">#1d1a16</span>, 13px, at left 21% / top 11%, width 58%. Date and signature right-aligned in <span class="tok">#4a463e</span>. Faint scanlines give the scanned-document feel.</dd>
+      <dt>copy</dt><dd><div class="copy">                    10 . 02 . 1988
+
+donnie —
+
+the world did not end. you unmade it.
+you carried the dark back through itself
+and the count began again from nothing.
+
+i wrote that every living creature on earth
+dies alone. that was not the whole of it.
+
+the dead wait behind a door you have
+opened before. you will know the words
+when you stand there — the most beautiful
+in the language.
+
+say them at the <span class="key">cellar door</span>.
+
+                    — r. sparrow</div></dd>
+      <dt>reveal</dt><dd>Lines type in one at a time (360ms) with a blinking ink caret tracking the active line; a click completes the page instantly. After the last line, the key phrase recolors to red over 0.5s and becomes the door forward.</dd>
+      <dt>the red</dt><dd><b>“cellar door”</b> — the hint <em>is</em> the secret (the words for scene 04), and the red word is also the link onward. Sparrow’s register never names the mechanic.</dd>
+    </dl>
+  </div>
+
+  <!-- 03 -->
+  <div class="scene">
+    <div class="sh"><span class="num">03</span><h2>the hunt</h2><span class="mood">the void</span></div>
+    <div class="url">/cellar/door/sparrow.html</div>
+    <dl class="row">
+      <dt>compose</dt><dd>Near-total darkness. One faint line dead-centre in <span class="tok">#262626</span>. A single red mark — the crosshair, 16px, <span class="tok">--highlight</span> — at 32% opacity, placed randomly (12–82% x, 16–78% y) on every visit. Timestamp burned bottom-left; credit dimmed to <span class="tok">#3a3a3a</span>.</dd>
+      <dt>copy</dt><dd><div class="copy">her name was that of a bird.</div></dd>
+      <dt>reveal</dt><dd>Nothing moves. The mark brightens to full and flickers on hover. Clicking it → the whisper. The loneliest screen in the level — you have to <em>find</em> the door in the dark.</dd>
+      <dt>the red</dt><dd><b>the one faint mark.</b> It is moved every visit, so the hunt is never the same place twice.</dd>
+    </dl>
+  </div>
+
+  <!-- 04 -->
+  <div class="scene">
+    <div class="sh"><span class="num">04</span><h2>the whisper</h2><span class="mood">the desktop · win98</span></div>
+    <div class="url">/cellar/door/whisper.html</div>
+    <dl class="row">
+      <dt>compose</dt><dd>A single 98.css window — title <em>whisper</em>, navy title bar, close box — centred on the void <span class="tok">--dark</span>. Body: a prompt, a text field, an <em>ok</em> button. Nothing else exists.</dd>
+      <dt>copy</dt><dd><div class="copy">whisper                          ✕
+say the words.
+[                    ]      ok
+
+<span class="sys">› those are not the words.</span>
+<span class="sys">› try to remember.</span>
+<span class="sys">› she told you once.</span></div></dd>
+      <dt>reveal</dt><dd>The field is auto-focused; Enter or <em>ok</em> submits. The answer is <b>cellar door</b> (case- and space-insensitive). Wrong answers throw a native Win98 alert — the system is the fiction. The close box refuses: “YOU CANNOT CLOSE THIS.”</dd>
+      <dt>the red</dt><dd><b>none — deliberately withheld.</b> The only screen with no signpost. The level has taught you the words; here you must already know them.</dd>
+    </dl>
+  </div>
+
+  <!-- 05 -->
+  <div class="scene">
+    <div class="sh"><span class="num">05</span><h2>frank</h2><span class="mood">the desktop</span></div>
+    <div class="url">/cellar/door/frank.html</div>
+    <dl class="row">
+      <dt>compose</dt><dd>One lone <em>frank</em> desktop icon top-left. A window titled <em>FRANK</em> centred, with a red <span class="tok">is-warn</span> title bar (#7a0000→--highlight) and a black inset screen. Inside: Frank’s uppercase voice and a large count in <span class="tok">--mono-alt</span>, all in <span class="tok">--highlight</span>.</dd>
+      <dt>copy</dt><dd><div class="copy"><span class="sys key">wake up, donnie.
+i have been watching.</span>
+
+<span class="key">28 : 06 : 42 : 12  →  00 : 00 : 00 : 00</span>
+
+<span class="sys key">that is when the world ends.
+you are out of time.</span>
+
+<span class="key">.open the door.</span></div></dd>
+      <dt>reveal</dt><dd>Frank’s voice assembles (130ms), the count fades in and drains to zero over ~5.2s on an accelerating curve — time collapsing inward. At zero the count glitches (SVG turbulence) as the intro voice fades out and the verdict lands; then <span class="tok">.open the door.</span> fades in. Close box → “YOU MADE ME DO IT.”</dd>
+      <dt>the red</dt><dd><b>Frank himself.</b> His voice and the draining count are the screen’s single red presence — the count is the end of the 28-day count, run all the way out.</dd>
+    </dl>
+  </div>
+
+  <!-- 06 -->
+  <div class="scene">
+    <div class="sh"><span class="num">06</span><h2>the door</h2><span class="mood">the void · terminal</span></div>
+    <div class="url">/cellar/door/end.html</div>
+    <dl class="row">
+      <dt>compose</dt><dd>A centred doorway of light built from hard vector bands — dark jambs <span class="tok">#070707</span>, grey step edges <span class="tok">#3f3f3f</span>/<span class="tok">#b4b4b4</span>, a pure-white 44px core, a bright lintel — with light spilling onto the floor in two hard-edged trapezoids (<span class="tok">#c8c8c8</span>, <span class="tok">#7a7a7a</span>). Held words bottom-left, embossed white <span class="tok">#cdcdcd</span>. No scanlines, no chrome, no animation.</dd>
+      <dt>copy</dt><dd><div class="copy">you said the words.
+the door is open.</div></dd>
+      <dt>reveal</dt><dd>None. It holds, perfectly still — the last frame of the site. There is no exit.</dd>
+      <dt>the red</dt><dd><b>spent.</b> No red, and nowhere left to click. The signpost that guided the whole level is gone because the journey is over.</dd>
+    </dl>
+  </div>
+
+  <div class="close">
+    <h3>the arc</h3>
+    <p class="arc">collapse <span class="a">›</span> letter <span class="a">›</span> darkness <span class="a">›</span> whisper <span class="a">›</span> countdown <span class="a">›</span> light</p>
+    <h3 style="margin-top:24px;">constraints honoured</h3>
+    <ul>
+      <li>800×500 stage; everything outside is void; all in-scene placement absolute, in % of stage.</li>
+      <li>One red <span class="tok">--highlight</span> per screen, maximum — and twice, deliberately, none.</li>
+      <li>Palette, type (Pixelated MS Sans Serif / DepartureMono), and components (98.css windows, hidden marks, assembling type, scanlines, turbulence) per the system.</li>
+      <li>Copy lowercase, terse, oracular, second person, present tense; dates as ritual; system voice UPPERCASE; the mechanic never named.</li>
+      <li>No gradients except paper + Win98 title bars; no rounded corners; no soft shadows; terminal state holds perfectly still.</li>
+    </ul>
+  </div>
+
+</div>
+</body>
+</html>
