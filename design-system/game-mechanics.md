@@ -222,7 +222,77 @@ red but **nothing left to click** — "the signpost is spent because the journey
 over." Withholding the system's one promise is the strongest statement the system can
 make. Use exactly once, at the end.
 
-### 2.12 Atmosphere mechanics (non-interactive but load-bearing)
+### 2.12 The in-page timeline (task > task > task > new page)
+
+The original's structural rhythm, inherited from the Flash timeline itself: a level
+is a **linear filmstrip with Stop frames**, and each Stop is a task. The movie plays,
+halts, and waits for the player's act to press play again — three, four, six times on
+one page — and then a **URL navigation is the chapter break**.
+
+- *Proven:* golf.swf chains red square → red square → "go _level2" → TV → exercise 1
+  → exercise 2 → TV ×2 → window-forward → arrow → sidewalk → wallet → red lines, ALL
+  on one page, before the tab break to `/sparkle/motion/`. philosophy.swf chains
+  crosshair → window ×3 → grid → hidden button → book → password → flash-reveal on
+  one page. (`swfdump -a` shows the skeleton: `Stop` frames = task gates,
+  `gotoAndPlay` = task rewards, `getURL` = the chapter break.)
+- *Rules:* cluster 3–6 tasks per page so progress feels like *advancing a film*, not
+  flipping pages; spend navigation sparingly — a new URL should feel like a chapter
+  heading (and reads as one, since URLs are whispered phrases). The page boundary is
+  also the *save point*: sections re-enterable by URL are the calibration/testing
+  seams (§6).
+- *L4 honesty note:* the redesign currently runs closer to one-task-per-page than
+  the original's chains — the two-phase hunt (ring → paper → cross) is the only
+  multi-beat page. New scenes should prefer adding beats to existing pages over
+  adding pages.
+- *Automation:* in-page tasks gate on canvas/DOM change (`diff-stable`,
+  `waitVisibleMs`); the chapter break gates on navigation (`awaitNavMs`,
+  `stopOnNav`) — mixing them up is how repeat-clicks blow through pages (the
+  tangent-derail bug).
+
+### 2.13 ASCII portraiture
+
+Characters rendered *by the system, in the system's own medium* — text. The original
+drops an **ascii bunny** Frank as the lifeline exercise's feedback; the figure who
+haunts the videostore-grade JPEGs suddenly speaks in the same monospace the
+terminal uses. It's the document mood (§design-system.md) wearing a face.
+
+- *Rules:* reserve it for apparitions — a character manifesting *inside* the
+  machine, not decoration. Monospace font, no anti-aliasing, the original glyph
+  palette (` `, `` ` ``, `.,:~^<(/C3VXgG08%B$@`). Dark-on-light for paper/terminal
+  scenes, light-on-dark for void scenes. Generate from a film still (luminance →
+  glyph ramp, sample rows at ~2× column pitch for character aspect).
+- *Asset:* `design-system/ascii-donnie.txt` (82×52, from the classroom frame at
+  t≈37min) — generated for a prospective L4 beat.
+- *Automation-friendly by nature:* pure static text — diff-settles instantly, needs
+  no reference still.
+
+### 2.14 Audio
+
+The original plays sound as *atmosphere and testimony*, never as a required sense:
+
+- **Ambient layers** — golf.swf loads `birds.swf` into `_level3` purely as sound
+  (night air on the golf course); a whole Flash level reserved for tone.
+- **Spoken testimony** — phone.swf voice-acts the FAA transcript over ~110s; the
+  L3 ending is *paced by* the audio's duration.
+- **The cardinal rule, kept everywhere:** nothing gates on *hearing*. The transcript
+  renders its text on screen as it plays; the dialogue is duplicated visually. Audio
+  deepens; it never holds the key. (This is also the accessibility floor.)
+- *Rules for new work:* one ambient bed per level at most, started by the level's
+  first click (autoplay requires a user gesture — in Ruffle *and* in modern
+  browsers); voice/SFX only where the fiction produces them (a phone, a TV, a
+  drive-through window). Silence is the default mood — the void screens should stay
+  silent.
+- *L4 honesty note:* the redesign is currently **silent end-to-end** — no ambient
+  bed, no voice. The biggest unclaimed atmosphere win; candidate beats: a low room
+  tone behind the hunt, the typewriter strikes under Roberta's letter, Frank's
+  count-drain ticking.
+- *Automation:* audio is invisible to image-diff. Gate audio-paced beats on the
+  **known duration** (phone.swf = 2739 frames @ 25fps = 109.5s) plus a
+  `match-reference` of the visual end state — never on sound itself. Headless
+  runs may not render audio at all; the walkthrough must complete with sound off
+  (which the cardinal rule guarantees).
+
+### 2.15 Atmosphere mechanics (non-interactive but load-bearing)
 
 - **The ticking counter** — live dates/seconds (`10-02-1988`, the 8,981-days counter,
   L4's accelerating 28-day drain). Time pressure as *mood*, never as fail state.
@@ -288,19 +358,30 @@ The rhythm that makes the loop feel like dread rather than a scavenger hunt:
 ## 5. Building a new level (the L4 worked example)
 
 Level 4 (`/cellar/door/`, non-canon epilogue) is the proof that the mechanics survive
-the Flash→HTML translation. Its flow — collapse → letter → hunt → whisper → frank →
-door — was composed entirely from the catalog above:
+the Flash→HTML translation. Its flow — collapse → letter → two-phase hunt → whisper →
+frank → door — was composed entirely from the catalog above:
 
 | L4 beat | Mechanic remixed | Source |
 |---|---|---|
 | collapse (words assemble over the engine still) | 2.8 auto-forward + assembling type | intro montage |
 | `.continue.` fades in after assembly | 2.2 earned exit | `.proceed.` link |
 | Sparrow's letter, key phrase goes live | 2.3 glowing key word | breathe |
+| the lore ring → Donnie's obituary (pop7 tab) | 2.9 popup-tab economy, ring=lore / cross=door grammar | pop1 (Roberta's obituary — the game's first lore beat, now its last) |
+| dismissing the paper reveals the door mark | 2.2 earned exit + 2.12 in-page task chain | L1's third crosshair (appears only after both obituaries) |
 | sparrow hunt in the dark (`?seed=`) | 2.4 the hunt | chapter dots |
 | whisper window, **no red** | 2.11 signpost withdrawn | (new — the escalation) |
 | `cellar door` + escalating alerts | 2.3 wrong-answer escalation | (new) |
-| Frank window, count drains to zero | 2.12 counter + 2.8 cinematic | 8,981-days counter |
+| Frank window, count drains to zero | 2.15 counter + 2.8 cinematic | 8,981-days counter |
+| the ASCII Donnie resolves after the verdict (grey, lower-left — Frank faces what he watches) | 2.13 ASCII portraiture | the ascii bunny (L2 lifeline feedback) |
 | `.open the door.` → static ending | 2.1 red + 6. terminal state | "time is up, donnie." |
+
+The apparition's glyphs are fetched from `/cellar/door/donnie.txt` — a plain text
+file, deliberately discoverable by view-source archaeologists, and never
+load-bearing (a failed fetch leaves the pre empty; the door still arrives on the
+wall clock).
+
+Known gaps, by the catalog's own measure: **no audio anywhere** (2.14 — the largest
+unclaimed win) and task chains still sparse outside the two-phase hunt (2.12).
 
 **New-level checklist:**
 

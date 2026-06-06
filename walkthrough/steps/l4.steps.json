@@ -80,10 +80,10 @@
       "id": "l4-frank",
       "section": "Level 4 — Cellar Door",
       "captureBefore": false,
-      "caption": "FRANK, in a red-barred window over his pixelated mask: “WAKE UP, DONNIE. I HAVE BEEN WATCHING.” The 28-day count fades in and drains to zero on an accelerating curve — time collapsing inward. At zero it glitches, the verdict lands — “THAT IS WHEN THE WORLD ENDS. YOU ARE OUT OF TIME.” — and .open the door. appears.",
+      "caption": "FRANK, in a red-barred window over his pixelated mask: “WAKE UP, DONNIE. I HAVE BEEN WATCHING.” The 28-day count fades in and drains to zero on an accelerating curve — time collapsing inward. At zero it glitches and the verdict lands — “THAT IS WHEN THE WORLD ENDS. YOU ARE OUT OF TIME.” Then, lower-left, the thing Frank has been watching resolves out of the dark: DONNIE, rendered in ASCII — grey terminal glyphs, the system drawing you in its own medium. Last, .open the door. appears.",
       "action": { "type": "none" },
-      "wait": { "mode": "fixed", "fixedMs": 11000 },
-      "note": "Wall-clock beat: voice ≈ 650ms + 7×130ms, drain starts ~2.1s, runs 5.2s, door reveals ~8.7s. State is derived from elapsed time, so the door is always reached."
+      "wait": { "mode": "fixed", "fixedMs": 13000 },
+      "note": "Wall-clock beat: voice ≈ 650ms + 7×130ms, drain starts ~2.1s, runs 5.2s, verdict ~7.3s, the ascii apparition (pre#apparition, glyphs fetched from /cellar/door/donnie.txt — never load-bearing) resolves ~8.5s, door reveals ~10.7s. State is derived from elapsed time, so the door is always reached."
     },
     {
       "id": "l4-door",

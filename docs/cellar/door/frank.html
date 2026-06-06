@@ -26,7 +26,8 @@
 .desk-icon span { font-family:var(--mono); -webkit-font-smoothing:none; font-size:11px; color:#cfcfcf; letter-spacing:0.04em; text-shadow:1px 1px 0 #000; }
 
 .frank {
-    left:50%; top:50%; transform:translate(-50%,-50%); width:452px;
+    /* right of centre — the apparition owns the left; Frank faces what he watches */
+    left:63%; top:50%; transform:translate(-50%,-50%); width:452px;
     font-family:var(--mono); -webkit-font-smoothing:none;
 }
 .frank .title-bar-text { color:#fff; letter-spacing:0.14em; }
@@ -57,6 +58,21 @@ a.door-link {
     color:var(--highlight) !important; font-size:13px; letter-spacing:0.34em; text-decoration:none; cursor:pointer;
 }
 a.door-link:hover { animation: flicker 0.1s steps(1) 5; }
+/* the apparition — donnie, rendered by the system in its own medium (the
+   ascii-bunny grammar). grey, not red: he is not a signpost, he is what
+   Frank has been watching. resolves after the verdict, before the door. */
+.apparition {
+    position:absolute; left:2.5%; bottom:2.5%; z-index:20; margin:0;
+    padding:28px 32px;
+    font-family:var(--mono-alt), monospace; -webkit-font-smoothing:none;
+    font-size:6px; line-height:6px; letter-spacing:0;
+    color:#6e6e6e; white-space:pre; pointer-events:none; user-select:none;
+    /* a pool of dark behind the glyphs so he reads against the mask photo */
+    background: radial-gradient(ellipse 62% 58% at 50% 44%, rgba(0,0,0,0.85) 38%, rgba(0,0,0,0) 76%);
+    opacity:0; transition:opacity 1.6s ease;
+}
+.apparition.in { opacity:1; }
+.still .apparition { opacity:1 !important; transition:none !important; }
 @font-face {
       font-family: "Pixelated MS Sans Serif";
       font-style: normal;
@@ -106,6 +122,8 @@ a.door-link:hover { animation: flicker 0.1s steps(1) 5; }
         <svg class="vectors" id="vectors" viewBox="0 0 800 500" preserveAspectRatio="none" aria-hidden="true"></svg>
 
         <div class="desk-icon"><img src="/images/favicon-frank.png" alt=""><span>frank</span></div>
+
+        <pre class="apparition" id="apparition" aria-hidden="true"></pre>
 
         <div class="window frank">
             <div class="title-bar is-warn">
@@ -196,7 +214,17 @@ var voice = document.getElementById('voice');
 var count = document.getElementById('count');
 var finalEl = document.getElementById('final');
 var door = document.getElementById('door');
+var app = document.getElementById('apparition');
 var TOTAL = 28*86400 + 6*3600 + 42*60 + 12;
+
+/* the apparition's glyphs live in a plain text file (no HTML-escaping of the
+   ascii art, and the curious can find /cellar/door/donnie.txt themselves).
+   never load-bearing: if the fetch fails the pre stays empty and the door
+   still arrives on schedule. */
+fetch('/cellar/door/donnie.txt')
+    .then(function (r) { return r.ok ? r.text() : ''; })
+    .then(function (t) { app.textContent = t; })
+    .catch(function () {});
 
 function fmt(s) {
     s = Math.max(0, Math.floor(s));
@@ -211,7 +239,8 @@ var words = Array.prototype.slice.call(voice.querySelectorAll('.w'));
 var V0 = 650, VPER = 130;                  /* voice assemble timing */
 var DS = V0 + words.length * VPER + 500;   /* drain start */
 var DUR = 5200;                            /* drain duration */
-var DOOR_AT = DS + DUR + 1400;             /* door reveal */
+var APP_AT = DS + DUR + 1200;              /* the apparition resolves after the verdict */
+var DOOR_AT = APP_AT + 2200;               /* door reveal — last word on the page */
 var ended = false;
 
 function showEnd() {
@@ -236,7 +265,7 @@ if (STILL) {
     count.classList.add('in');               /* hold the count at the brink */
 } else if (reduce) {
     words.forEach(function (w) { w.classList.add('in'); });
-    count.classList.add('in'); showEnd(); showDoor();
+    count.classList.add('in'); showEnd(); app.classList.add('in'); showDoor();
 } else {
     /* one wall-clock loop. setInterval keeps firing even when backgrounded,
        and state is derived from elapsed time — so the door is ALWAYS reached
@@ -252,6 +281,7 @@ if (STILL) {
                 count.textContent = fmt(TOTAL * (1 - p * p));   /* accelerate — time collapsing */
             } else {
                 showEnd();
+                if (e >= APP_AT) app.classList.add('in');
                 if (e >= DOOR_AT) { showDoor(); if (iv) { clearInterval(iv); iv = 0; } }
             }
         }
