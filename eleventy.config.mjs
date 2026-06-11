@@ -20,6 +20,7 @@ export default async function(eleventyConfig) {
     const passthroughCopies = {
       "src/images": "images",
       "src/scripts": "scripts",
+      "walkthrough/output/walkthrough.html": "pages/walkthrough",
       "./node_modules/alpinejs/dist/cdn.min.js": "scripts/alpine.js",
       "./node_modules/@ruffle-rs": "scripts/",
       "src/files": "./",
