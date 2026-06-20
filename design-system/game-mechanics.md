@@ -2,10 +2,10 @@
 
 The companion to [`design-system.md`](design-system.md). That document is the *look*;
 this one is the *play*. It catalogs every mechanic in the game — distilled from the
-fully calibrated 50-step walkthrough (`walkthrough/steps/donnie.steps.json`), the
-field notes (`walkthrough/GUIDE.md`, `walkthrough/HANDOVER.md`), and the Level 4
-redesign — as reusable design patterns for exploring this game, extending it, or
-building a new one in the same genre.
+fully calibrated 50-step walkthrough (`walkthrough/steps/donnie.steps.json`) and the
+field notes (`walkthrough/GUIDE.md`, `walkthrough/HANDOVER.md`) — as reusable design
+patterns for exploring this game, extending it, or building a new one in the same
+genre.
 
 > **Genre, in one line:** a cryptic exploration puzzle disguised as a broken website.
 > No inventory, no score, no instructions. The player's only verbs are *click*,
@@ -16,7 +16,7 @@ building a new one in the same genre.
 
 ## 1. The core loop
 
-Every level, original (2001) and new (Level 4), runs the same five-beat loop:
+Every level runs the same five-beat loop:
 
 ```
 ARRIVE      a cinematic owns the screen; the player can only watch (or tap to skip frames)
@@ -37,7 +37,6 @@ INTRO (forced cinematic, est. tone) ──► MENU (hub: 3 crosshairs, levels ga
   L1: learn the world  ──reward──►  breathe  ──unlocks──►  L2
   L2: learn the villain ──reward──►  rose     ──unlocks──►  L3
   L3: the ending (almost all cinematic — the player has earned the right to watch)
-  L4 (new, non-canon): the epilogue — remixes every mechanic the game taught
 ```
 
 Note the interactivity curve: L1 is the densest puzzle, L3 is nearly a film. The game
@@ -61,7 +60,7 @@ decorations — is inert.
 
 - *Proven:* menu crosshairs; obituary circles; the third "guide" crosshair that only
   appears after both obituaries; the red word `breathe` inside the letter; the
-  `>>> LAUNCH THE DOCUMENT` button; L4's 32%-opacity mark in the dark.
+  `>>> LAUNCH THE DOCUMENT` button.
 - *Rules:* one red accent per screen, maximum. The hit area can be tiny (the L2 advance
   square is ~4px; the tangent crosshair diamond misses at 33px off). Red may *appear*
   as a consequence of progress (the third crosshair) — appearance is itself feedback.
@@ -101,15 +100,11 @@ single red word inside body text (the hint **is** the secret).
   (Frank hands you the word; you repeat it back later), `breathe` (red word in
   Donnie's letter → Level 2 password), `ling ling` (wallet riddle — *optional*; the
   scene forwards even unanswered), `rose` (Jim's license, 45a Rose Street → "the name
-  of the street he lives in… like the flower" → Level 3), `cellar door` (L4 — the
-  letter says *"say them where the steps go down to the dark"*).
+  of the street he lives in… like the flower" → Level 3).
 - *Commit styles vary deliberately:* `sparrow` needs Enter; `smurf` commits live via a
   per-frame check (no Enter — typing the last letter *is* the submission, which feels
-  like the site reading your mind); L4 splits type and Enter into two beats.
-- *Wrong answers:* originals do nothing (silence as judgment). L4 adds escalation —
-  three native alerts that get more personal (`THOSE ARE NOT THE WORDS` → `TRY TO
-  REMEMBER` → `SHE TOLD YOU ONCE`), and the window's close box refuses. Escalating
-  diegetic rejection > error message.
+  like the site reading your mind).
+- *Wrong answers:* the originals do nothing — silence as judgment.
 - *Rules:* the riddle restates the clue obliquely, never verbatim. One password per
   level, used exactly once. Always set explicit input `color` (white-on-white bug on
   dark stages).
@@ -120,8 +115,7 @@ The hotspot's *position* is random per visit, so knowledge of the mechanic doesn
 trivialize the act — you must still search.
 
 - *Proven:* the Philosophy chapter dots (random x along the left band, each click
-  spawns a new dot, the freshest dot is the largest); L4's sparrow mark (random
-  within 12–82% x / 16–78% y, 32% opacity over near-black).
+  spawns a new dot, the freshest dot is the largest).
 - *Rules:* constrain randomness to a band so the search space is fair; make the mark
   faint but unmistakable once seen; hovering may reward with a name/tooltip (the
   chapter dots show chapter titles).
@@ -212,7 +206,7 @@ Lore lives in **new browser tabs** (obituaries, news articles, the Level 3 hint)
 
 Sparse, diegetic keyboard moments: `Y` at the terminal's `C:\>MORE ? (Y/N)` (N does
 nothing — the choice is fake, the ritual is real), passwords typed character by
-character, L4's Enter-as-its-own-beat (*"say them out loud, if you like"*).
+character.
 
 ### 2.11 The signpost withdrawn
 
