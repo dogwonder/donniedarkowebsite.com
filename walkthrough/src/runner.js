@@ -50,7 +50,7 @@ export async function runPlaythrough({ config, stepsDoc, stepsPath, headed, outD
     log(`\n▶ loading ${startUrl}`);
     await page.goto(startUrl, { waitUntil: "load" });
     // "canvas" is the page's STAGE locator: the Ruffle canvas on Flash pages, or
-    // the 800×500 .aspect-ratio div on HTML-native pages (e.g. Level 4) — both
+    // the 800×500 .aspect-ratio div on HTML-native pages (e.g. the reconstructed scenes) — both
     // share the authored geometry, so capture/coord-mapping/settle are identical.
     let canvas = await waitForStageReady(page, ruffleCfg, log);
     await page.waitForTimeout(config.settle.initialSettleMs);

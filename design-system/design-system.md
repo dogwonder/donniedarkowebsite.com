@@ -83,14 +83,14 @@ in `_vars.scss` for non-game pages.
 
 | Component | Where | Anatomy |
 |---|---|---|
-| **Win98 window** | `src/scss/vendor/98/98.css` | `.window` > `.title-bar` (`.title-bar-text`, `.title-bar-controls` with `button[aria-label="Close"]`) > `.window-body`. Position absolutely inside the stage for game beats (see `cellar/door/frank.html`); the original stacked them the same way |
-| **Hidden hotspot** | site-wide idiom | `<a data-url hidden href="…">` — transparent, absolute, `z-index: 999`, ~44–48px square, revealed by `removeAttribute('hidden')` on a game event. THE core mechanic (see `are/you/sleep/golfing/main.html`, `from/the/sky/main.html`, `cellar/door/*.html`) |
+| **Win98 window** | `src/scss/vendor/98/98.css` | `.window` > `.title-bar` (`.title-bar-text`, `.title-bar-controls` with `button[aria-label="Close"]`) > `.window-body`. Position absolutely inside the stage for game beats; the original stacked them the same way |
+| **Hidden hotspot** | site-wide idiom | `<a data-url hidden href="…">` — transparent, absolute, `z-index: 999`, ~44–48px square, revealed by `removeAttribute('hidden')` on a game event. THE core mechanic (see `are/you/sleep/golfing/main.html`, `from/the/sky/main.html`) |
 | **Red crosshair / mark** | menu, hunts | Small red (`--highlight`) target; the only invitation to click the site ever offers. Flicker on hover: `@keyframes flicker { 50% { opacity: 0 } }` 0.1s ×5 |
-| **Assembling type** | `missingScripts.animateText` / `level4Scripts.animateText` | Text builds word-by-word (90–240ms cadence), fires `wordsFinished`; reveals come *after* assembly. Source element starts `display:none`. Split on `/\s+/` (indentation = invisible words). Spans don't survive word-splitting — recolor key words via post-assembly `innerHTML.replace` |
-| **Glowing key word** | letters | A password rendered in `--highlight` red inside body text (`breathe`, `cellar door`) — the hint *is* the secret |
+| **Assembling type** | `missingScripts.animateText` | Text builds word-by-word (90–240ms cadence), fires `wordsFinished`; reveals come *after* assembly. Source element starts `display:none`. Split on `/\s+/` (indentation = invisible words). Spans don't survive word-splitting — recolor key words via post-assembly `innerHTML.replace` |
+| **Glowing key word** | letters | A password rendered in `--highlight` red inside body text (`breathe`) — the hint *is* the secret |
 | **Scanlines** | `_effects.scss` `.interlace` | `repeating-linear-gradient` 1px dark lines. For stage overlays prefer a page-scoped `::before` with `pointer-events: none` (the shared class fights stage geometry and can eat clicks) |
 | **Noise/grain** | `partials/svg.html` filters | SVG turbulence filters `#noise1–4` + `animation: noise`. Use sparingly; never on frames that must hold still |
-| **Password gate** | `missing/are/you/sleep/golfing/5.html`, `cellar/door/whisper.html` | Bare `<input>` in a window; JS `checkPassword()`; wrong answer = native `alert()` (diegetic Win98). Always set explicit input `color` — `body.dark` makes text white-on-white |
+| **Password gate** | `missing/are/you/sleep/golfing/5.html` | Bare `<input>` in a window; JS `checkPassword()`; wrong answer = native `alert()` (diegetic Win98). Always set explicit input `color` — `body.dark` makes text white-on-white |
 | **Terminal document** | intro, transcripts | Green or black monospace over a scanned-paper image; `C:\>` prompts, `MORE? (Y/N)` |
 
 ## 6. Interaction principles
@@ -98,11 +98,11 @@ in `_vars.scss` for non-game pages.
 1. **Never explain.** No tooltips, no "click here", no onboarding. Discovery is the game.
 2. **Hide the exits.** Progression links are invisible until earned, then *barely* visible.
 3. **Red is the only signpost.**
-4. **Real randomness for humans, seeds for machines.** Randomised elements (hotspot hunts)
-   accept `?seed=<n>` (mulberry32 PRNG, `src/scripts/level4.js`) so the Playwright
-   walkthrough is deterministic while visitors get a true hunt.
+4. **Real randomness for humans, drivable for machines.** Randomised elements (the
+   Philosophy chapter-dot hunt) stay a true hunt for visitors; the walkthrough harness
+   drives them by runtime red-detection rather than fixed coordinates.
 5. **The system is the fiction.** Alerts, title bars, browser windows and URLs
-   (`/are/you/sleep/golfing/`, `/cellar/door/`) are narrative devices. New URLs read as
+   (`/are/you/sleep/golfing/`, `/from/the/sky/`) are narrative devices. New URLs read as
    whispered phrases, lowercase, no hyphens.
 6. **Terminal states hold still.** Endings settle to a perfectly static frame (they're
    asserted against reference stills by the walkthrough harness).
@@ -131,11 +131,6 @@ Real rendered frames, 768×480 (the stage at the reference viewport). Ground tru
 | `03-cloud-menu-crosshairs.png` | The menu: drifting words, photographic montage, red crosshairs as the only UI |
 | `04-frank-win98-window.png` | The desktop mood: a single IE-chrome window on darkness; Frank; `smurf` |
 | `05-l3-ending-time-is-up.png` | A terminal state: *"time is up, donnie"* |
-| `06-l4-collapse-intro.png` | (L4) black void + assembled type + red `.continue.` |
-| `07-l4-sparrow-letter.png` | (L4) paper mood + glowing red key words in a letter |
-| `08-l4-cellar-hunt.png` | (L4) the hunt: one faint red mark in near-total darkness |
-| `09-l4-frank-countdown.png` | (L4) Win98 window beat: red system voice + countdown |
-| `10-l4-cellar-door-end.png` | (L4) terminal state: door of light, words held static |
 
 ## 9. Building a new scene — checklist
 

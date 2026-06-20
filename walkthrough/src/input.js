@@ -315,7 +315,7 @@ export async function performAction(page, canvas, ruffleCfg, action, log = () =>
 
     case "domType": {
       // Type into a real HTML <input> (CSS selector), NOT a Ruffle EditText — the
-      // HTML-native password gates (Level 4's "cellar door" whisper) are plain DOM
+      // HTML-native password gates (e.g. the reconstructed sleep-golfing gate) are plain DOM
       // forms. Clears first, types char-by-char with a human-ish dwell (so any
       // per-keystroke JS sees each character), then submits via Enter or a click.
       const selector = action.selector;

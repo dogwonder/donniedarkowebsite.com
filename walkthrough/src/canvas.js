@@ -51,7 +51,7 @@ export async function suppressRuffleOverlays(page) {
 
 /**
  * Does the current page run Ruffle at all? Pages built with `isRuffle = false`
- * (the HTML-native Level 4 scenes) never load ruffle.js, so `window.RufflePlayer`
+ * (the HTML-native reconstructed scenes) never load ruffle.js, so `window.RufflePlayer`
  * is a deterministic signal — present before any async polyfill upgrade, absent
  * on pure-HTML pages. The element check is a belt-and-braces fallback.
  */

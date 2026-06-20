@@ -119,9 +119,10 @@ trivialize the act — you must still search.
 - *Rules:* constrain randomness to a band so the search space is fair; make the mark
   faint but unmistakable once seen; hovering may reward with a name/tooltip (the
   chapter dots show chapter titles).
-- **Real randomness for humans, seeds for machines** — randomized placement accepts
-  `?seed=<n>` (mulberry32) so the walkthrough is deterministic while visitors get a
-  true hunt. This rule is non-negotiable for any new random mechanic (§6).
+- **Real randomness for humans, drivable for machines** — visitors get a genuine
+  hunt; the walkthrough drives the Flash chapter-dot hunt by runtime red-detection,
+  not fixed coordinates. Any *new* random mechanic must stay machine-drivable too —
+  expose a stable signature (the red signpost) or accept a `?seed=<n>` (§6).
 
 ### 2.5 Win98 windows as game objects
 
@@ -372,7 +373,7 @@ any new mechanic must satisfy, and the harness primitive that consumes each:
 
 | Design rule | Why / harness primitive |
 |---|---|
-| Random placement takes `?seed=<n>` (mulberry32) | deterministic runs, true hunt for humans — `domClick` on the seeded element |
+| Random placement stays machine-drivable | Flash hunts driven by `detectClick` red-detection; new HTML scenes can take `?seed=<n>` (mulberry32) — never hard-coded coords |
 | Terminal states hold perfectly still | asserted via `match-reference` against a reference PNG (L3: threshold 0.15 separates transcript 20% from ending 9.6%) |
 | Reveals fire on **events**, not bare timers | the harness gates on visibility (`waitVisibleMs`), not sleeps |
 | Animations have deterministic durations | `fixed` waits can be derived, not guessed (compute each beat from frame counts / line cadence, never eyeball it) |
