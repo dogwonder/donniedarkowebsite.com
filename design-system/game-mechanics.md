@@ -210,11 +210,10 @@ character.
 
 ### 2.11 The signpost withdrawn
 
-The endgame screens remove the red. L4's whisper window has *no red anywhere* — "the
-level has taught you the words; here you must already know them." The final screen has
-red but **nothing left to click** — "the signpost is spent because the journey is
-over." Withholding the system's one promise is the strongest statement the system can
-make. Use exactly once, at the end.
+The endgame screens remove the red. The L3 finale still has red on screen but leaves
+**nothing left to click** — "the signpost is spent because the journey is over."
+Withholding the system's one promise is the strongest statement the system can make.
+Use exactly once, at the end.
 
 ### 2.12 The in-page timeline (task > task > task > new page)
 
@@ -234,10 +233,6 @@ one page — and then a **URL navigation is the chapter break**.
   heading (and reads as one, since URLs are whispered phrases). The page boundary is
   also the *save point*: sections re-enterable by URL are the calibration/testing
   seams (§6).
-- *L4 honesty note:* the redesign currently runs closer to one-task-per-page than
-  the original's chains — the two-phase hunt (ring → paper → cross) is the only
-  multi-beat page. New scenes should prefer adding beats to existing pages over
-  adding pages.
 - *Automation:* in-page tasks gate on canvas/DOM change (`diff-stable`,
   `waitVisibleMs`); the chapter break gates on navigation (`awaitNavMs`,
   `stopOnNav`) — mixing them up is how repeat-clicks blow through pages (the
@@ -256,7 +251,7 @@ terminal uses. It's the document mood (§design-system.md) wearing a face.
   scenes, light-on-dark for void scenes. Generate from a film still (luminance →
   glyph ramp, sample rows at ~2× column pitch for character aspect).
 - *Asset:* `design-system/ascii-donnie.txt` (82×52, from the classroom frame at
-  t≈37min) — generated for a prospective L4 beat.
+  t≈37min).
 - *Automation-friendly by nature:* pure static text — diff-settles instantly, needs
   no reference still.
 
@@ -276,10 +271,6 @@ The original plays sound as *atmosphere and testimony*, never as a required sens
   browsers); voice/SFX only where the fiction produces them (a phone, a TV, a
   drive-through window). Silence is the default mood — the void screens should stay
   silent.
-- *L4 honesty note:* the redesign is currently **silent end-to-end** — no ambient
-  bed, no voice. The biggest unclaimed atmosphere win; candidate beats: a low room
-  tone behind the hunt, the typewriter strikes under Roberta's letter, Frank's
-  count-drain ticking.
 - *Automation:* audio is invisible to image-diff. Gate audio-paced beats on the
   **known duration** (phone.swf = 2739 frames @ 25fps = 109.5s) plus a
   `match-reference` of the visual end state — never on sound itself. Headless
@@ -288,12 +279,12 @@ The original plays sound as *atmosphere and testimony*, never as a required sens
 
 ### 2.15 Atmosphere mechanics (non-interactive but load-bearing)
 
-- **The ticking counter** — live dates/seconds (`10-02-1988`, the 8,981-days counter,
-  L4's accelerating 28-day drain). Time pressure as *mood*, never as fail state.
+- **The ticking counter** — live dates/seconds (`10-02-1988`, the 8,981-days counter).
+  Time pressure as *mood*, never as fail state.
 - **Scanlines / noise / drift** — perpetual subtle motion so the screen feels alive
   (and never diff-settles — see §6).
 - **URL as whisper** — paths are narrative: `/are/you/sleep/golfing/`,
-  `/from/the/sky/`, `/cellar/door/`. Lowercase phrases, no hyphens. A new game's
+  `/from/the/sky/`. Lowercase phrases, no hyphens. A new game's
   sitemap should read as a poem.
 - **The fake-out reset** — screens tear, dissolve, "destabilize"; the game pretends
   to break (THINGS AREN'T THAT SIMPLE!, the red fracture). Damage as transition.
@@ -311,7 +302,6 @@ Frank's window ──────"smurf"───────────► Fra
 Donnie's letter ─────red word──────────► (carried across levels) ──► breathe ──► L2
 wallet window ───────Jim's ID──────────► (optional) ling ling
 Jim's license ───────"45a rose street"─► flower riddle ──► rose ──► L3
-Sparrow's letter (L4)─"go down to the dark"─► the whisper window ──► cellar door
 ```
 
 Design rules extracted:
@@ -333,8 +323,8 @@ The rhythm that makes the loop feel like dread rather than a scavenger hunt:
 
 | Beat | Duration | Player verb | Proven by |
 |---|---|---|---|
-| Cold open | 5–45s | watch / tap | intro montage, L4 collapse |
-| First quiet screen | open-ended | hunt the red | obit circles, L4 mark |
+| Cold open | 5–45s | watch / tap | intro montage |
+| First quiet screen | open-ended | hunt the red | obit circles |
 | Lore drop | reading time | read, close | popup tabs, the letter |
 | The gate | until solved | type / choose | every password |
 | Eruption | 5–15s | watch | screen tear, smurf flood, fire |
@@ -344,38 +334,16 @@ The rhythm that makes the loop feel like dread rather than a scavenger hunt:
   screens (one mark on black). Never two dense screens consecutively.
 - Sound/animation builds toward gates and erupts after them.
 - Each level should teach exactly **one new verb** (L1: close-to-advance; L2: the
-  judged choice; L3: nothing new — it spends what you know; L4: the seedable hunt +
-  withdrawal of the signpost).
+  judged choice; L3: nothing new — it spends what you know).
 
 ---
 
-## 5. Building a new level (the L4 worked example)
+## 5. Building a new level
 
-Level 4 (`/cellar/door/`, non-canon epilogue) is the proof that the mechanics survive
-the Flash→HTML translation. Its flow — collapse → letter → two-phase hunt → whisper →
-frank → door — was composed entirely from the catalog above:
-
-| L4 beat | Mechanic remixed | Source |
-|---|---|---|
-| collapse (words assemble over the engine still) | 2.8 auto-forward + assembling type | intro montage |
-| `.continue.` fades in after assembly | 2.2 earned exit | `.proceed.` link |
-| Sparrow's letter, key phrase goes live | 2.3 glowing key word | breathe |
-| the lore ring → Donnie's obituary (pop7 tab) | 2.9 popup-tab economy, ring=lore / cross=door grammar | pop1 (Roberta's obituary — the game's first lore beat, now its last) |
-| dismissing the paper reveals the door mark | 2.2 earned exit + 2.12 in-page task chain | L1's third crosshair (appears only after both obituaries) |
-| sparrow hunt in the dark (`?seed=`) | 2.4 the hunt | chapter dots |
-| whisper window, **no red** | 2.11 signpost withdrawn | (new — the escalation) |
-| `cellar door` + escalating alerts | 2.3 wrong-answer escalation | (new) |
-| Frank window, count drains to zero | 2.15 counter + 2.8 cinematic | 8,981-days counter |
-| the ASCII Donnie resolves after the verdict (grey, lower-left — Frank faces what he watches) | 2.13 ASCII portraiture | the ascii bunny (L2 lifeline feedback) |
-| `.open the door.` → static ending | 2.1 red + 6. terminal state | "time is up, donnie." |
-
-The apparition's glyphs are fetched from `/cellar/door/donnie.txt` — a plain text
-file, deliberately discoverable by view-source archaeologists, and never
-load-bearing (a failed fetch leaves the pre empty; the door still arrives on the
-wall clock).
-
-Known gaps, by the catalog's own measure: **no audio anywhere** (2.14 — the largest
-unclaimed win) and task chains still sparse outside the two-phase hunt (2.12).
+The catalog above is the parts bin; this is the assembly order. Every mechanic in §2
+is composable — a new level is a fresh arrangement of red signposts, hidden hotspots,
+password gates, randomized hunts, and the five-beat loop, hung on a fiction the
+interface can wear.
 
 **New-level checklist:**
 
@@ -407,7 +375,7 @@ any new mechanic must satisfy, and the harness primitive that consumes each:
 | Random placement takes `?seed=<n>` (mulberry32) | deterministic runs, true hunt for humans — `domClick` on the seeded element |
 | Terminal states hold perfectly still | asserted via `match-reference` against a reference PNG (L3: threshold 0.15 separates transcript 20% from ending 9.6%) |
 | Reveals fire on **events**, not bare timers | the harness gates on visibility (`waitVisibleMs`), not sleeps |
-| Animations have deterministic durations | `fixed` waits can be derived, not guessed (L4 notes compute every beat: "650ms hold + 13 lines × 360ms") |
+| Animations have deterministic durations | `fixed` waits can be derived, not guessed (compute each beat from frame counts / line cadence, never eyeball it) |
 | Perpetual ambience (scanlines, counters) is *subtle* | `diff-stable` needs loose thresholds or sub-regions; a violently animated idle screen is undrivable *and* unreadable |
 | Progression controls are DOM elements where possible | `domClick`/`domType` are geometry-proof; canvas coords drift |
 | Flaky/late-arriving advances must be retry-safe (extra clicks = no-ops) | `clickUntilNet` (re-click until the asset loads), `repeat` + `stopOnNav` (halt the instant a click navigates) |
@@ -456,6 +424,5 @@ The transferable core, stripped of Donnie Darko:
 ---
 
 *Sources: `walkthrough/steps/donnie.steps.json` (50 calibrated steps + notes),
-`walkthrough/steps/l4.steps.json`, `walkthrough/GUIDE.md`, `walkthrough/HANDOVER.md`,
-`walkthrough/README.md`, `design-system/design-system.md`,
-`walkthrough/THE-PHILOSOPHY-OF-TIME-TRAVEL.md`.*
+`walkthrough/GUIDE.md`, `walkthrough/HANDOVER.md`, `walkthrough/README.md`,
+`design-system/design-system.md`, `walkthrough/THE-PHILOSOPHY-OF-TIME-TRAVEL.md`.*
