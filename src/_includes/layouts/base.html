@@ -42,6 +42,8 @@
     {% block styles %}{% endblock %}
 
     <script defer data-domain="donniedarkowebsite.com" src="https://plausible.io/js/script.js"></script>
+    {# Side by side with Plausible for four weeks (kettle-cups-cloud #18). The page ID is fixed at build time and must be in sites.json. #}
+    <script defer src="{{ "/" | url }}scripts/stats.js" data-endpoint="https://stats.co-local.co.uk/c" data-site="donniedarko" data-page="{{ page.url | replace(r/^\/|\.html?$/g, "") or "home" }}"></script>
 
   </head>
   <body class="{{ 'dark' if isDark else '' }}">
