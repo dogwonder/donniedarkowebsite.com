@@ -1,0 +1,50 @@
+<!-- Paste at the top of the Changelog list (before "July 2024"). Gutenberg block markup, matches existing post. -->
+
+<p class="wp-block-paragraph"><strong>June 2026</strong></p>
+
+
+
+<p class="wp-block-paragraph">An illustrated walkthrough! Because Flash is, well, Flash, and the game has a habit of sealing itself up if you say the magic words in the wrong order, I wanted a step-by-step guide that plays the whole thing start to finish: <a href="https://donniedarkowebsite.com/pages/walkthrough.html">the illustrated playthrough</a>.</p>
+
+
+
+<p class="wp-block-paragraph">Full disclosure: I built this with an AI coding assistant (<a href="https://www.anthropic.com/claude-code">Claude Code</a>). I knew the game inside out and what I wanted &#8211; a bot that drives a real playthrough and screenshots every move &#8211; and the AI did most of the actual writing of the <a href="https://playwright.dev/">Playwright</a> automation. It was a lot of back-and-forth: it would get stuck, I&#8217;d tell it which crosshair to click or which password came next, and we calibrated the thing one step at a time. So the route through the game is mine; a good chunk of the code is the machine&#8217;s.</p>
+
+
+
+<p class="wp-block-paragraph">It&#8217;s a single self-contained page &#8211; 50 steps across 10 sections, from the opening bullseye all the way to the ending in <code>/from/the/sky/</code> &#8211; with a before/after screenshot for every move and the action that was taken. The entire session is recorded as video too.</p>
+
+
+
+<ul class="wp-block-list">
+<li>It&#8217;s driven by <a href="https://playwright.dev/">Playwright</a> steering <a href="https://ruffle.rs/">Ruffle</a>. The catch: Playwright can&#8217;t see <em>into</em> Flash, so every input is a raw canvas coordinate or a keypress, and the bot waits for the canvas to <em>stop changing</em> (a pixel image-diff) rather than guessing with fixed sleeps. Getting those coordinates right was the fiddly, human part &#8211; lots of squinting at screenshots and nudging numbers.</li>
+
+
+
+<li>Ruffle renders via WebGL, which clears its buffer after compositing, so <code>canvas.toDataURL()</code> just returns blank frames. The screenshots are Playwright element captures clipped to the canvas region instead &#8211; renderer-agnostic and reliable.</li>
+
+
+
+<li>Every step, screenshot and caption is generated from a single calibrated steps file, so the walkthrough rebuilds itself whenever the run is re-recorded.</li>
+
+
+
+<li>And yes, the passwords are all in there if you get stuck: <code>breathe</code>, <code>sparrow</code>, <code>smurf</code>, <code>ling ling</code> and <code>rose</code>. Say them in the wrong order and the universe stays sealed.</li>
+</ul>
+
+
+<!-- ============================================================= -->
+<!-- ADDITION: Alexandra Jugović / Hi-ReS! got in touch.            -->
+<!-- Fold in under the June 2026 changelog entry (or as its own).  -->
+<!-- ============================================================= -->
+
+
+<p class="wp-block-paragraph">The best thing to come out of this whole project: <strong>Alexandra Jugović</strong> &#8211; one of the original creators of the site, co-founder of the agency <a href="https://hi-res.net/">Hi-ReS!</a> &#8211; saw the rebuild and got in touch.</p>
+
+
+
+<p class="wp-block-paragraph">We got to talk about the website itself: the process, the thinking, the art behind it. Hearing the story of how it was actually made, first-hand from the person who made it, was genuinely inspirational &#8211; one of those &#8220;I can&#8217;t quite believe this is happening&#8221; moments for a side project that started as me just trying to get an old Flash site running again.</p>
+
+
+
+<p class="wp-block-paragraph">She also very kindly sent over some additional files I didn&#8217;t have &#8211; so the website is now that bit more complete, and closer to the original than I could have got it on my own. Thank you, Alexandra. ❤️</p>
